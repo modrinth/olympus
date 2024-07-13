@@ -321,7 +321,7 @@
         </p>
       </div>
       <div class="button-group push-right">
-        <Button @click="deleteWarning.hide()"> Cancel </Button>
+        <Button @click="deleteWarning.hide()"> Cancel</Button>
         <Button color="danger" @click="deleteSelected">
           <TrashIcon />
           Remove
@@ -344,7 +344,7 @@
         </p>
       </div>
       <div class="button-group push-right">
-        <Button @click="deleteDisabledWarning.hide()"> Cancel </Button>
+        <Button @click="deleteDisabledWarning.hide()"> Cancel</Button>
         <Button color="danger" @click="deleteDisabled">
           <TrashIcon />
           Remove
@@ -364,6 +364,15 @@
     :instance="instance"
     :versions="props.versions"
   />
+  <Teleport v-if="mounted" to=".side-cards">
+    <Card class="filter-panel">
+      <CategoryFilter
+        :facets="facets"
+        :project-type="selectableProjectTypes[selectedProjectType]"
+        @toggle-facet="toggleFacet"
+      />
+    </Card>
+  </Teleport>
 </template>
 <script setup>
 import {
@@ -394,7 +403,7 @@ import {
   Card,
 } from '@modrinth/ui'
 import { formatProjectType } from '@modrinth/utils'
-import { computed, onUnmounted, ref, watch } from 'vue'
+import { computed, onUnmounted, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   add_project_from_path,
@@ -413,6 +422,7 @@ import { highlightModInProfile } from '@/helpers/utils.js'
 import { MenuIcon, ToggleIcon, TextInputIcon, AddProjectImage, PackageIcon } from '@/assets/icons'
 import ExportModal from '@/components/ui/ExportModal.vue'
 import ModpackVersionModal from '@/components/ui/ModpackVersionModal.vue'
+import CategoryFilter from '@/components/ui/filter/CategoryFilter.vue'
 
 const router = useRouter()
 
@@ -453,12 +463,25 @@ const canUpdatePack = computed(() => {
 })
 const exportModal = ref(null)
 
+// used to make sure to only render teleport (category selector)
+// when the page is fully loading so the sidebar definitely exists
+let mounted = ref(false)
+
+onMounted(() => {
+  mounted.value = true
+})
+
 const initProjects = (initInstance) => {
   projects.value = []
   if (!initInstance || !initInstance.projects) return
   for (const [path, project] of Object.entries(initInstance.projects)) {
     if (project.metadata.type === 'modrinth' && !props.offline) {
       let owner = project.metadata.members.find((x) => x.role === 'Owner')
+
+      let categories = project.metadata.project.categories.concat(
+        project.metadata.project.additional_categories,
+      )
+
       projects.value.push({
         path,
         name: project.metadata.project.title,
@@ -471,6 +494,7 @@ const initProjects = (initInstance) => {
         updateVersion: project.metadata.update_version,
         outdated: !!project.metadata.update_version,
         project_type: project.metadata.project.project_type,
+        categories: categories,
         id: project.metadata.project.id,
       })
     } else if (project.metadata.type === 'inferred') {
@@ -483,6 +507,7 @@ const initProjects = (initInstance) => {
         icon: project.metadata.icon ? convertFileSrc(project.metadata.icon) : null,
         disabled: project.disabled,
         outdated: false,
+        categories: [],
         project_type: project.metadata.project_type,
       })
     } else {
@@ -532,6 +557,7 @@ watch(
 const modpackVersionModal = ref(null)
 const installing = computed(() => props.instance.install_stage !== 'installed')
 
+const facets = ref([])
 const searchFilter = ref('')
 const selectAll = ref(false)
 const selectedProjectType = ref('All')
@@ -573,12 +599,25 @@ const selectableProjectTypes = computed(() => {
 
 const search = computed(() => {
   const projectType = selectableProjectTypes.value[selectedProjectType.value]
+  const facetNames = facets.value.map((facet) => {
+    return facet.split(':')[1]
+  })
+
   const filtered = projects.value
     .filter((mod) => {
       return (
         mod.name.toLowerCase().includes(searchFilter.value.toLowerCase()) &&
         (projectType === 'all' || mod.project_type === projectType)
       )
+    })
+    .filter((mod) => {
+      for (let facet of facetNames) {
+        if (!mod.categories.includes(facet)) {
+          return false
+        }
+      }
+
+      return true
     })
     .filter((mod) => {
       if (hideNonSelected.value) {
@@ -589,6 +628,16 @@ const search = computed(() => {
 
   return updateSort(filtered)
 })
+
+function toggleFacet(name) {
+  const index = facets.value.indexOf(name)
+
+  if (index !== -1) {
+    facets.value.splice(index, 1)
+  } else {
+    facets.value.push(name)
+  }
+}
 
 const updateSort = (projects) => {
   switch (sortColumn.value) {
@@ -1133,6 +1182,7 @@ onUnmounted(() => {
     }
   }
 }
+
 .empty-prompt {
   display: flex;
   flex-direction: column;
@@ -1154,6 +1204,15 @@ onUnmounted(() => {
   p,
   h3 {
     margin: 0;
+  }
+}
+
+.filter-panel {
+  :deep(h2) {
+    color: var(--color-contrast);
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.16rem;
   }
 }
 </style>

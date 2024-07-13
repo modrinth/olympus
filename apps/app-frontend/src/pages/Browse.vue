@@ -1,21 +1,11 @@
 <script setup>
 import { computed, nextTick, ref, readonly, shallowRef, watch, onUnmounted } from 'vue'
 import { ClearIcon, SearchIcon, ClientIcon, ServerIcon, XIcon } from '@modrinth/assets'
-import {
-  Pagination,
-  Checkbox,
-  Button,
-  DropdownSelect,
-  Promotion,
-  NavRow,
-  Card,
-  SearchFilter,
-} from '@modrinth/ui'
-import { formatCategoryHeader, formatCategory } from '@modrinth/utils'
+import { formatCategory } from '@modrinth/utils'
 import Multiselect from 'vue-multiselect'
 import { handleError } from '@/store/state'
 import { useBreadcrumbs } from '@/store/breadcrumbs'
-import { get_categories, get_loaders, get_game_versions } from '@/helpers/tags'
+import { get_loaders, get_game_versions, sortByNameOrNumber, get_categories } from '@/helpers/tags'
 import { useRoute, useRouter } from 'vue-router'
 import { Avatar } from '@modrinth/ui'
 import SearchCard from '@/components/ui/SearchCard.vue'
@@ -28,6 +18,7 @@ import { check_installed, get, get as getInstance } from '@/helpers/profile.js'
 import { convertFileSrc } from '@tauri-apps/api/tauri'
 import { isOffline } from '@/helpers/utils'
 import { offline_listener } from '@/helpers/events'
+import CategoryFilter from '@/components/ui/filter/CategoryFilter.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -368,45 +359,6 @@ function getSearchUrl(offset, useObj) {
   return useObj ? obj : url
 }
 
-const sortedCategories = computed(() => {
-  const values = new Map()
-  for (const category of categories.value.filter(
-    (cat) => cat.project_type === (projectType.value === 'datapack' ? 'mod' : projectType.value),
-  )) {
-    if (!values.has(category.header)) {
-      values.set(category.header, [])
-    }
-    values.get(category.header).push(category)
-  }
-  return values
-})
-
-// Sorts alphabetically, but correctly identifies 8x, 128x, 256x, etc
-// identifier[0], then if it ties, identifier[1], etc
-async function sortByNameOrNumber(sortable, identifiers) {
-  sortable.sort((a, b) => {
-    for (let identifier of identifiers) {
-      let aNum = parseFloat(a[identifier])
-      let bNum = parseFloat(b[identifier])
-      if (isNaN(aNum) && isNaN(bNum)) {
-        // Both are strings, sort alphabetically
-        let stringComp = a[identifier].localeCompare(b[identifier])
-        if (stringComp != 0) return stringComp
-      } else if (!isNaN(aNum) && !isNaN(bNum)) {
-        // Both are numbers, sort numerically
-        let numComp = aNum - bNum
-        if (numComp != 0) return numComp
-      } else {
-        // One is a number and one is a string, numbers go first
-        let numStringComp = isNaN(aNum) ? 1 : -1
-        if (numStringComp != 0) return numStringComp
-      }
-    }
-    return 0
-  })
-  return sortable
-}
-
 async function clearFilters() {
   for (const facet of [...facets.value]) {
     await toggleFacet(facet, true)
@@ -639,23 +591,7 @@ onUnmounted(() => unlistenOffline())
             @update:model-value="onSearchChangeToTop(1)"
           />
         </div>
-        <div
-          v-for="categoryList in Array.from(sortedCategories)"
-          :key="categoryList[0]"
-          class="categories"
-        >
-          <h2>{{ formatCategoryHeader(categoryList[0]) }}</h2>
-          <div v-for="category in categoryList[1]" :key="category.name">
-            <SearchFilter
-              :active-filters="facets"
-              :icon="category.icon"
-              :display-name="formatCategory(category.name)"
-              :facet-name="`categories:${encodeURIComponent(category.name)}`"
-              class="filter-checkbox"
-              @toggle="toggleFacet"
-            />
-          </div>
-        </div>
+        <CategoryFilter :facets="facets" :project-type="projectType" @toggle-facet="toggleFacet" />
         <div v-if="projectType !== 'datapack'" class="environment">
           <h2>Environments</h2>
           <SearchFilter
@@ -913,7 +849,7 @@ onUnmounted(() => unlistenOffline())
       background: transparent;
     }
 
-    h2 {
+    :deep(h2) {
       color: var(--color-contrast);
       margin-top: 1rem;
       margin-bottom: 0.5rem;

@@ -34,3 +34,29 @@ export async function get_donation_platforms() {
 export async function get_report_types() {
   return await invoke('plugin:tags|tags_get_report_types')
 }
+
+// Sorts alphabetically, but correctly identifies 8x, 128x, 256x, etc
+// identifier[0], then if it ties, identifier[1], etc
+export function sortByNameOrNumber(sortable, identifiers) {
+  sortable.sort((a, b) => {
+    for (let identifier of identifiers) {
+      let aNum = parseFloat(a[identifier])
+      let bNum = parseFloat(b[identifier])
+      if (isNaN(aNum) && isNaN(bNum)) {
+        // Both are strings, sort alphabetically
+        let stringComp = a[identifier].localeCompare(b[identifier])
+        if (stringComp != 0) return stringComp
+      } else if (!isNaN(aNum) && !isNaN(bNum)) {
+        // Both are numbers, sort numerically
+        let numComp = aNum - bNum
+        if (numComp != 0) return numComp
+      } else {
+        // One is a number and one is a string, numbers go first
+        let numStringComp = isNaN(aNum) ? 1 : -1
+        if (numStringComp != 0) return numStringComp
+      }
+    }
+    return 0
+  })
+  return sortable
+}
