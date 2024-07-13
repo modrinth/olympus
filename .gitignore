@@ -38,9 +38,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
-.nx/cache
-.nx/workspace-data
-
 # Nuxt dev/build outputs
 .output
 .data
@@ -54,3 +51,4 @@ apps/frontend/src/generated
 .turbo
 target
 generated
+.env

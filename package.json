@@ -9,7 +9,8 @@
     "app:dev": "turbo run dev --filter=@modrinth/app",
     "build": "turbo run build --continue",
     "lint": "turbo run lint --continue",
-    "test": "turbo run test --continue"
+    "test": "turbo run test --continue",
+    "fix": "turbo run fix --continue"
   },
   "devDependencies": {
     "prettier": "^3.3.2",

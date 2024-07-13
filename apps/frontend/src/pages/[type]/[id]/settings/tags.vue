@@ -250,6 +250,9 @@ export default defineNuxtComponent({
 </script>
 <style lang="scss" scoped>
 .label__title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-card-xs);
   margin-top: var(--spacing-card-bg);
 
   svg {

@@ -16,6 +16,7 @@ module.exports = {
         icon: "var(--color-icon)",
         // Text
         primary: "var(--color-text)",
+        contrast: "var(--color-contrast)",
         secondary: "var(--color-secondary)",
         inactive: "var(--color-text-inactive)",
         dark: "var(--color-text-dark)",

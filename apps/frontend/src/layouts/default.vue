@@ -778,8 +778,7 @@ function hideStagingBanner() {
     }
 
     .navbar {
-      padding: 0 var(--spacing-card-lg);
-      margin: 0 var(--spacing-card-lg);
+      padding: 0 0.75rem;
       max-width: 1280px;
       margin-left: auto;
       margin-right: auto;

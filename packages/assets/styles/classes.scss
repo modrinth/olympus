@@ -426,11 +426,6 @@ a,
     --_accent-color: var(--color-gray);
   }
 
-  &.btn-large {
-    font-weight: 700;
-    min-height: 2.5rem;
-  }
-
   box-sizing: border-box;
 
   color: var(--_text-color);
@@ -469,6 +464,22 @@ a,
   &.transparent {
     background: none;
     box-shadow: none;
+  }
+
+  &.btn-large {
+    font-weight: 700;
+    padding: 12px 16px;
+    font-size: 16px;
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+
+  &.btn-large-round {
+    padding: 0.75rem;
+    border-radius: 50%;
   }
 
   &.btn-dropdown-animation {

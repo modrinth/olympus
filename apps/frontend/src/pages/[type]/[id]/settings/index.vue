@@ -413,6 +413,12 @@ const deleteIcon = async () => {
 .visibility-info {
   padding: 0;
   list-style: none;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-card-xs);
+  }
 }
 
 svg {

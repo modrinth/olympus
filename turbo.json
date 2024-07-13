@@ -20,9 +20,13 @@
     "lint": {},
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "inputs": ["$TURBO_DEFAULT$", ".env*"]
     },
-    "test": {}
+    "test": {},
+    "fix": {
+      "cache": false
+    }
   },
   "ui": "tui"
 }

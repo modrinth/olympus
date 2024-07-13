@@ -64,10 +64,6 @@
   }
 }
 
-.site-header {
-  margin: 0 0.75rem;
-}
-
 @media (min-width: 1024px) {
   .full-page {
     margin: 0 auto;
@@ -115,6 +111,43 @@
   }
 
   .normal-page__content {
+    max-width: calc(60rem - 0.75rem);
+    overflow-x: hidden;
+  }
+}
+
+.new-page {
+  display: grid;
+  margin: 0 auto;
+  max-width: 80rem;
+  column-gap: 0.75rem;
+  padding: 0 0.75rem;
+
+  grid-template:
+    "header"
+    "content"
+    "sidebar"
+    / 100%;
+
+  @media screen and (min-width: 1024px) {
+    grid-template:
+      "header header" auto
+      "content sidebar" auto
+      "content dummy" 1fr
+      / 1fr 20rem;
+
+    .normal-page__sidebar {
+      min-width: 20rem;
+      width: 20rem;
+    }
+  }
+
+  .normal-page__sidebar {
+    grid-area: sidebar;
+  }
+
+  .normal-page__content {
+    grid-area: content;
     max-width: calc(60rem - 0.75rem);
     overflow-x: hidden;
   }

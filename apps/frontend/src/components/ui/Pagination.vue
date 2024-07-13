@@ -118,6 +118,7 @@ export default {
 
 <style scoped lang="scss">
 a {
+  position: relative;
   color: var(--color-button-text);
   box-shadow: var(--shadow-raised), var(--shadow-inset);
 

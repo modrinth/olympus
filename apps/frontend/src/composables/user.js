@@ -107,29 +107,26 @@ export const userCollectProject = async (collection, projectId) => {
 export const userFollowProject = async (project) => {
   const user = (await useUser()).value;
 
-  user.follows = user.follows.concat(project);
-  project.followers++;
+  if (user.follows.find((x) => x.id === project.id)) {
+    user.follows = user.follows.filter((x) => x.id !== project.id);
+    project.followers--;
 
-  setTimeout(() => {
-    useBaseFetch(`project/${project.id}/follow`, {
-      method: "POST",
+    setTimeout(() => {
+      useBaseFetch(`project/${project.id}/follow`, {
+        method: "DELETE",
+      });
     });
-  });
-};
+  } else {
+    user.follows = user.follows.concat(project);
+    project.followers++;
 
-export const userUnfollowProject = async (project) => {
-  const user = (await useUser()).value;
-
-  user.follows = user.follows.filter((x) => x.id !== project.id);
-  project.followers--;
-
-  setTimeout(() => {
-    useBaseFetch(`project/${project.id}/follow`, {
-      method: "DELETE",
+    setTimeout(() => {
+      useBaseFetch(`project/${project.id}/follow`, {
+        method: "POST",
+      });
     });
-  });
+  }
 };
-
 export const resendVerifyEmail = async () => {
   const app = useNuxtApp();
 
