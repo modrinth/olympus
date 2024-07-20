@@ -146,6 +146,80 @@ if (route.query.ai) {
 async function refreshSearch() {
   const base = 'https://api.modrinth.com/v2/'
 
+  // Perform direct url check
+  try {
+    const potentialUrl = new URL(query.value)
+    let searchResults = {
+      hits: [],
+      total_hits: 0,
+      limit: 1,
+    }
+    if (
+      potentialUrl.hostname.indexOf('modrinth.com') != -1 &&
+      potentialUrl.href.indexOf(`/${projectType.value}/`) != -1
+    ) {
+      const potentialUrlSlashes = potentialUrl.href.split('/')
+      const modpacksIndex = potentialUrlSlashes.indexOf(projectType.value)
+      const packSlug = potentialUrlSlashes[modpacksIndex + 1]
+      if (packSlug) {
+        let url = 'project'
+        let val = `${base}${url}/${packSlug}`
+        let rawResults = await useFetch(val, 'direct url search results', true)
+        let memberRawResults = await useFetch(
+          val + `/members`,
+          'direct url members search results',
+          true
+        )
+        if (rawResults) {
+          if (rawResults.project_type != projectType.value) {
+            results.value = searchResults
+            return
+          }
+
+          // Convert to ProjectResult
+          searchResults.total_hits = 1
+          searchResults.hits = [
+            {
+              slug: rawResults.slug,
+              title: rawResults.title,
+              description: rawResults.description,
+              categories: rawResults.categories.concat(rawResults.additional_categories),
+              client_side: rawResults.client_side,
+              server_side: rawResults.server_side,
+              project_type: rawResults.project_type,
+              downloads: rawResults.downloads,
+              icon_url: rawResults.icon_url,
+              color: rawResults.color,
+              thread_id: rawResults.thread_id,
+              monetization_status: rawResults.monetization_status,
+              project_id: rawResults.id,
+              author: memberRawResults
+                .filter((mem) => mem.role === 'Owner')
+                .map((mem) => mem.user.username)[0],
+              display_categories: rawResults.categories,
+              versions: rawResults.game_versions,
+              follows: rawResults.followers,
+              date_created: new Date().toISOString(),
+              date_modified: rawResults.updated,
+              latest_version: rawResults.game_versions[rawResults.game_versions.length - 1],
+              license: rawResults.license.id,
+              gallery: rawResults.gallery.map((img) => img.url),
+              featured_gallery: rawResults.gallery
+                .filter((img) => img.featured === true)
+                .map((img) => img.url)[0],
+            },
+          ]
+        }
+      }
+    }
+    results.value = searchResults
+
+    // short circuit
+    return
+  } catch (e) {
+    // ignore
+  }
+
   const params = [`limit=${maxResults.value}`, `index=${sortType.value.name}`]
   if (query.value.length > 0) {
     params.push(`query=${query.value.replace(/ /g, '+')}`)
@@ -256,6 +330,8 @@ async function refreshSearch() {
       limit: 1,
     }
   }
+
+  // Check for installed
   if (instanceContext.value) {
     for (val of rawResults.hits) {
       val.installed = await check_installed(instanceContext.value.path, val.project_id).then(
@@ -263,6 +339,8 @@ async function refreshSearch() {
       )
     }
   }
+
+  // Set results
   results.value = rawResults
 }
 
