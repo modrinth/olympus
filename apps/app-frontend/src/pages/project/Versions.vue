@@ -3,11 +3,7 @@
     <div class="manage">
       <multiselect
         v-model="filterLoader"
-        :options="
-          versions
-            .flatMap((value) => value.loaders)
-            .filter((value, index, self) => self.indexOf(value) === index)
-        "
+        :options="possibleLoaders"
         :multiple="true"
         :searchable="true"
         :show-no-results="false"
@@ -20,11 +16,7 @@
       />
       <multiselect
         v-model="filterGameVersions"
-        :options="
-          versions
-            .flatMap((value) => value.game_versions)
-            .filter((value, index, self) => self.indexOf(value) === index)
-        "
+        :options="possibleGameVersions"
         :multiple="true"
         :searchable="true"
         :show-no-results="false"
@@ -37,11 +29,7 @@
       />
       <multiselect
         v-model="filterVersions"
-        :options="
-          versions
-            .map((value) => value.version_type)
-            .filter((value, index, self) => self.indexOf(value) === index)
-        "
+        :options="possibleVersions"
         :multiple="true"
         :searchable="true"
         :show-no-results="false"
@@ -186,9 +174,37 @@ const props = defineProps({
   },
 })
 
+const possibleVersions = computed(() => {
+  return props.versions
+    .flatMap((value) => value.version_type)
+    .filter((value, index, self) => self.indexOf(value) === index)
+})
+const possibleLoaders = computed(() => {
+  return props.versions
+    .flatMap((value) => value.loaders)
+    .filter((value, index, self) => self.indexOf(value) === index)
+})
+const possibleGameVersions = computed(() => {
+  return props.versions
+    .flatMap((value) => value.game_versions)
+    .filter((value, index, self) => self.indexOf(value) === index)
+})
+
 const filterVersions = ref([])
-const filterLoader = ref(props.instance ? [props.instance?.metadata?.loader] : [])
-const filterGameVersions = ref(props.instance ? [props.instance?.metadata?.game_version] : [])
+const filterLoader = ref([])
+const filterGameVersions = ref([])
+
+if (props.instance) {
+  let loader = props.instance.metadata?.loader
+  if (possibleLoaders.value.includes(loader)) {
+    filterLoader.value.push(loader)
+  }
+
+  let gameVersion = props.instance.metadata?.game_version
+  if (possibleGameVersions.value.includes(gameVersion)) {
+    filterGameVersions.value.push(gameVersion)
+  }
+}
 
 const currentPage = ref(1)
 
