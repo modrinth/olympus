@@ -268,7 +268,11 @@ pub async fn install_zipped_mrpack_files(
         let potential_icon =
             profile_path.get_full_path().await?.join("icon.png");
         if !icon_exists && potential_icon.exists() {
-            profile::edit_icon(&profile_path, Some(&potential_icon)).await?;
+            profile::edit_icon(
+                &profile_path,
+                Some(&potential_icon.to_string_lossy()),
+            )
+            .await?;
         }
 
         if let Some(profile_val) = profile::get(&profile_path, None).await? {

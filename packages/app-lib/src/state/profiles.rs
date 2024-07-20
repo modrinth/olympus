@@ -365,18 +365,38 @@ impl Profile {
     }
 
     #[tracing::instrument(skip(self, semaphore, icon))]
-    pub async fn set_icon<'a>(
+    pub async fn set_icon_file<'a>(
         &'a mut self,
         cache_dir: &Path,
         semaphore: &IoSemaphore,
         icon: bytes::Bytes,
         file_name: &str,
     ) -> crate::Result<()> {
+        self.clear_icon();
+
         let file =
             write_cached_icon(file_name, cache_dir, icon, semaphore).await?;
         self.metadata.icon = Some(file);
+
         self.metadata.date_modified = Utc::now();
         Ok(())
+    }
+
+    #[tracing::instrument(skip(self))]
+    pub fn set_icon_http(&mut self, path: &str) {
+        self.clear_icon();
+
+        self.metadata.icon_url = Some(path.to_string());
+
+        self.metadata.date_modified = Utc::now();
+    }
+
+    #[tracing::instrument(skip(self))]
+    pub fn clear_icon(&mut self) {
+        self.metadata.icon_url = None;
+        self.metadata.icon = None;
+
+        self.metadata.date_modified = Utc::now();
     }
 
     pub fn crash_task(path: ProfilePathId) {

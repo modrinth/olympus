@@ -86,7 +86,7 @@ pub async fn profile_create(
             let bytes =
                 io::read(state.directories.caches_dir().join(icon)).await?;
             profile
-                .set_icon(
+                .set_icon_file(
                     &state.directories.caches_dir(),
                     &state.io_semaphore,
                     bytes::Bytes::from(bytes),

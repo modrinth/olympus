@@ -351,7 +351,7 @@ pub async fn profile_edit(
 #[tauri::command]
 pub async fn profile_edit_icon(
     path: ProfilePathId,
-    icon_path: Option<&Path>,
+    icon_path: Option<&str>,
 ) -> Result<()> {
     profile::edit_icon(&path, icon_path).await?;
     Ok(())

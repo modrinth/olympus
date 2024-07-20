@@ -164,25 +164,29 @@ where
 /// Edits a profile's icon
 pub async fn edit_icon(
     path: &ProfilePathId,
-    icon_path: Option<&Path>,
+    icon_path: Option<&str>,
 ) -> crate::Result<()> {
     let state = State::get().await?;
 
     let res = if let Some(icon) = icon_path {
-        let bytes = io::read(icon).await?;
-
         let mut profiles = state.profiles.write().await;
 
         match profiles.0.get_mut(path) {
             Some(ref mut profile) => {
-                profile
-                    .set_icon(
-                        &state.directories.caches_dir(),
-                        &state.io_semaphore,
-                        bytes::Bytes::from(bytes),
-                        &icon.to_string_lossy(),
-                    )
-                    .await?;
+                if icon.starts_with("http") {
+                    profile.set_icon_http(icon);
+                } else {
+                    let bytes = io::read(&icon).await?;
+
+                    profile
+                        .set_icon_file(
+                            &state.directories.caches_dir(),
+                            &state.io_semaphore,
+                            bytes::Bytes::from(bytes),
+                            icon,
+                        )
+                        .await?;
+                }
 
                 emit_profile(
                     profile.uuid,
@@ -200,11 +204,10 @@ pub async fn edit_icon(
         }
     } else {
         edit(path, |profile| {
-            profile.metadata.icon = None;
+            profile.clear_icon();
             async { Ok(()) }
         })
         .await?;
-        State::sync().await?;
 
         Ok(())
     };

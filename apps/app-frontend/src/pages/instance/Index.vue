@@ -2,15 +2,7 @@
   <div class="instance-container">
     <div class="side-cards">
       <Card class="instance-card" @contextmenu.prevent.stop="handleRightClick">
-        <Avatar
-          size="lg"
-          :src="
-            !instance.metadata.icon ||
-            (instance.metadata.icon && instance.metadata.icon.startsWith('http'))
-              ? instance.metadata.icon
-              : convertFileSrc(instance.metadata?.icon)
-          "
-        />
+        <Avatar size="lg" :src="iconSrc" />
         <div class="instance-info">
           <h2 class="name">{{ instance.metadata.name }}</h2>
           <span class="metadata">
@@ -148,8 +140,8 @@ import { handleError, useBreadcrumbs, useLoading } from '@/store/state'
 import { isOffline, showProfileInFolder } from '@/helpers/utils.js'
 import ContextMenu from '@/components/ui/ContextMenu.vue'
 import { mixpanel_track } from '@/helpers/mixpanel'
-import { convertFileSrc } from '@tauri-apps/api/tauri'
 import { useFetch } from '@/helpers/fetch'
+import { useInstanceIcon } from '@/composable/instance/icon.js'
 import { handleSevereError } from '@/store/error.js'
 
 const route = useRoute()
@@ -158,6 +150,8 @@ const router = useRouter()
 const breadcrumbs = useBreadcrumbs()
 
 const instance = ref(await get(route.params.id).catch(handleError))
+
+const iconSrc = useInstanceIcon(instance)
 
 breadcrumbs.setName(
   'Instance',
