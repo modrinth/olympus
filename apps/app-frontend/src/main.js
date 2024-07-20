@@ -7,7 +7,6 @@ import '@/assets/stylesheets/global.scss'
 import FloatingVue from 'floating-vue'
 import 'floating-vue/dist/style.css'
 import { get_opening_command, initialize_state } from '@/helpers/state'
-import loadCssMixin from './mixins/macCssFix.js'
 import { get } from '@/helpers/settings'
 import { invoke } from '@tauri-apps/api'
 import { isDev } from './helpers/utils.js'
@@ -36,7 +35,6 @@ let app = createApp(App)
 app.use(router)
 app.use(pinia)
 app.use(FloatingVue)
-app.mixin(loadCssMixin)
 app.use(VIntlPlugin)
 
 const mountedApp = app.mount('#app')

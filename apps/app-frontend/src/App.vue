@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { RouterView, RouterLink, useRouter, useRoute } from 'vue-router'
 import {
   HomeIcon,
@@ -42,6 +42,7 @@ import URLConfirmModal from '@/components/ui/URLConfirmModal.vue'
 import OnboardingScreen from '@/components/ui/tutorial/OnboardingScreen.vue'
 import { install_from_file } from './helpers/pack'
 import { useError } from '@/store/error.js'
+import { useCheckDisableMouseover } from '@/composables/macCssFix.js'
 
 const themeStore = useTheming()
 const urlModal = ref(null)
@@ -116,6 +117,10 @@ defineExpose({
     failureText.value = e
     os.value = await getOS()
   },
+})
+
+onMounted(async () => {
+  await useCheckDisableMouseover()
 })
 
 const confirmClose = async () => {
