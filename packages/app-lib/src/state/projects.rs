@@ -17,6 +17,7 @@ use sha2::Digest;
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 use tokio::io::AsyncReadExt;
+use tokio::time::Instant;
 
 use super::ProjectPathId;
 
@@ -272,7 +273,7 @@ pub async fn infer_data_from_files(
     fetch_semaphore: &FetchSemaphore,
     credentials: &CredentialsStore,
 ) -> crate::Result<HashMap<ProjectPathId, Project>> {
-    let mut file_path_hashes = HashMap::new();
+    let mut handles = vec![];
 
     for path in paths {
         if !path.exists() {
@@ -285,24 +286,35 @@ pub async fn infer_data_from_files(
             }
         }
 
-        let mut file = tokio::fs::File::open(path.clone())
-            .await
-            .map_err(|e| IOError::with_path(e, &path))?;
+        let handle = tokio::spawn(async move {
+            let mut file = tokio::fs::File::open(path.clone())
+                .await
+                .map_err(|e| IOError::with_path(e, &path))?;
 
-        let mut buffer = [0u8; 4096]; // Buffer to read chunks
-        let mut hasher = sha2::Sha512::new(); // Hasher
+            let mut buffer = [0u8; 65536 ]; // 64kb Buffer to read chunks
+            let mut hasher = sha2::Sha512::new(); // Hasher
 
-        loop {
-            let bytes_read =
-                file.read(&mut buffer).await.map_err(IOError::from)?;
-            if bytes_read == 0 {
-                break;
+            loop {
+                let bytes_read =
+                    file.read(&mut buffer).await.map_err(IOError::from)?;
+                if bytes_read == 0 {
+                    break;
+                }
+                hasher.update(&buffer[..bytes_read]);
             }
-            hasher.update(&buffer[..bytes_read]);
-        }
 
-        let hash = format!("{:x}", hasher.finalize());
-        file_path_hashes.insert(hash, path.clone());
+            let hash = format!("{:x}", hasher.finalize());
+            Ok::<_,crate::Error>((hash, path))
+        });
+
+        handles.push(handle);
+    }
+
+    let mut file_path_hashes = HashMap::new();
+
+    for handle in handles {
+        let (hash, path) = handle.await??;
+        file_path_hashes.insert(hash, path);
     }
 
     let files_url = format!("{}version_files", MODRINTH_API_URL);
