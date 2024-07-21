@@ -775,13 +775,31 @@ pub async fn run_credentials(
         ))
     })?;
 
+    let java_args = profile
+        .java
+        .as_ref()
+        .and_then(|it| it.extra_arguments.as_ref())
+        .unwrap_or(&settings.custom_java_args);
+
     let pre_launch_hooks =
         &profile.hooks.as_ref().unwrap_or(&settings.hooks).pre_launch;
     if let Some(hook) = pre_launch_hooks {
-        // TODO: hook parameters
-        let mut cmd = hook.split(' ');
+        // TODO: Improve Hook parameters
+        
+        let full_path = path.get_full_path().await?;
+        let jre_key = get_optimal_jre_key(&path).await?;
+        // The hook parameters are compatible with MultiMC-based and other launchers. See https://github.com/MultiMC/Launcher/wiki/Instance-settings#custom-commands
+        let cmd_with_hook_parameters = hook
+            .replace("$INST_NAME", profile.metadata.name.as_str())
+            .replace("$INST_ID", profile.metadata.name.as_str())
+            .replace("$INST_DIR", full_path.to_str().unwrap())
+            .replace("$INST_MC_DIR", full_path.to_str().unwrap())
+            .replace("$INST_JAVA", jre_key.unwrap().path.as_str())
+            // TODO: Pass the args correctly
+            .replace("$INST_JAVA_ARGS", java_args.join(" ").as_str());
+
+        let mut cmd = cmd_with_hook_parameters.split(' ');
         if let Some(command) = cmd.next() {
-            let full_path = path.get_full_path().await?;
             let result = Command::new(command)
                 .args(&cmd.collect::<Vec<&str>>())
                 .current_dir(&full_path)
@@ -800,12 +818,6 @@ pub async fn run_credentials(
             }
         }
     }
-
-    let java_args = profile
-        .java
-        .as_ref()
-        .and_then(|it| it.extra_arguments.as_ref())
-        .unwrap_or(&settings.custom_java_args);
 
     let wrapper = profile
         .hooks
