@@ -4,7 +4,6 @@ import { LogOutIcon, LogInIcon, BoxIcon, FolderSearchIcon, UpdatedIcon } from '@
 import { Card, Slider, DropdownSelect, Toggle, Modal, Button } from '@modrinth/ui'
 import { handleError, useTheming } from '@/store/state'
 import { is_dir_writeable, change_config_dir, get, set } from '@/helpers/settings'
-import { get_max_memory } from '@/helpers/jre'
 import { get as getCreds, logout } from '@/helpers/mr_auth.js'
 import JavaSelector from '@/components/ui/JavaSelector.vue'
 import ModrinthLoginScreen from '@/components/ui/tutorial/ModrinthLoginScreen.vue'
@@ -12,6 +11,7 @@ import { mixpanel_opt_out_tracking, mixpanel_opt_in_tracking } from '@/helpers/m
 import { open } from '@tauri-apps/api/dialog'
 import { getOS } from '@/helpers/utils.js'
 import { getVersion } from '@tauri-apps/api/app'
+import useMemorySlider from '@/composables/useMemorySlider.js'
 
 const pageOptions = ['Home', 'Library']
 
@@ -32,7 +32,7 @@ const fetchSettings = await accessSettings().catch(handleError)
 
 const settings = ref(fetchSettings)
 const settingsDir = ref(settings.value.loaded_config_dir)
-const maxMemory = ref(Math.floor((await get_max_memory().catch(handleError)) / 1024))
+const { maxMemory, snapPoints } = await useMemorySlider()
 
 watch(
   settings,
@@ -414,6 +414,8 @@ async function refreshDir() {
           :max="maxMemory"
           :step="64"
           unit="mb"
+          :snap-points="snapPoints"
+          :snap-range="512"
         />
       </div>
     </Card>

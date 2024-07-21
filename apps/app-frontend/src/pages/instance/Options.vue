@@ -245,6 +245,8 @@
         :max="maxMemory"
         :step="64"
         unit="mb"
+        :snap-points="snapPoints"
+        snap-range="512"
       />
     </div>
   </Card>
@@ -548,7 +550,6 @@ import {
   update_repair_modrinth,
 } from '@/helpers/profile.js'
 import { computed, readonly, ref, shallowRef, watch } from 'vue'
-import { get_max_memory } from '@/helpers/jre.js'
 import { get } from '@/helpers/settings.js'
 import JavaSelector from '@/components/ui/JavaSelector.vue'
 import { convertFileSrc } from '@tauri-apps/api/tauri'
@@ -565,6 +566,7 @@ import { mixpanel_track } from '@/helpers/mixpanel'
 import { useTheming } from '@/store/theme.js'
 import { useBreadcrumbs } from '@/store/breadcrumbs'
 import ModpackVersionModal from '@/components/ui/ModpackVersionModal.vue'
+import useMemorySlider from '@/composables/useMemorySlider.js'
 
 const breadcrumbs = useBreadcrumbs()
 
@@ -650,7 +652,7 @@ const envVars = ref(
 
 const overrideMemorySettings = ref(!!props.instance.memory)
 const memory = ref(props.instance.memory ?? globalSettings.memory)
-const maxMemory = Math.floor((await get_max_memory().catch(handleError)) / 1024)
+const { maxMemory, snapPoints } = await useMemorySlider()
 
 const overrideWindowSettings = ref(!!props.instance.resolution || !!props.instance.fullscreen)
 const resolution = ref(props.instance.resolution ?? globalSettings.game_resolution)
