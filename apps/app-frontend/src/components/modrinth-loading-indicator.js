@@ -20,14 +20,6 @@ export default defineComponent({
       default:
         'repeating-linear-gradient(to right, var(--color-brand) 0%, var(--color-brand) 100%)',
     },
-    offsetWidth: {
-      type: String,
-      default: '208px',
-    },
-    offsetHeight: {
-      type: String,
-      default: '52px',
-    },
   },
   setup(props, { slots }) {
     const indicator = useLoadingIndicator({
@@ -52,12 +44,9 @@ export default defineComponent({
         'div',
         {
           style: {
-            position: 'fixed',
-            top: props.offsetHeight,
-            right: 0,
-            left: props.offsetWidth,
+            position: 'absolute',
             pointerEvents: 'none',
-            width: `calc((100vw - ${props.offsetWidth}) * ${indicator.progress.value / 100})`,
+            width: `calc(100% * ${indicator.progress.value / 100})`,
             height: `${props.height}px`,
             opacity: indicator.isLoading.value ? 1 : 0,
             background: props.color || undefined,
