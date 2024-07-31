@@ -30,10 +30,14 @@
                 : 'Install'
           }}
         </Button>
-        <Button>
+        <a
+          :href="`https://modrinth.com/report?item=version&itemID=${route.params.version}`"
+          rel="external"
+          class="btn"
+        >
           <ReportIcon />
           Report
-        </Button>
+        </a>
         <a
           :href="`https://modrinth.com/mod/${route.params.id}/version/${route.params.version}`"
           rel="external"

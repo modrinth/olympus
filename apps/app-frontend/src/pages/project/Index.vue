@@ -92,10 +92,14 @@
         </div>
         <hr class="card-divider" />
         <div class="button-group">
-          <Button class="instance-button" disabled>
+          <a
+            :href="`https://modrinth.com/report?item=project&itemID=${data.id}`"
+            rel="external"
+            class="btn"
+          >
             <ReportIcon />
             Report
-          </Button>
+          </a>
           <Button class="instance-button" disabled>
             <HeartIcon />
             Follow
