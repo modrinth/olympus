@@ -289,7 +289,7 @@ pub async fn delete_logs_by_filename(
     };
 
     let path = logs_folder.join(filename);
-    io::remove_dir_all(&path).await?;
+    io::remove_file(&path).await?;
     Ok(())
 }
 
