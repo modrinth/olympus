@@ -5,7 +5,7 @@ import { ref, watch, computed } from "vue";
 // note: build step can miss unix import for some reason, so
 // we have to import it like this
 
-const { unix } = dayjs; // eslint-disable-line import/no-named-as-default-member
+const { unix } = dayjs;
 
 export function useCountryNames(style = "long") {
   const formattingOptions = { type: "region", style };
@@ -277,7 +277,7 @@ export const processAnalyticsByCountry = (category, projects, sortFn) => {
   };
 };
 
-const sortCount = ([_a, a], [_b, b]) => b - a;
+const sortCount = ([, a], [, b]) => b - a;
 const sortTimestamp = ([a], [b]) => a - b;
 const roundValue = ([ts, value]) => [ts, Math.round(parseFloat(value) * 100) / 100];
 

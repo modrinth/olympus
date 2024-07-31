@@ -1,25 +1,24 @@
-type AsyncFunction<TArgs extends any[], TResult> = (...args: TArgs) => Promise<TResult>;
-type ErrorFunction = (err: any) => void | Promise<void>;
-type VoidFunction = () => void | Promise<void>;
-
-type useClientTry = <TArgs extends any[], TResult>(
-  fn: AsyncFunction<TArgs, TResult>,
-  onFail?: ErrorFunction,
-  onFinish?: VoidFunction,
-) => (...args: TArgs) => Promise<TResult | undefined>;
-
-const defaultOnError: ErrorFunction = (error) => {
+function defaultErrorHandler(error: any) {
   addNotification({
     group: "main",
     title: "An error occurred",
     text: error?.data?.description || error.message || error || "Unknown error",
     type: "error",
   });
-};
+}
 
-export const useClientTry: useClientTry =
-  (fn, onFail = defaultOnError, onFinish) =>
-  async (...args) => {
+type AsyncFunction<TArgs extends unknown[], TResult> = (...args: TArgs) => Promise<TResult>;
+
+type ErrorHandlerFunction = (err: unknown) => void | Promise<void>;
+
+type FinishCallbackFunction = () => Promise<void> | void;
+
+export async function useClientTry<TArgs extends unknown[], TResult>(
+  fn: AsyncFunction<TArgs, TResult>,
+  onFail: ErrorHandlerFunction = defaultErrorHandler,
+  onFinish?: FinishCallbackFunction,
+) {
+  return async function (...args: TArgs) {
     startLoading();
     try {
       return await fn(...args);
@@ -34,3 +33,4 @@ export const useClientTry: useClientTry =
       stopLoading();
     }
   };
+}

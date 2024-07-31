@@ -142,7 +142,7 @@ const { data: collections } = await useAsyncData(`user/${auth.value.user.id}/col
 
 const orderedCollections = computed(() => {
   if (!collections.value) return [];
-  return collections.value
+  return [...collections.value]
     .sort((a, b) => {
       const aUpdated = new Date(a.updated);
       const bUpdated = new Date(b.updated);

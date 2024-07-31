@@ -45,6 +45,22 @@ const localesCategoriesOverrides: Partial<Record<string, "fun" | "experimental">
   pes: "experimental",
 };
 
+function readBinding<V extends string | undefined>(
+  binding: string,
+  defaultValue?: V,
+): undefined extends V ? string | undefined : string {
+  const globalThis_ = globalThis as Record<string, unknown>;
+
+  let value;
+  if (binding in globalThis_) value = globalThis_[binding];
+
+  if (value == null || typeof value !== "string") {
+    return defaultValue as never;
+  }
+
+  return value;
+}
+
 export default defineNuxtConfig({
   srcDir: "src/",
   app: {
@@ -312,10 +328,8 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
-    // @ts-ignore
-    apiBaseUrl: process.env.BASE_URL ?? globalThis.BASE_URL ?? getApiUrl(),
-    // @ts-ignore
-    rateLimitKey: process.env.RATE_LIMIT_IGNORE_KEY ?? globalThis.RATE_LIMIT_IGNORE_KEY,
+    apiBaseUrl: process.env.BASE_URL ?? readBinding("BASE_URL") ?? getApiUrl(),
+    rateLimitKey: process.env.RATE_LIMIT_IGNORE_KEY ?? readBinding("RATE_LIMIT_IGNORE_KEY"),
     public: {
       apiBaseUrl: getApiUrl(),
       siteUrl: getDomain(),
@@ -327,14 +341,12 @@ export default defineNuxtConfig({
       branch:
         process.env.VERCEL_GIT_COMMIT_REF ||
         process.env.CF_PAGES_BRANCH ||
-        // @ts-ignore
-        globalThis.CF_PAGES_BRANCH ||
+        readBinding("CF_PAGES_BRANCH") ||
         "master",
       hash:
         process.env.VERCEL_GIT_COMMIT_SHA ||
         process.env.CF_PAGES_COMMIT_SHA ||
-        // @ts-ignore
-        globalThis.CF_PAGES_COMMIT_SHA ||
+        readBinding("CF_PAGES_COMMIT_SHA") ||
         "unknown",
 
       turnstile: { siteKey: "0x4AAAAAAAW3guHM6Eunbgwu" },
@@ -351,7 +363,7 @@ export default defineNuxtConfig({
       },
     },
   },
-  modules: ["@vintl/nuxt", "@nuxtjs/turnstile"],
+  modules: ["@nuxt/eslint", "@vintl/nuxt", "@nuxtjs/turnstile"],
   vintl: {
     defaultLocale: "en-US",
     locales: [
@@ -412,8 +424,7 @@ export default defineNuxtConfig({
 });
 
 function getApiUrl() {
-  // @ts-ignore
-  return process.env.BROWSER_BASE_URL ?? globalThis.BROWSER_BASE_URL ?? STAGING_API_URL;
+  return process.env.BROWSER_BASE_URL ?? readBinding("BROWSER_BASE_URL") ?? STAGING_API_URL;
 }
 
 function isProduction() {
@@ -428,11 +439,8 @@ function getDomain() {
   if (process.env.NODE_ENV === "production") {
     if (process.env.SITE_URL) {
       return process.env.SITE_URL;
-    }
-    // @ts-ignore
-    else if (process.env.CF_PAGES_URL || globalThis.CF_PAGES_URL) {
-      // @ts-ignore
-      return process.env.CF_PAGES_URL ?? globalThis.CF_PAGES_URL;
+    } else if (process.env.CF_PAGES_URL || readBinding("CF_PAGES_URL")) {
+      return process.env.CF_PAGES_URL ?? readBinding("CF_PAGES_URL");
     } else if (process.env.HEROKU_APP_NAME) {
       return `https://${process.env.HEROKU_APP_NAME}.herokuapp.com`;
     } else if (process.env.VERCEL_URL) {

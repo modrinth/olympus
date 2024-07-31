@@ -241,7 +241,7 @@ const nags = computed(() => [
     },
   },
   {
-    condition: props.project.gallery.length === 0 || !featuredGalleryImage,
+    condition: props.project.gallery.length === 0 || !featuredGalleryImage.value,
     title: "Feature a gallery image",
     id: "feature-gallery-image",
     description: "Featured gallery images may be the first impression of many users.",

@@ -97,23 +97,18 @@ export const inferVersionInfo = async function (rawFile, project, gameVersions) 
   const inferFunctions = {
     // Forge 1.13+ and NeoForge
     "META-INF/mods.toml": async (file, zip) => {
-      const metadata = TOML.parse(file, { joiner: "\n" }); // eslint-disable-line import/no-named-as-default-member
+      const metadata = TOML.parse(file, { joiner: "\n" });
 
       if (metadata.mods && metadata.mods.length > 0) {
         let versionNum = metadata.mods[0].version;
 
         // ${file.jarVersion} -> Implementation-Version from manifest
         const manifestFile = zip.file("META-INF/MANIFEST.MF");
-        if (
-          // eslint-disable-next-line no-template-curly-in-string
-          metadata.mods[0].version.includes("${file.jarVersion}") &&
-          manifestFile !== null
-        ) {
+        if (metadata.mods[0].version.includes("${file.jarVersion}") && manifestFile !== null) {
           const manifestText = await manifestFile.async("text");
           const regex = /Implementation-Version: (.*)$/m;
           const match = manifestText.match(regex);
           if (match) {
-            // eslint-disable-next-line no-template-curly-in-string
             versionNum = versionNum.replace("${file.jarVersion}", match[1]);
           }
         }

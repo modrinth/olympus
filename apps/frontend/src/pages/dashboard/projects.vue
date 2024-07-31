@@ -440,19 +440,19 @@ export default defineNuxtComponent({
           discord_url: this.editLinks.discord.clear ? null : this.editLinks.discord.val.trim(),
         };
 
-        if (!baseData.issues_url?.length ?? 1 > 0) {
+        if (!((baseData.issues_url?.length ?? 1) > 0)) {
           delete baseData.issues_url;
         }
 
-        if (!baseData.source_url?.length ?? 1 > 0) {
+        if (!((baseData.source_url?.length ?? 1) > 0)) {
           delete baseData.source_url;
         }
 
-        if (!baseData.wiki_url?.length ?? 1 > 0) {
+        if (!((baseData.wiki_url?.length ?? 1) > 0)) {
           delete baseData.wiki_url;
         }
 
-        if (!baseData.discord_url?.length ?? 1 > 0) {
+        if (!((baseData.discord_url?.length ?? 1) > 0)) {
           delete baseData.discord_url;
         }
 

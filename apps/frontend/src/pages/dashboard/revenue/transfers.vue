@@ -118,7 +118,7 @@ const { data: payouts, refresh } = await useAsyncData(`payout`, () =>
 );
 
 const sortedPayouts = computed(() =>
-  payouts.value.sort((a, b) => dayjs(b.created) - dayjs(a.created)),
+  [...payouts.value].sort((a, b) => dayjs(b.created) - dayjs(a.created)),
 );
 
 const years = computed(() => {

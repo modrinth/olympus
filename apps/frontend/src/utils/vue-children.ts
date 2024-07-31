@@ -8,7 +8,7 @@ import { createTextVNode, isVNode, toDisplayString, type VNode } from "vue";
  * @returns Either the original VNode or a text VNode containing child converted
  * to a display string.
  */
-function normalizeChild(child: any): VNode {
+function normalizeChild(child: unknown): VNode {
   return isVNode(child) ? child : createTextVNode(toDisplayString(child));
 }
 
@@ -20,6 +20,6 @@ function normalizeChild(child: any): VNode {
  * @param children Children to normalize.
  * @returns Children with all of non-VNodes converted to display strings.
  */
-export function normalizeChildren(children: any | any[]): VNode[] {
+export function normalizeChildren(children: unknown | unknown[]): VNode[] {
   return Array.isArray(children) ? children.map(normalizeChild) : [normalizeChild(children)];
 }
