@@ -199,7 +199,7 @@
 import { OverflowMenu, MarkdownEditor } from "@modrinth/ui";
 import { DropdownIcon } from "@modrinth/assets";
 import { useImageUpload } from "~/composables/image-upload.ts";
-import CopyCode from "~/components/ui/CopyCode.vue";
+import { CopyCode } from "@modrinth/ui";
 import ReplyIcon from "~/assets/images/utils/reply.svg?component";
 import SendIcon from "~/assets/images/utils/send.svg?component";
 import CloseIcon from "~/assets/images/utils/check-circle.svg?component";
@@ -211,7 +211,7 @@ import ThreadMessage from "~/components/ui/thread/ThreadMessage.vue";
 import { isStaff } from "~/helpers/users.js";
 import { isApproved, isRejected } from "~/helpers/projects.js";
 import Modal from "~/components/ui/Modal.vue";
-import Checkbox from "~/components/ui/Checkbox.vue";
+import { Checkbox } from "@modrinth/ui";
 
 const props = defineProps({
   thread: {

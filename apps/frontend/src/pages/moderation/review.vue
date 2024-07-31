@@ -101,15 +101,13 @@
   </section>
 </template>
 <script setup>
-import Chips from "~/components/ui/Chips.vue";
-import Avatar from "~/components/ui/Avatar.vue";
+import { Chips, Avatar, Badge } from "@modrinth/ui";
 import UnknownIcon from "~/assets/images/utils/unknown.svg?component";
 import EyeIcon from "~/assets/images/utils/eye.svg?component";
 import SortAscIcon from "~/assets/images/utils/sort-asc.svg?component";
 import SortDescIcon from "~/assets/images/utils/sort-desc.svg?component";
 import WarningIcon from "~/assets/images/utils/issues.svg?component";
 import ModerationIcon from "~/assets/images/sidebar/admin.svg?component";
-import Badge from "~/components/ui/Badge.vue";
 import { formatProjectType } from "~/plugins/shorthands.js";
 
 useHead({

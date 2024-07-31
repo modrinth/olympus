@@ -427,7 +427,7 @@ import {
   IssuesIcon,
   ReportIcon,
 } from "@modrinth/assets";
-import { Button } from "@modrinth/ui";
+import { Button, Avatar } from "@modrinth/ui";
 import HamburgerIcon from "~/assets/images/utils/hamburger.svg?component";
 import CrossIcon from "~/assets/images/utils/x.svg?component";
 import SearchIcon from "~/assets/images/utils/search.svg?component";
@@ -446,7 +446,6 @@ import ChartIcon from "~/assets/images/utils/chart.svg?component";
 
 import NavRow from "~/components/ui/NavRow.vue";
 import ModalCreation from "~/components/ui/ModalCreation.vue";
-import Avatar from "~/components/ui/Avatar.vue";
 import { getProjectTypeMessage } from "~/utils/i18n-project-type.ts";
 import { commonMessages } from "~/utils/common-messages.ts";
 
@@ -933,10 +932,7 @@ function hideStagingBanner() {
               outline: none;
 
               .user-icon {
-                min-height: unset;
-                min-width: unset;
-                height: 2rem !important;
-                width: 2rem !important;
+                --size: 2rem !important;
                 outline: 2px solid var(--color-raised-bg);
                 transition: outline-color 0.1s ease-in-out;
               }

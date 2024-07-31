@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import Checkbox from "~/components/ui/Checkbox.vue";
+import { Checkbox } from "@modrinth/ui";
 
 export default {
   components: {

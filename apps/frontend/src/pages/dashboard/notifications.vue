@@ -50,7 +50,7 @@
   </div>
 </template>
 <script setup>
-import { Button } from "@modrinth/ui";
+import { Button, Chips } from "@modrinth/ui";
 import { HistoryIcon } from "@modrinth/assets";
 import {
   fetchExtraNotificationData,
@@ -58,7 +58,6 @@ import {
   markAsRead,
 } from "~/helpers/notifications.js";
 import NotificationItem from "~/components/ui/NotificationItem.vue";
-import Chips from "~/components/ui/Chips.vue";
 import CheckCheckIcon from "~/assets/images/utils/check-check.svg?component";
 import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 import Pagination from "~/components/ui/Pagination.vue";

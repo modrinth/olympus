@@ -293,9 +293,7 @@ import {
   ImageIcon,
   TransferIcon,
 } from "@modrinth/assets";
-import { ConfirmModal } from "@modrinth/ui";
-import FileInput from "~/components/ui/FileInput.vue";
-import DropArea from "~/components/ui/DropArea.vue";
+import { ConfirmModal, FileInput, DropArea } from "@modrinth/ui";
 import Modal from "~/components/ui/Modal.vue";
 
 import { isPermission } from "~/utils/permissions.ts";

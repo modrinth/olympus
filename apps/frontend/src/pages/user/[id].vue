@@ -281,9 +281,8 @@
 </template>
 <script setup>
 import { LibraryIcon, BoxIcon, LinkIcon, LockIcon, XIcon } from "@modrinth/assets";
-import { Promotion } from "@modrinth/ui";
+import { Promotion, Badge, CopyCode, Avatar } from "@modrinth/ui";
 import ProjectCard from "~/components/ui/ProjectCard.vue";
-import Badge from "~/components/ui/Badge.vue";
 import { reportUser } from "~/utils/report-helpers.ts";
 
 import ReportIcon from "~/assets/images/utils/report.svg?component";
@@ -300,8 +299,6 @@ import ImageIcon from "~/assets/images/utils/image.svg?component";
 import WorldIcon from "~/assets/images/utils/world.svg?component";
 import ModalCreation from "~/components/ui/ModalCreation.vue";
 import NavRow from "~/components/ui/NavRow.vue";
-import CopyCode from "~/components/ui/CopyCode.vue";
-import Avatar from "~/components/ui/Avatar.vue";
 import CollectionCreateModal from "~/components/ui/CollectionCreateModal.vue";
 
 const data = useNuxtApp();

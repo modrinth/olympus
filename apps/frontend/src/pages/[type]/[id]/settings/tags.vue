@@ -113,7 +113,7 @@
 </template>
 
 <script>
-import Checkbox from "~/components/ui/Checkbox.vue";
+import { Checkbox } from "@modrinth/ui";
 import StarIcon from "~/assets/images/utils/star.svg?component";
 import SaveIcon from "~/assets/images/utils/save.svg?component";
 

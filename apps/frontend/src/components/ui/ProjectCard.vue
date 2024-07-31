@@ -91,14 +91,14 @@
 
 <script>
 import Categories from "~/components/ui/search/Categories.vue";
-import Badge from "~/components/ui/Badge.vue";
-import EnvironmentIndicator from "~/components/ui/EnvironmentIndicator.vue";
+import { Badge } from "@modrinth/ui";
+import { EnvironmentIndicator } from "@modrinth/ui";
 
 import CalendarIcon from "~/assets/images/utils/calendar.svg?component";
 import EditIcon from "~/assets/images/utils/updated.svg?component";
 import DownloadIcon from "~/assets/images/utils/download.svg?component";
 import HeartIcon from "~/assets/images/utils/heart.svg?component";
-import Avatar from "~/components/ui/Avatar.vue";
+import { Avatar } from "@modrinth/ui";
 
 export default {
   components: {

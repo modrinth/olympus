@@ -85,7 +85,7 @@
 
 <script setup>
 import { Multiselect } from "vue-multiselect";
-import Checkbox from "~/components/ui/Checkbox.vue";
+import { Checkbox } from "@modrinth/ui";
 import ClearIcon from "~/assets/images/utils/clear.svg?component";
 
 const props = defineProps({

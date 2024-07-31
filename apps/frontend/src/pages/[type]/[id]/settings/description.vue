@@ -34,8 +34,7 @@
 </template>
 
 <script>
-import { MarkdownEditor } from "@modrinth/ui";
-import Chips from "~/components/ui/Chips.vue";
+import { MarkdownEditor, Chips } from "@modrinth/ui";
 import SaveIcon from "~/assets/images/utils/save.svg?component";
 import { renderHighlightedString } from "~/helpers/highlight.js";
 import { useImageUpload } from "~/composables/image-upload.ts";

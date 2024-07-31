@@ -89,13 +89,13 @@
 
 <script setup>
 import { renderHighlightedString } from "~/helpers/highlight.js";
-import Avatar from "~/components/ui/Avatar.vue";
-import Badge from "~/components/ui/Badge.vue";
+import { Avatar } from "@modrinth/ui";
+import { Badge } from "@modrinth/ui";
 import ReportIcon from "~/assets/images/utils/report.svg?component";
 import UnknownIcon from "~/assets/images/utils/unknown.svg?component";
 import VersionIcon from "~/assets/images/utils/version.svg?component";
 import ThreadSummary from "~/components/ui/thread/ThreadSummary.vue";
-import CopyCode from "~/components/ui/CopyCode.vue";
+import { CopyCode } from "@modrinth/ui";
 
 defineProps({
   report: {

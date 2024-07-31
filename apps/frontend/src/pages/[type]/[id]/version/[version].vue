@@ -612,7 +612,7 @@
   </div>
 </template>
 <script>
-import { MarkdownEditor } from "@modrinth/ui";
+import { MarkdownEditor, Avatar, Badge, CopyCode, Chips, Checkbox, FileInput } from "@modrinth/ui";
 import { Multiselect } from "vue-multiselect";
 import { acceptFileFromProjectType } from "~/helpers/fileUtils.js";
 import { inferVersionInfo } from "~/helpers/infer.js";
@@ -621,15 +621,9 @@ import { renderHighlightedString } from "~/helpers/highlight.js";
 import { reportVersion } from "~/utils/report-helpers.ts";
 import { useImageUpload } from "~/composables/image-upload.ts";
 
-import Avatar from "~/components/ui/Avatar.vue";
-import Badge from "~/components/ui/Badge.vue";
 import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
-import CopyCode from "~/components/ui/CopyCode.vue";
 import Categories from "~/components/ui/search/Categories.vue";
 import ModalConfirm from "~/components/ui/ModalConfirm.vue";
-import Chips from "~/components/ui/Chips.vue";
-import Checkbox from "~/components/ui/Checkbox.vue";
-import FileInput from "~/components/ui/FileInput.vue";
 
 import FileIcon from "~/assets/images/utils/file.svg?component";
 import TrashIcon from "~/assets/images/utils/trash.svg?component";

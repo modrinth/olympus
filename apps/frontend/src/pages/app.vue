@@ -8,13 +8,10 @@ import {
   DownloadIcon,
   LinkIcon,
 } from "@modrinth/assets";
-import Avatar from "~/components/ui/Avatar.vue";
-import LogoAnimated from "~/components/brand/LogoAnimated.vue";
-import Badge from "~/components/ui/Badge.vue";
+import { Avatar, AnimatedLogo, Badge, Checkbox } from "@modrinth/ui";
 import PrismIcon from "~/assets/images/external/prism.svg?component";
 import ATLauncher from "~/assets/images/external/atlauncher.svg?component";
 import CurseForge from "~/assets/images/external/curseforge.svg?component";
-import Checkbox from "~/components/ui/Checkbox.vue";
 
 import { homePageProjects } from "~/generated/state.json";
 
@@ -456,7 +453,7 @@ useSeoMeta({
               <div class="cell">
                 <div>
                   <div class="icon-logo modrinth">
-                    <LogoAnimated class="icon" />
+                    <AnimatedLogo class="icon" />
                   </div>
                 </div>
               </div>
@@ -493,7 +490,7 @@ useSeoMeta({
         </div>
         <div class="feature gradient-border website">
           <div class="icon-logo">
-            <LogoAnimated class="icon" />
+            <AnimatedLogo class="icon" />
           </div>
           <div class="ellipsis" />
           <div class="projects-showcase">
@@ -534,7 +531,7 @@ useSeoMeta({
           </div>
           <div class="inner-ring ring">
             <div class="icon-logo">
-              <LogoAnimated class="icon" />
+              <AnimatedLogo class="icon" />
             </div>
             <div class="launcher-badge top-left">
               <img src="~/assets/images/external/gdlauncher.png" alt="GDLauncher" />
@@ -1980,9 +1977,6 @@ useSeoMeta({
   width: 5rem;
   height: 5rem;
   padding: 0.75rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   border: 1px solid var(--landing-border-color);
   border-radius: var(--radius-lg);
 

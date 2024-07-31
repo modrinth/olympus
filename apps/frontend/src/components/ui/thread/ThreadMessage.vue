@@ -109,8 +109,8 @@ import {
 } from "@modrinth/assets";
 import { OverflowMenu, ConditionalNuxtLink } from "@modrinth/ui";
 import { renderString } from "@modrinth/utils";
-import Avatar from "~/components/ui/Avatar.vue";
-import Badge from "~/components/ui/Badge.vue";
+import { Avatar } from "@modrinth/ui";
+import { Badge } from "@modrinth/ui";
 import { isStaff } from "~/helpers/users.js";
 
 const props = defineProps({

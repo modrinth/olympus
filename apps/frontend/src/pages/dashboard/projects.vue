@@ -302,12 +302,9 @@
 <script>
 import { Multiselect } from "vue-multiselect";
 
-import Badge from "~/components/ui/Badge.vue";
-import Checkbox from "~/components/ui/Checkbox.vue";
+import { Badge, Checkbox, Avatar, CopyCode } from "@modrinth/ui";
 import Modal from "~/components/ui/Modal.vue";
-import Avatar from "~/components/ui/Avatar.vue";
 import ModalCreation from "~/components/ui/ModalCreation.vue";
-import CopyCode from "~/components/ui/CopyCode.vue";
 
 import SettingsIcon from "~/assets/images/utils/settings.svg?component";
 import TrashIcon from "~/assets/images/utils/trash.svg?component";

@@ -295,7 +295,7 @@
         class="pagination-before"
         @switch-page="onSearchChange"
       />
-      <LogoAnimated v-if="searchLoading && !noLoad" />
+      <AnimatedLogo v-if="searchLoading && !noLoad" class="flex justify-center" />
       <div v-else-if="results && results.hits && results.hits.length === 0" class="no-results">
         <p>No results found for your query!</p>
       </div>
@@ -344,12 +344,10 @@
 </template>
 <script setup>
 import { Multiselect } from "vue-multiselect";
-import { Promotion } from "@modrinth/ui";
+import { Promotion, AnimatedLogo, Checkbox } from "@modrinth/ui";
 import ProjectCard from "~/components/ui/ProjectCard.vue";
 import Pagination from "~/components/ui/Pagination.vue";
 import SearchFilter from "~/components/ui/search/SearchFilter.vue";
-import Checkbox from "~/components/ui/Checkbox.vue";
-import LogoAnimated from "~/components/brand/LogoAnimated.vue";
 
 import ClientIcon from "~/assets/images/categories/client.svg?component";
 import ServerIcon from "~/assets/images/categories/server.svg?component";
