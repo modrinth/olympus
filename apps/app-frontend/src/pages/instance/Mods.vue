@@ -586,23 +586,14 @@ const updateSort = (projects) => {
   switch (sortColumn.value) {
     case 'Version':
       return projects.slice().sort((a, b) => {
-        if (a.version < b.version) {
-          return ascending.value ? -1 : 1
+        let aVersion = a.version ? a.version : ''
+        let bVersion = b.version ? b.version : ''
+
+        if (ascending.value) {
+          return aVersion.localeCompare(bVersion, undefined, { numeric: true })
+        } else {
+          return bVersion.localeCompare(aVersion, undefined, { numeric: true })
         }
-        if (a.version > b.version) {
-          return ascending.value ? 1 : -1
-        }
-        return 0
-      })
-    case 'Author':
-      return projects.slice().sort((a, b) => {
-        if (a.author < b.author) {
-          return ascending.value ? -1 : 1
-        }
-        if (a.author > b.author) {
-          return ascending.value ? 1 : -1
-        }
-        return 0
       })
     case 'Enabled':
       return projects.slice().sort((a, b) => {
@@ -616,13 +607,11 @@ const updateSort = (projects) => {
       })
     default:
       return projects.slice().sort((a, b) => {
-        if (a.name < b.name) {
-          return ascending.value ? -1 : 1
+        if (ascending.value) {
+          return a.name.localeCompare(b.name)
+        } else {
+          return b.name.localeCompare(a.name)
         }
-        if (a.name > b.name) {
-          return ascending.value ? 1 : -1
-        }
-        return 0
       })
   }
 }
@@ -1116,6 +1105,7 @@ onUnmounted(() => {
     }
   }
 }
+
 .empty-prompt {
   display: flex;
   flex-direction: column;
