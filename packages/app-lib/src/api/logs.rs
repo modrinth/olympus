@@ -1,3 +1,4 @@
+use std::cmp::Ordering;
 use std::io::{Read, SeekFrom};
 use std::time::SystemTime;
 
@@ -163,7 +164,11 @@ pub async fn get_logs(
     .await?;
 
     let mut logs = logs.into_iter().collect::<crate::Result<Vec<Logs>>>()?;
-    logs.sort_by(|a, b| b.age.cmp(&a.age).then(b.filename.cmp(&a.filename)));
+    logs.sort_by(|a, b| match (a.filename.as_str(), b.filename.as_str()) {
+        ("latest.log", _) => Ordering::Less,
+        (_, "latest.log") => Ordering::Greater,
+        _ => b.age.cmp(&a.age).then(b.filename.cmp(&a.filename)),
+    });
     Ok(logs)
 }
 
