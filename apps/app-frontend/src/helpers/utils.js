@@ -5,6 +5,11 @@ export async function isDev() {
   return await invoke('is_dev')
 }
 
+/// Show Main Window - called once after first frontend rendered
+export async function showMainWindow() {
+  return await invoke('show_window')
+}
+
 // One of 'Windows', 'Linux', 'MacOS'
 export async function getOS() {
   return await invoke('plugin:utils|get_os')
