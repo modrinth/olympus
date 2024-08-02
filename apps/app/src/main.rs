@@ -142,6 +142,7 @@ fn main() {
         .plugin(api::tags::init())
         .plugin(api::utils::init())
         .plugin(api::cache::init())
+        .plugin(api::skin_manager::init())
         .invoke_handler(tauri::generate_handler![
             initialize_state,
             is_dev,

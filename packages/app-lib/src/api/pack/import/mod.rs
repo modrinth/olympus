@@ -29,6 +29,7 @@ pub enum ImportLauncherType {
     ATLauncher,
     GDLauncher,
     Curseforge,
+    Mojang,
     #[serde(other)]
     Unknown,
 }
@@ -41,6 +42,7 @@ impl fmt::Display for ImportLauncherType {
             ImportLauncherType::ATLauncher => write!(f, "ATLauncher"),
             ImportLauncherType::GDLauncher => write!(f, "GDLauncher"),
             ImportLauncherType::Curseforge => write!(f, "Curseforge"),
+            ImportLauncherType::Mojang => write!(f, "Mojang"),
             ImportLauncherType::Unknown => write!(f, "Unknown"),
         }
     }
@@ -67,6 +69,12 @@ pub async fn get_importable_instances(
         )
         .await
         .unwrap_or_else(|| "instances".to_string()),
+        ImportLauncherType::Mojang => {
+            return Err(crate::ErrorKind::InputError(
+                "Launcher type Unsupported".to_string(),
+            )
+            .into())
+        },
         ImportLauncherType::Unknown => {
             return Err(crate::ErrorKind::InputError(
                 "Launcher type Unknown".to_string(),
@@ -143,6 +151,12 @@ pub async fn import_instance(
             )
             .await
         }
+        ImportLauncherType::Mojang => {
+            return Err(crate::ErrorKind::InputError(
+                "Launcher type Unsupported".to_string(),
+            )
+            .into())
+        },
         ImportLauncherType::Unknown => {
             return Err(crate::ErrorKind::InputError(
                 "Launcher type Unknown".to_string(),
@@ -184,6 +198,9 @@ pub fn get_default_launcher_path(
         ImportLauncherType::Curseforge => {
             Some(dirs::home_dir()?.join("curseforge").join("minecraft"))
         }
+        ImportLauncherType::Mojang => {
+            Some(dirs::data_dir()?.join(".minecraft"))
+        }
         ImportLauncherType::Unknown => None,
     };
     let path = path?;
@@ -214,6 +231,7 @@ pub async fn is_valid_importable_instance(
         ImportLauncherType::Curseforge => {
             curseforge::is_valid_curseforge(instance_path).await
         }
+        ImportLauncherType::Mojang => false,
         ImportLauncherType::Unknown => false,
     }
 }

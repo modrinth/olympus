@@ -10,6 +10,7 @@ pub mod pack;
 pub mod process;
 pub mod profile;
 pub mod settings;
+pub mod skin_manager;
 pub mod tags;
 
 pub mod data {

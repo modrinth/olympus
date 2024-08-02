@@ -99,6 +99,12 @@ pub enum ErrorKind {
     #[error("Error: {0}")]
     OtherError(String),
 
+    #[error("Image error: {0}")]
+    ImageError(#[from] image::error::ImageError),
+
+    #[error("Error decoding: {0}")]
+    DecodeError(#[from] base64::DecodeError),
+
     #[cfg(feature = "tauri")]
     #[error("Tauri error: {0}")]
     TauriError(#[from] tauri::Error),

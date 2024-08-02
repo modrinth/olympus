@@ -7,14 +7,17 @@
     :class="{ expanded: mode === 'expanded' }"
     @click="showCard = !showCard"
   >
-    <Avatar
-      :size="mode === 'expanded' ? 'xs' : 'sm'"
-      :src="
-        selectedAccount
-          ? `https://mc-heads.net/avatar/${selectedAccount.id}/128`
-          : 'https://launcher-files.modrinth.com/assets/steve_head.png'
-      "
-    />
+    <div class="overlap">
+      <AnimatedLogo v-if="!loaded_skins" class="loading" />
+      <Avatar
+        :size="mode === 'expanded' ? 'xs' : 'sm'"
+        :src="
+          selectedAccount
+            ? account_heads[selectedAccount.id]
+            : 'https://launcher-files.modrinth.com/assets/steve_head.png'
+        "
+      />
+    </div>
   </div>
   <transition name="fade">
     <Card
@@ -24,7 +27,7 @@
       :class="{ expanded: mode === 'expanded', isolated: mode === 'isolated' }"
     >
       <div v-if="selectedAccount" class="selected account">
-        <Avatar size="xs" :src="`https://mc-heads.net/avatar/${selectedAccount.id}/128`" />
+        <Avatar size="xs" :src="account_heads[selectedAccount.id]" />
         <div>
           <h4>{{ selectedAccount.username }}</h4>
           <p>Selected</p>
@@ -42,7 +45,7 @@
       <div v-if="displayAccounts.length > 0" class="account-group">
         <div v-for="account in displayAccounts" :key="account.id" class="account-row">
           <Button class="option account" @click="setAccount(account)">
-            <Avatar :src="`https://mc-heads.net/avatar/${account.id}/128`" class="icon" />
+            <Avatar :src="account_heads[account.id]" class="icon" />
             <p>{{ account.username }}</p>
           </Button>
           <Button v-tooltip="'Log out'" icon-only @click="logout(account.id)">
@@ -60,7 +63,7 @@
 
 <script setup>
 import { PlusIcon, TrashIcon, LogInIcon } from '@modrinth/assets'
-import { Avatar, Button, Card } from '@modrinth/ui'
+import { Avatar, Button, Card, AnimatedLogo } from '@modrinth/ui'
 import { ref, computed, onMounted, onBeforeUnmount, onUnmounted } from 'vue'
 import {
   users,
@@ -73,6 +76,15 @@ import { handleError } from '@/store/state.js'
 import { mixpanel_track } from '@/helpers/mixpanel'
 import { process_listener } from '@/helpers/events'
 import { handleSevereError } from '@/store/error.js'
+import {
+  cache_users_skins,
+  cache_new_user_skin,
+  account_heads,
+  loaded_skins,
+  get_heads,
+  get_filters,
+  selectedAccount as skinManagerAccount,
+} from '@/helpers/skin_manager.js'
 
 defineProps({
   mode: {
@@ -100,9 +112,11 @@ const displayAccounts = computed(() =>
   accounts.value.filter((account) => defaultUser.value !== account.id),
 )
 
-const selectedAccount = computed(() =>
-  accounts.value.find((account) => account.id === defaultUser.value),
-)
+const selectedAccount = computed(() => {
+  const account = accounts.value.find((account) => account.id === defaultUser.value)
+  skinManagerAccount.value = account
+  return account
+})
 
 async function setAccount(account) {
   defaultUser.value = account.id
@@ -114,6 +128,8 @@ async function login() {
   const loggedIn = await login_flow().catch(handleSevereError)
 
   if (loggedIn) {
+    await cache_new_user_skin(loggedIn).catch(handleError)
+    get_heads()
     await setAccount(loggedIn)
     await refreshValues()
   }
@@ -154,8 +170,16 @@ const unlisten = await process_listener(async (e) => {
   }
 })
 
+const refreshSkins = async () => {
+  get_heads()
+  loaded_skins.value = await cache_users_skins().catch(handleError)
+  get_heads()
+  get_filters()
+}
+
 onMounted(() => {
   window.addEventListener('click', handleClickOutside)
+  refreshSkins()
 })
 
 onBeforeUnmount(() => {
@@ -302,6 +326,24 @@ onUnmounted(() => {
   margin: auto 0 auto 0.25rem;
   display: flex;
   flex-direction: column;
+}
+
+.overlap {
+  display: grid;
+  justify-items: center;
+  align-items: start;
+
+  .loading {
+    margin: 0;
+    padding: 0;
+    width: 1rem;
+    height: 1rem;
+    transform: scale(0.6) translateX(-2rem) translateY(-0.3rem);
+  }
+}
+.overlap > * {
+  grid-column-start: 1;
+  grid-row-start: 1;
 }
 
 .text {

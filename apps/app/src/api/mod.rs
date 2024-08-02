@@ -15,6 +15,7 @@ pub mod profile_create;
 pub mod settings;
 pub mod tags;
 pub mod utils;
+pub mod skin_manager;
 
 pub mod cache;
 

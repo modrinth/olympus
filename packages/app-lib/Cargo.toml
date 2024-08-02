@@ -42,9 +42,11 @@ paste = { version = "1.0" }
 tauri = { version = "1.7.1", optional = true }
 indicatif = { version = "0.17.3", optional = true }
 
+image = "0.24.7"
+
 async-tungstenite = { version = "0.25.1", features = ["tokio-runtime", "tokio-native-tls"] }
 futures = "0.3"
-reqwest = { version = "0.12.3", features = ["json", "stream", "deflate", "gzip", "brotli"] }
+reqwest = { version = "0.12.3", features = ["json", "stream", "deflate", "gzip", "brotli", "multipart"] }
 tokio = { version = "1", features = ["full"] }
 tokio-stream = { version = "0.1", features = ["fs"] }
 async-recursion = "1.0.4"

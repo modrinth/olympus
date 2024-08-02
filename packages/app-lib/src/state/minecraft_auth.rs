@@ -208,7 +208,7 @@ pub struct Credentials {
 }
 
 impl Credentials {
-    async fn refresh(
+    pub async fn refresh(
         &mut self,
         exec: impl sqlx::Executor<'_, Database = sqlx::Sqlite> + Copy,
     ) -> crate::Result<()> {
