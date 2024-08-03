@@ -14,7 +14,7 @@
           <CompactChart
             v-if="analytics.formattedData.value.downloads"
             ref="tinyDownloadChart"
-            :title="`Downloads since ${dayjs(startDate).format('MMM D, YYYY')}`"
+            :title="`Downloads`"
             color="var(--color-brand)"
             :value="formatNumber(analytics.formattedData.value.downloads.sum, false)"
             :data="analytics.formattedData.value.downloads.chart.sumData"
@@ -33,7 +33,7 @@
           <CompactChart
             v-if="analytics.formattedData.value.views"
             ref="tinyViewChart"
-            :title="`Page views since ${dayjs(startDate).format('MMM D, YYYY')}`"
+            :title="`Views`"
             color="var(--color-blue)"
             :value="formatNumber(analytics.formattedData.value.views.sum, false)"
             :data="analytics.formattedData.value.views.chart.sumData"
@@ -50,7 +50,7 @@
           <CompactChart
             v-if="analytics.formattedData.value.revenue"
             ref="tinyRevenueChart"
-            :title="`Revenue since ${dayjs(startDate).format('MMM D, YYYY')}`"
+            :title="`Revenue`"
             color="var(--color-purple)"
             :value="formatMoney(analytics.formattedData.value.revenue.sum, false)"
             :data="analytics.formattedData.value.revenue.chart.sumData"
@@ -71,6 +71,9 @@
               <span class="label__title">
                 {{ formatCategoryHeader(selectedChart) }}
               </span>
+              <span class="label__subtitle">
+                {{ formattedCategorySubtitle }}
+              </span>
             </h2>
             <div class="chart-controls__buttons">
               <Button v-tooltip="'Toggle project colors'" icon-only @click="onToggleColors">
@@ -83,11 +86,12 @@
                 <UpdatedIcon />
               </Button>
               <DropdownSelect
+                class="range-dropdown"
                 v-model="selectedRange"
-                :options="selectableRanges"
+                :options="ranges"
                 name="Time range"
                 :display-name="
-                  (o: (typeof selectableRanges)[number] | undefined) => o?.label || 'Custom'
+                  (o: RangeObject) => o?.getLabel([startDate, endDate]) ?? 'Loading...'
                 "
               />
             </div>
@@ -313,7 +317,7 @@ const props = withDefaults(
      * @deprecated Use `ranges` instead
      */
     resoloutions?: Record<string, number>;
-    ranges?: Record<number, [string, number] | string>;
+    ranges?: RangeObject[];
     personal?: boolean;
   }>(),
   {
@@ -325,12 +329,6 @@ const props = withDefaults(
 );
 
 const projects = ref(props.projects || []);
-
-const selectableRanges = Object.entries(props.ranges).map(([duration, extra]) => ({
-  label: typeof extra === "string" ? extra : extra[0],
-  value: Number(duration),
-  res: typeof extra === "string" ? Number(duration) : extra[1],
-}));
 
 // const selectedChart = ref('downloads')
 const selectedChart = computed({
@@ -404,33 +402,78 @@ const isUsingProjectColors = computed({
   },
 });
 
+const startDate = ref(dayjs().startOf("day"));
+const endDate = ref(dayjs().endOf("day"));
+const timeResolution = ref(30);
+
+onBeforeMount(() => {
+  // Load cached data and range from localStorage - cache.
+  if (import.meta.client) {
+    const rangeLabel = localStorage.getItem("analyticsSelectedRange");
+    if (rangeLabel) {
+      const range = props.ranges.find((r) => r.getLabel([dayjs(), dayjs()]) === rangeLabel)!;
+
+      if (range !== undefined) {
+        internalRange.value = range;
+        const ranges = range.getDates(dayjs());
+        timeResolution.value = range.timeResolution;
+        startDate.value = ranges.startDate;
+        endDate.value = ranges.endDate;
+      }
+    }
+  }
+});
+
+onMounted(() => {
+  if (internalRange.value === null) {
+    internalRange.value = props.ranges.find(
+      (r) => r.getLabel([dayjs(), dayjs()]) === "Previous 30 days",
+    )!;
+  }
+
+  const ranges = selectedRange.value.getDates(dayjs());
+  startDate.value = ranges.startDate;
+  endDate.value = ranges.endDate;
+  timeResolution.value = selectedRange.value.timeResolution;
+});
+
+const internalRange: Ref<RangeObject> = ref(null as unknown as RangeObject);
+
+const selectedRange = computed({
+  get: () => {
+    return internalRange.value;
+  },
+  set: (newRange) => {
+    const ranges = newRange.getDates(dayjs());
+    startDate.value = ranges.startDate;
+    endDate.value = ranges.endDate;
+    timeResolution.value = newRange.timeResolution;
+
+    internalRange.value = newRange;
+
+    if (import.meta.client) {
+      localStorage.setItem(
+        "analyticsSelectedRange",
+        internalRange.value?.getLabel([dayjs(), dayjs()]) ?? "Previous 30 days",
+      );
+    }
+  },
+});
+
 const analytics = useFetchAllAnalytics(
   resetCharts,
   projects,
   selectedDisplayProjects,
   props.personal,
+  startDate,
+  endDate,
+  timeResolution,
 );
 
-const { startDate, endDate, timeRange, timeResolution } = analytics;
-
-const selectedRange = computed({
-  get: () => {
-    return (
-      selectableRanges.find((option) => option.value === timeRange.value) || {
-        label: "Custom",
-        value: timeRange.value,
-      }
-    );
-  },
-  set: (newRange: { label: string; value: number; res?: number }) => {
-    timeRange.value = newRange.value;
-    startDate.value = Date.now() - timeRange.value * 60 * 1000;
-    endDate.value = Date.now();
-
-    if (newRange?.res) {
-      timeResolution.value = newRange.res;
-    }
-  },
+const formattedCategorySubtitle = computed(() => {
+  return (
+    selectedRange.value?.getLabel([dayjs(startDate.value), dayjs(endDate.value)]) ?? "Loading..."
+  );
 });
 
 const selectedDataSet = computed(() => {
@@ -475,6 +518,9 @@ const onToggleColors = () => {
 </script>
 
 <script lang="ts">
+/**
+ * @deprecated Use `ranges` instead
+ */
 const defaultResoloutions: Record<string, number> = {
   "5 minutes": 5,
   "30 minutes": 30,
@@ -484,17 +530,161 @@ const defaultResoloutions: Record<string, number> = {
   "A week": 10080,
 };
 
-const defaultRanges: Record<number, [string, number] | string> = {
-  30: ["Last 30 minutes", 1],
-  60: ["Last hour", 5],
-  720: ["Last 12 hours", 15],
-  1440: ["Last day", 60],
-  10080: ["Last week", 720],
-  43200: ["Last month", 1440],
-  129600: ["Last quarter", 10080],
-  525600: ["Last year", 20160],
-  1051200: ["Last two years", 40320],
+type DateRange = { startDate: dayjs.Dayjs; endDate: dayjs.Dayjs };
+
+type RangeObject = {
+  getLabel: (dateRange: [dayjs.Dayjs, dayjs.Dayjs]) => string;
+  getDates: (currentDate: dayjs.Dayjs) => DateRange;
+  // A time resolution in minutes.
+  timeResolution: number;
 };
+
+const defaultRanges: RangeObject[] = [
+  {
+    getLabel: () => "Previous 30 minutes",
+    getDates: (currentDate: dayjs.Dayjs) => ({
+      startDate: dayjs(currentDate).subtract(30, "minute"),
+      endDate: currentDate,
+    }),
+    timeResolution: 1,
+  },
+  {
+    getLabel: () => "Previous hour",
+    getDates: (currentDate: dayjs.Dayjs) => ({
+      startDate: dayjs(currentDate).subtract(1, "hour"),
+      endDate: currentDate,
+    }),
+    timeResolution: 5,
+  },
+  {
+    getLabel: () => "Previous 12 hours",
+    getDates: (currentDate: dayjs.Dayjs) => ({
+      startDate: dayjs(currentDate).subtract(12, "hour"),
+      endDate: currentDate,
+    }),
+    timeResolution: 12,
+  },
+  {
+    getLabel: () => "Previous 24 hours",
+    getDates: (currentDate: dayjs.Dayjs) => ({
+      startDate: dayjs(currentDate).subtract(1, "day"),
+      endDate: currentDate,
+    }),
+    timeResolution: 30,
+  },
+  {
+    getLabel: () => "Today",
+    getDates: (currentDate: dayjs.Dayjs) => ({
+      startDate: dayjs(currentDate).startOf("day"),
+      endDate: currentDate,
+    }),
+    timeResolution: 30,
+  },
+  {
+    getLabel: () => "Yesterday",
+    getDates: (currentDate: dayjs.Dayjs) => ({
+      startDate: dayjs(currentDate).subtract(1, "day").startOf("day"),
+      endDate: dayjs(currentDate).startOf("day").subtract(1, "second"),
+    }),
+    timeResolution: 30,
+  },
+  {
+    getLabel: () => "This week",
+    getDates: (currentDate: dayjs.Dayjs) => ({
+      startDate: dayjs(currentDate).startOf("week").add(1, "hour"),
+      endDate: currentDate,
+    }),
+    timeResolution: 360,
+  },
+  {
+    getLabel: () => "Last week",
+    getDates: (currentDate: dayjs.Dayjs) => ({
+      startDate: dayjs(currentDate).subtract(1, "week").startOf("week").add(1, "hour"),
+      endDate: dayjs(currentDate).startOf("week").subtract(1, "second"),
+    }),
+    timeResolution: 1440,
+  },
+  {
+    getLabel: () => "Previous 7 days",
+    getDates: (currentDate: dayjs.Dayjs) => ({
+      startDate: dayjs(currentDate).startOf("day").subtract(7, "day").add(1, "hour"),
+      endDate: currentDate.startOf("day"),
+    }),
+    timeResolution: 720,
+  },
+  {
+    getLabel: () => "This month",
+    getDates: (currentDate: dayjs.Dayjs) => ({
+      startDate: dayjs(currentDate).startOf("month").add(1, "hour"),
+      endDate: currentDate,
+    }),
+    timeResolution: 1440,
+  },
+  {
+    getLabel: () => "Last month",
+    getDates: (currentDate: dayjs.Dayjs) => ({
+      startDate: dayjs(currentDate).subtract(1, "month").startOf("month").add(1, "hour"),
+      endDate: dayjs(currentDate).startOf("month").subtract(1, "second"),
+    }),
+    timeResolution: 1440,
+  },
+  {
+    getLabel: () => "Previous 30 days",
+    getDates: (currentDate: dayjs.Dayjs) => ({
+      startDate: dayjs(currentDate).startOf("day").subtract(30, "day").add(1, "hour"),
+      endDate: currentDate.startOf("day"),
+    }),
+    timeResolution: 1440,
+  },
+  {
+    getLabel: () => "This quarter",
+    getDates: (currentDate: dayjs.Dayjs) => ({
+      startDate: dayjs(currentDate).startOf("quarter").add(1, "hour"),
+      endDate: currentDate,
+    }),
+    timeResolution: 1440,
+  },
+  {
+    getLabel: () => "Last quarter",
+    getDates: (currentDate: dayjs.Dayjs) => ({
+      startDate: dayjs(currentDate).subtract(1, "quarter").startOf("quarter").add(1, "hour"),
+      endDate: dayjs(currentDate).startOf("quarter").subtract(1, "second"),
+    }),
+    timeResolution: 1440,
+  },
+  {
+    getLabel: () => "This year",
+    getDates: (currentDate: dayjs.Dayjs) => ({
+      startDate: dayjs(currentDate).startOf("year"),
+      endDate: currentDate,
+    }),
+    timeResolution: 20160,
+  },
+  {
+    getLabel: () => "Last year",
+    getDates: (currentDate: dayjs.Dayjs) => ({
+      startDate: dayjs(currentDate).subtract(1, "year").startOf("year"),
+      endDate: dayjs(currentDate).startOf("year").subtract(1, "second"),
+    }),
+    timeResolution: 20160,
+  },
+  {
+    getLabel: () => "Previous year",
+    getDates: (currentDate: dayjs.Dayjs) => ({
+      startDate: dayjs(currentDate).subtract(1, "year"),
+      endDate: dayjs(currentDate),
+    }),
+    timeResolution: 40320,
+  },
+  {
+    getLabel: () => "Previous two years",
+    getDates: (currentDate: dayjs.Dayjs) => ({
+      startDate: dayjs(currentDate).subtract(2, "year"),
+      endDate: currentDate,
+    }),
+    timeResolution: 40320,
+  },
+];
 </script>
 
 <style scoped lang="scss">
@@ -515,6 +705,20 @@ const defaultRanges: Record<number, [string, number] | string> = {
       min-height: auto;
     }
   }
+
+  h2 {
+    display: flex;
+    flex-direction: column;
+
+    .label__subtitle {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-secondary);
+    }
+  }
+}
+
+.range-dropdown {
+  font-size: var(--font-size-sm);
 }
 
 .chart-area {
@@ -679,6 +883,7 @@ const defaultRanges: Record<number, [string, number] | string> = {
     flex-direction: column;
     gap: var(--gap-xs);
   }
+
   .percentage-bar {
     grid-area: bar;
     width: 100%;
@@ -687,6 +892,7 @@ const defaultRanges: Record<number, [string, number] | string> = {
     border: 1px solid var(--color-button-bg);
     border-radius: var(--radius-sm);
     overflow: hidden;
+
     span {
       display: block;
       height: 100%;
