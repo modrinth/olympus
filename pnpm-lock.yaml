@@ -17,8 +17,8 @@ importers:
         specifier: ^3.3.2
         version: 3.3.2
       turbo:
-        specifier: ^2.0.6
-        version: 2.0.6
+        specifier: ^2.0.12
+        version: 2.0.12
       vue:
         specifier: ^3.4.31
         version: 3.4.31(typescript@5.5.3)
@@ -58,7 +58,7 @@ importers:
         version: 1.11.11
       floating-vue:
         specifier: ^5.2.2
-        version: 5.2.2(@nuxt/kit@3.12.3)(vue@3.4.31(typescript@5.5.3))
+        version: 5.2.2(@nuxt/kit@3.12.3(magicast@0.3.4))(vue@3.4.31(typescript@5.5.3))
       mixpanel-browser:
         specifier: ^2.49.0
         version: 2.53.0
@@ -310,7 +310,7 @@ importers:
         version: 1.11.11
       floating-vue:
         specifier: 2.0.0-beta.24
-        version: 2.0.0-beta.24(@nuxt/kit@3.12.3(rollup@3.29.4))(vue@3.4.31(typescript@5.5.3))
+        version: 2.0.0-beta.24(@nuxt/kit@3.12.3(magicast@0.3.4)(rollup@3.29.4))(vue@3.4.31(typescript@5.5.3))
       highlight.js:
         specifier: ^11.9.0
         version: 11.9.0
@@ -332,7 +332,7 @@ importers:
     devDependencies:
       '@vintl/unplugin':
         specifier: ^1.5.1
-        version: 1.5.2(@vue/compiler-core@3.4.31)(rollup@3.29.4)(vite@4.5.3)(vue@3.4.31(typescript@5.5.3))(webpack@5.92.1)
+        version: 1.5.2(@vue/compiler-core@3.4.31)(rollup@3.29.4)(vite@4.5.3(@types/node@20.14.11)(sass@1.77.6)(terser@5.31.3))(vue@3.4.31(typescript@5.5.3))(webpack@5.92.1)
       '@vintl/vintl':
         specifier: ^4.4.1
         version: 4.4.1(typescript@5.5.3)(vue@3.4.31(typescript@5.5.3))
@@ -5388,38 +5388,38 @@ packages:
   tslib@2.6.3:
     resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
 
-  turbo-darwin-64@2.0.6:
-    resolution: {integrity: sha512-XpgBwWj3Ggmz/gQVqXdMKXHC1iFPMDiuwugLwSzE7Ih0O13JuNtYZKhQnopvbDQnFQCeRq2Vsm5OTWabg/oB/g==}
+  turbo-darwin-64@2.0.12:
+    resolution: {integrity: sha512-NAgfgbXxX/JScWQmmQnGbPuFZq7LIswHfcMk5JwyBXQM/xmklNOxxac7MnGGIOf19Z2f6S3qHy17VIj0SeGfnA==}
     cpu: [x64]
     os: [darwin]
 
-  turbo-darwin-arm64@2.0.6:
-    resolution: {integrity: sha512-RfeZYXIAkiA21E8lsvfptGTqz/256YD+eI1x37fedfvnHFWuIMFZGAOwJxtZc6QasQunDZ9TRRREbJNI68tkIw==}
+  turbo-darwin-arm64@2.0.12:
+    resolution: {integrity: sha512-cP02uer5KSJ+fXL+OfRRk5hnVjV0c60hxDgNcJxrZpfhun7HHoKDDR7w2xhQntiA45aC6ZZEXRqMKpj6GAmKbg==}
     cpu: [arm64]
     os: [darwin]
 
-  turbo-linux-64@2.0.6:
-    resolution: {integrity: sha512-92UDa0xNQQbx0HdSp9ag3YSS3xPdavhc7q9q9mxIAcqyjjD6VElA4Y85m4F/DDGE5SolCrvBz2sQhVmkOd6Caw==}
+  turbo-linux-64@2.0.12:
+    resolution: {integrity: sha512-+mQgGfg1eq5qF+wenK/FKJaNMNAo5DQLC4htQy+8osW+fx6U+8+6UlPQPaycAWDEqwOI7NwuqkeHfkEQLQUTyQ==}
     cpu: [x64]
     os: [linux]
 
-  turbo-linux-arm64@2.0.6:
-    resolution: {integrity: sha512-eQKu6utCVUkIH2kqOzD8OS6E0ba6COjWm6PRDTNCHQRljZW503ycaTUIdMOiJrVg1MkEjDyOReUg8s8D18aJ4Q==}
+  turbo-linux-arm64@2.0.12:
+    resolution: {integrity: sha512-KFyEZDXfPU1DK4zimxdCcqAcK7IIttX4mfsgB7NsSEOmH0dhHOih/YFYiyEDC1lTRx0C2RlzQ0Kjjdz48AN5Eg==}
     cpu: [arm64]
     os: [linux]
 
-  turbo-windows-64@2.0.6:
-    resolution: {integrity: sha512-+9u4EPrpoeHYCQ46dRcou9kbkSoelhOelHNcbs2d86D6ruYD/oIAHK9qgYK8LeARRz0jxhZIA/dWYdYsxJJWkw==}
+  turbo-windows-64@2.0.12:
+    resolution: {integrity: sha512-kJj4KCkZTkDTDCqsSw1m1dbO4WeoQq1mYUm/thXOH0OkeqYbSMt0EyoTcJOgKUDsrMnzZD2gPfYrlYHtV69lVA==}
     cpu: [x64]
     os: [win32]
 
-  turbo-windows-arm64@2.0.6:
-    resolution: {integrity: sha512-rdrKL+p+EjtdDVg0wQ/7yTbzkIYrnb0Pw4IKcjsy3M0RqUM9UcEi67b94XOAyTa5a0GqJL1+tUj2ebsFGPgZbg==}
+  turbo-windows-arm64@2.0.12:
+    resolution: {integrity: sha512-TY3ROxguDilN2olCwcZMaePdW01Xhma0pZU7bNhsQEqca9RGAmsZBuzfGnTMcWPmv4tpnb/PlX1hrt1Hod/44Q==}
     cpu: [arm64]
     os: [win32]
 
-  turbo@2.0.6:
-    resolution: {integrity: sha512-/Ftmxd5Mq//a9yMonvmwENNUN65jOVTwhhBPQjEtNZutYT9YKyzydFGLyVM1nzhpLWahQSMamRc/RDBv5EapzA==}
+  turbo@2.0.12:
+    resolution: {integrity: sha512-8s2KwqjwQj7z8Z53SUZSKVkQOZ2/Sl4D2F440oaBY/k2lGju60dW6srEpnn8/RIDeICZmQn3pQHF79Jfnc5Skw==}
     hasBin: true
 
   type-check@0.4.0:
@@ -6912,7 +6912,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@nuxt/kit@3.12.3':
+  '@nuxt/kit@3.12.3(magicast@0.3.4)':
     dependencies:
       '@nuxt/schema': 3.12.3
       c12: 1.11.1(magicast@0.3.4)
@@ -6933,6 +6933,34 @@ snapshots:
       ufo: 1.5.3
       unctx: 2.3.1
       unimport: 3.7.2
+      untyped: 1.4.2
+    transitivePeerDependencies:
+      - magicast
+      - rollup
+      - supports-color
+    optional: true
+
+  '@nuxt/kit@3.12.3(magicast@0.3.4)(rollup@3.29.4)':
+    dependencies:
+      '@nuxt/schema': 3.12.3(rollup@3.29.4)
+      c12: 1.11.1(magicast@0.3.4)
+      consola: 3.2.3
+      defu: 6.1.4
+      destr: 2.0.3
+      globby: 14.0.2
+      hash-sum: 2.0.0
+      ignore: 5.3.1
+      jiti: 1.21.6
+      klona: 2.0.6
+      knitwork: 1.1.0
+      mlly: 1.7.1
+      pathe: 1.1.2
+      pkg-types: 1.1.3
+      scule: 1.3.0
+      semver: 7.6.2
+      ufo: 1.5.3
+      unctx: 2.3.1
+      unimport: 3.7.2(rollup@3.29.4)
       untyped: 1.4.2
     transitivePeerDependencies:
       - magicast
@@ -6966,34 +6994,6 @@ snapshots:
       - magicast
       - rollup
       - supports-color
-
-  '@nuxt/kit@3.12.3(rollup@3.29.4)':
-    dependencies:
-      '@nuxt/schema': 3.12.3(rollup@3.29.4)
-      c12: 1.11.1(magicast@0.3.4)
-      consola: 3.2.3
-      defu: 6.1.4
-      destr: 2.0.3
-      globby: 14.0.2
-      hash-sum: 2.0.0
-      ignore: 5.3.1
-      jiti: 1.21.6
-      klona: 2.0.6
-      knitwork: 1.1.0
-      mlly: 1.7.1
-      pathe: 1.1.2
-      pkg-types: 1.1.3
-      scule: 1.3.0
-      semver: 7.6.2
-      ufo: 1.5.3
-      unctx: 2.3.1
-      unimport: 3.7.2(rollup@3.29.4)
-      untyped: 1.4.2
-    transitivePeerDependencies:
-      - magicast
-      - rollup
-      - supports-color
-    optional: true
 
   '@nuxt/schema@3.12.3':
     dependencies:
@@ -7483,6 +7483,13 @@ snapshots:
       estree-walker: 2.0.2
       picomatch: 2.3.1
 
+  '@rollup/pluginutils@5.1.0':
+    dependencies:
+      '@types/estree': 1.0.5
+      estree-walker: 2.0.2
+      picomatch: 2.3.1
+    optional: true
+
   '@rollup/pluginutils@5.1.0(rollup@3.29.4)':
     dependencies:
       '@types/estree': 1.0.5
@@ -7918,7 +7925,7 @@ snapshots:
       - vue
       - webpack
 
-  '@vintl/unplugin@1.5.2(@vue/compiler-core@3.4.31)(rollup@3.29.4)(vite@4.5.3)(vue@3.4.31(typescript@5.5.3))(webpack@5.92.1)':
+  '@vintl/unplugin@1.5.2(@vue/compiler-core@3.4.31)(rollup@3.29.4)(vite@4.5.3(@types/node@20.14.11)(sass@1.77.6)(terser@5.31.3))(vue@3.4.31(typescript@5.5.3))(webpack@5.92.1)':
     dependencies:
       '@formatjs/cli-lib': 6.4.2(@vue/compiler-core@3.4.31)(vue@3.4.31(typescript@5.5.3))
       '@formatjs/icu-messageformat-parser': 2.7.8
@@ -7929,7 +7936,7 @@ snapshots:
       unplugin: 1.11.0
     optionalDependencies:
       rollup: 3.29.4
-      vite: 4.5.3
+      vite: 4.5.3(@types/node@20.14.11)(sass@1.77.6)(terser@5.31.3)
       webpack: 5.92.1
     transitivePeerDependencies:
       - '@glimmer/env'
@@ -9193,7 +9200,7 @@ snapshots:
       debug: 4.3.5
       enhanced-resolve: 5.17.0
       eslint: 8.57.0
-      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.3))(eslint-plugin-import@2.29.1)(eslint@8.57.0))(eslint@8.57.0)
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.3))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.3))(eslint-plugin-import@2.29.1)(eslint@8.57.0))(eslint@8.57.0)
       eslint-plugin-import: 2.29.1(@typescript-eslint/parser@7.16.1(eslint@8.57.0)(typescript@5.5.3))(eslint@8.57.0)
       fast-glob: 3.3.2
       get-tsconfig: 4.7.5
@@ -9205,13 +9212,12 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-module-utils@2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.3))(eslint-plugin-import@2.29.1)(eslint@8.57.0))(eslint@8.57.0):
+  eslint-module-utils@2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.3))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.3))(eslint-plugin-import@2.29.1)(eslint@8.57.0))(eslint@8.57.0):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 6.21.0(eslint@8.57.0)(typescript@5.5.3)
       eslint: 8.57.0
-      eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.3))(eslint-plugin-import@2.29.1)(eslint@8.57.0)
     transitivePeerDependencies:
       - supports-color
@@ -9592,21 +9598,21 @@ snapshots:
       vue: 3.4.31(typescript@5.5.3)
       vue-resize: 2.0.0-alpha.1(vue@3.4.31(typescript@5.5.3))
 
-  floating-vue@2.0.0-beta.24(@nuxt/kit@3.12.3(rollup@3.29.4))(vue@3.4.31(typescript@5.5.3)):
+  floating-vue@2.0.0-beta.24(@nuxt/kit@3.12.3(magicast@0.3.4)(rollup@3.29.4))(vue@3.4.31(typescript@5.5.3)):
     dependencies:
       '@floating-ui/dom': 1.1.1
       vue: 3.4.31(typescript@5.5.3)
       vue-resize: 2.0.0-alpha.1(vue@3.4.31(typescript@5.5.3))
     optionalDependencies:
-      '@nuxt/kit': 3.12.3(rollup@3.29.4)
+      '@nuxt/kit': 3.12.3(magicast@0.3.4)(rollup@3.29.4)
 
-  floating-vue@5.2.2(@nuxt/kit@3.12.3)(vue@3.4.31(typescript@5.5.3)):
+  floating-vue@5.2.2(@nuxt/kit@3.12.3(magicast@0.3.4))(vue@3.4.31(typescript@5.5.3)):
     dependencies:
       '@floating-ui/dom': 1.1.1
       vue: 3.4.31(typescript@5.5.3)
       vue-resize: 2.0.0-alpha.1(vue@3.4.31(typescript@5.5.3))
     optionalDependencies:
-      '@nuxt/kit': 3.12.3
+      '@nuxt/kit': 3.12.3(magicast@0.3.4)
 
   for-each@0.3.3:
     dependencies:
@@ -11711,32 +11717,32 @@ snapshots:
 
   tslib@2.6.3: {}
 
-  turbo-darwin-64@2.0.6:
+  turbo-darwin-64@2.0.12:
     optional: true
 
-  turbo-darwin-arm64@2.0.6:
+  turbo-darwin-arm64@2.0.12:
     optional: true
 
-  turbo-linux-64@2.0.6:
+  turbo-linux-64@2.0.12:
     optional: true
 
-  turbo-linux-arm64@2.0.6:
+  turbo-linux-arm64@2.0.12:
     optional: true
 
-  turbo-windows-64@2.0.6:
+  turbo-windows-64@2.0.12:
     optional: true
 
-  turbo-windows-arm64@2.0.6:
+  turbo-windows-arm64@2.0.12:
     optional: true
 
-  turbo@2.0.6:
+  turbo@2.0.12:
     optionalDependencies:
-      turbo-darwin-64: 2.0.6
-      turbo-darwin-arm64: 2.0.6
-      turbo-linux-64: 2.0.6
-      turbo-linux-arm64: 2.0.6
-      turbo-windows-64: 2.0.6
-      turbo-windows-arm64: 2.0.6
+      turbo-darwin-64: 2.0.12
+      turbo-darwin-arm64: 2.0.12
+      turbo-linux-64: 2.0.12
+      turbo-linux-arm64: 2.0.12
+      turbo-windows-64: 2.0.12
+      turbo-windows-arm64: 2.0.12
 
   type-check@0.4.0:
     dependencies:
@@ -11835,7 +11841,7 @@ snapshots:
 
   unimport@3.7.2:
     dependencies:
-      '@rollup/pluginutils': 5.1.0(rollup@4.18.0)
+      '@rollup/pluginutils': 5.1.0
       acorn: 8.12.1
       escape-string-regexp: 5.0.0
       estree-walker: 3.0.3
@@ -12073,13 +12079,16 @@ snapshots:
       svgo: 3.3.2
       vue: 3.4.31(typescript@5.5.3)
 
-  vite@4.5.3:
+  vite@4.5.3(@types/node@20.14.11)(sass@1.77.6)(terser@5.31.3):
     dependencies:
       esbuild: 0.18.20
       postcss: 8.4.39
       rollup: 3.29.4
     optionalDependencies:
+      '@types/node': 20.14.11
       fsevents: 2.3.3
+      sass: 1.77.6
+      terser: 5.31.3
     optional: true
 
   vite@5.3.3(@types/node@20.14.11)(sass@1.77.6)(terser@5.31.3):

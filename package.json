@@ -14,10 +14,10 @@
   },
   "devDependencies": {
     "prettier": "^3.3.2",
-    "turbo": "^2.0.6",
+    "turbo": "^2.0.12",
     "vue": "^3.4.31"
   },
-  "packageManager": "pnpm@9.4.0",
+  "packageManager": "pnpm@9.7.0",
   "pnpm": {
     "patchedDependencies": {
       "readable-stream@2.3.8": "patches/readable-stream@2.3.8.patch"
