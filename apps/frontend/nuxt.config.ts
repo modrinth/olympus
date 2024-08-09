@@ -125,6 +125,7 @@ export default defineNuxtConfig({
         homePageProjects?: any[];
         homePageSearch?: any[];
         homePageNotifs?: any[];
+        products?: any[];
       } = {};
 
       try {
@@ -165,6 +166,7 @@ export default defineNuxtConfig({
         homePageProjects,
         homePageSearch,
         homePageNotifs,
+        products,
       ] = await Promise.all([
         $fetch(`${API_URL}tag/category`, headers),
         $fetch(`${API_URL}tag/loader`, headers),
@@ -174,6 +176,8 @@ export default defineNuxtConfig({
         $fetch(`${API_URL}projects_random?count=60`, headers),
         $fetch(`${API_URL}search?limit=3&query=leave&index=relevance`, headers),
         $fetch(`${API_URL}search?limit=3&query=&index=updated`, headers),
+        // TODO: dehardcode
+        $fetch(`http://127.0.0.1:8000/_internal/billing/products`, headers),
       ]);
 
       state.categories = categories;
@@ -184,6 +188,7 @@ export default defineNuxtConfig({
       state.homePageProjects = homePageProjects;
       state.homePageSearch = homePageSearch;
       state.homePageNotifs = homePageNotifs;
+      state.products = products;
 
       await fs.writeFile("./src/generated/state.json", JSON.stringify(state));
 

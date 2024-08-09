@@ -2,6 +2,7 @@
 export { default as Avatar } from './base/Avatar.vue'
 export { default as Badge } from './base/Badge.vue'
 export { default as Button } from './base/Button.vue'
+export { default as ButtonStyled } from './base/ButtonStyled.vue'
 export { default as Card } from './base/Card.vue'
 export { default as Checkbox } from './base/Checkbox.vue'
 export { default as Chips } from './base/Chips.vue'
@@ -32,9 +33,9 @@ export { default as Chart } from './chart/Chart.vue'
 export { default as CompactChart } from './chart/CompactChart.vue'
 
 // Modals
+export { default as NewModal } from './modal/NewModal.vue'
 export { default as Modal } from './modal/Modal.vue'
 export { default as ConfirmModal } from './modal/ConfirmModal.vue'
-export { default as ReportModal } from './modal/ReportModal.vue'
 export { default as ShareModal } from './modal/ShareModal.vue'
 
 // Navigation

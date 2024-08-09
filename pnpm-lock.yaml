@@ -7644,7 +7644,6 @@ snapshots:
   '@types/node@20.14.11':
     dependencies:
       undici-types: 5.26.5
-    optional: true
 
   '@types/node@20.14.9':
     dependencies:
@@ -11069,7 +11068,7 @@ snapshots:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
-      '@types/node': 20.14.9
+      '@types/node': 20.14.11
       long: 5.2.3
 
   protocols@2.0.1: {}

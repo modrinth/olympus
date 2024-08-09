@@ -3,6 +3,7 @@
 // Branding
 import _ModrinthIcon from './branding/logo.svg?component'
 import _FourOhFourNotFound from './branding/404.svg?component'
+import _ModrinthPlusIcon from './branding/modrinth-plus.svg?component'
 
 // External Icons
 import _SSODiscordIcon from './external/sso/discord.svg?component'
@@ -35,6 +36,7 @@ import _BookIcon from './icons/book.svg?component'
 import _BookmarkIcon from './icons/bookmark.svg?component'
 import _BoxIcon from './icons/box.svg?component'
 import _CalendarIcon from './icons/calendar.svg?component'
+import _CardIcon from './icons/card.svg?component'
 import _ChartIcon from './icons/chart.svg?component'
 import _CheckIcon from './icons/check.svg?component'
 import _CheckCheckIcon from './icons/check-check.svg?component'
@@ -157,6 +159,7 @@ import './omorphia.scss'
 
 export const ModrinthIcon = _ModrinthIcon
 export const FourOhFourNotFound = _FourOhFourNotFound
+export const ModrinthPlusIcon = _ModrinthPlusIcon
 export const SSODiscordIcon = _SSODiscordIcon
 export const SSOGitHubIcon = _SSOGitHubIcon
 export const SSOGitLabIcon = _SSOGitLabIcon
@@ -301,3 +304,4 @@ export const TextQuoteIcon = _TextQuoteIcon
 export const Heading1Icon = _Heading1Icon
 export const Heading2Icon = _Heading2Icon
 export const Heading3Icon = _Heading3Icon
+export const CardIcon = _CardIcon

@@ -174,4 +174,8 @@ export const commonSettingsMessages = defineMessages({
     id: "settings.applications.title",
     defaultMessage: "Your applications",
   },
+  billing: {
+    id: "settings.billing.title",
+    defaultMessage: "Billing and subscriptions",
+  },
 });
