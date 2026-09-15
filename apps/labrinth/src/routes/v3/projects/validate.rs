@@ -67,12 +67,17 @@ pub(crate) async fn ensure_project_is_valid_for_review(
     .collect::<Vec<_>>();
     let project = Project::from(reloaded_project.clone());
 
-    if has_required_nags_with_context(
-        &project,
-        &versions,
-        &available_categories,
-        &disclosures,
-    ) {
+    let has_required_nags = web::block(move || {
+        has_required_nags_with_context(
+            &project,
+            &versions,
+            &available_categories,
+            &disclosures,
+        )
+    })
+    .await
+    .wrap_internal_err("validating project for review")?;
+    if has_required_nags {
         return Err(ApiError::Request(eyre!(
             "project must have no required validation nags before or while under review"
         )));
@@ -157,12 +162,15 @@ pub async fn validate(
     .collect::<Vec<_>>();
     let project = Project::from(project);
 
-    Ok(web::Json(ProjectValidationResponse {
-        nags: validate_project(
+    let nags = web::block(move || {
+        validate_project(
             &project,
             &versions,
             &available_categories,
             &disclosures,
-        ),
-    }))
+        )
+    })
+    .await
+    .wrap_internal_err("validating project")?;
+    Ok(web::Json(ProjectValidationResponse { nags }))
 }

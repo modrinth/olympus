@@ -9,6 +9,7 @@ mod description;
 mod disclosures;
 mod gallery;
 mod icon;
+mod language;
 mod license;
 mod links;
 mod moderation;
@@ -68,6 +69,7 @@ pub enum ProjectNagKind {
     ProjectDescriptionProfanity,
     ProjectDescriptionNonStandardText,
     ProjectDescriptionNonEnglish,
+    ProjectDescriptionMatchesSummary,
     AddDescription,
     DescriptionTooShort,
     ProjectDescriptionSpam,

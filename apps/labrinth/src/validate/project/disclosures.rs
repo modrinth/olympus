@@ -7,15 +7,18 @@ pub(super) fn validate(
     project: &crate::models::projects::Project,
     disclosures: Option<&[ProjectDisclosure]>,
 ) -> Vec<ProjectNag> {
-    let (project_type, _) =
-        LegacyProject::get_project_type(&project.project_types);
-    let mut nags = vec![
-        ProjectNag::new(
-            ProjectNagKind::CheckDisclosures,
-            ProjectNagSeverity::Suggestion,
-        )
-        .with_details(serde_json::json!({ "project_type": project_type })),
-    ];
+    let mut nags = Vec::new();
+    if disclosures.is_some_and(|disclosures| disclosures.is_empty()) {
+        let (project_type, _) =
+            LegacyProject::get_project_type(&project.project_types);
+        nags.push(
+            ProjectNag::new(
+                ProjectNagKind::CheckDisclosures,
+                ProjectNagSeverity::Suggestion,
+            )
+            .with_details(serde_json::json!({ "project_type": project_type })),
+        );
+    }
 
     if disclosures.is_some_and(|disclosures| {
         disclosures.iter().any(disclosure_has_paired_html)

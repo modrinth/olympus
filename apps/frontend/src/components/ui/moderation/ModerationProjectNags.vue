@@ -141,6 +141,7 @@ import {
 	type MessageDescriptor,
 	useVIntl,
 } from '@modrinth/ui'
+import { isStaff } from '@modrinth/utils'
 import type { Component } from 'vue'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
@@ -222,6 +223,7 @@ const messages = defineMessages({
 
 const { formatMessage } = useVIntl()
 const { addNotification } = injectNotificationManager()
+const flags = useFeatureFlags()
 
 const props = withDefaults(defineProps<Props>(), {
 	versions: () => [],
@@ -418,6 +420,15 @@ function isNagComplete(nag: Nag): boolean {
 
 const visibleNags = computed<Nag[]>(() => {
 	const finalNags = applicableNags.value.filter((nag) => !isNagComplete(nag))
+
+	if (
+		isProcessing.value &&
+		isStaff(props.currentMember?.user) &&
+		!flags.value.alwaysShowPublishingChecklistForStaff &&
+		!finalNags.some((nag) => nag.status === 'required')
+	) {
+		return []
+	}
 
 	if (props.project.status === 'draft') {
 		finalNags.push({

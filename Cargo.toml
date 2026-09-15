@@ -124,6 +124,7 @@ lettre = { version = "0.11.19", default-features = false, features = [
   "tokio1",
   "tokio1-rustls",
 ] }
+lingua = "=1.8.0"
 linkify = "0.11.0"
 lz4_flex = { version = "0.11.5", default-features = false, features = [
   "checked-decode",
@@ -248,7 +249,6 @@ webauthn-rs = "0.5.5"
 webauthn-rs-proto = "0.5.5"
 webp = { version = "0.3.1", default-features = false }
 webview2-com = "0.38.0"  # Should be updated in lockstep with wry
-whatlang = "0.18.0"
 whoami = "1.6.1"
 windows = "=0.61.3"  # Locked on 0.61 until we can update windows-core to 0.62
 windows-core = "=0.61.2"  # Locked on 0.61 until webview2-com updates to 0.62

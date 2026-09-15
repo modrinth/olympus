@@ -1,20 +1,23 @@
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeMap;
 use std::sync::LazyLock;
 
 use linkify::{LinkFinder, LinkKind};
+use pulldown_cmark::{Event, Parser, Tag};
 use regex::Regex;
 use unicode_normalization::UnicodeNormalization;
 use unicode_segmentation::UnicodeSegmentation;
 use url::Url;
-use whatlang::{Detector, Lang};
 
 use crate::models::exp::minecraft::Language;
 use crate::models::projects::Project;
 
+pub(super) use super::language::{
+    has_sufficient_english_blocks, is_confidently_non_english_short_text,
+    is_likely_english_summary,
+};
+
 static WORD: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"[\p{L}\p{M}\p{N}]+").unwrap());
-static NON_LATIN_LETTER: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"[\p{Alphabetic}&&[^\p{Latin}]]").unwrap());
 static SPAM_TOKEN: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r#"[\p{L}\p{M}\p{N}]+(?:['_\u{2019}.:+/-][\p{L}\p{M}\p{N}]+)*"#)
         .unwrap()
@@ -24,7 +27,6 @@ static SUMMARY_LINK_FINDER: LazyLock<LinkFinder> = LazyLock::new(|| {
     finder.kinds(&[LinkKind::Url]).url_must_have_scheme(false);
     finder
 });
-static LANGUAGE_DETECTOR: LazyLock<Detector> = LazyLock::new(Detector::new);
 static MARKDOWN_LINK: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"!?\[([^\]]*)\]\([^)]+\)").unwrap());
 static HTML_TAG: LazyLock<Regex> =
@@ -38,8 +40,6 @@ static HTML_CLOSE_TAG: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"(?is)</([a-z][\w:-]*)\s*>").unwrap());
 static CODE_BLOCK: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"(?s)```.*?```").unwrap());
-static DESCRIPTION_BLOCK_BREAK: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"\n\s*\n+").unwrap());
 static INLINE_CODE: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"`([^`]*)`").unwrap());
 static MARKDOWN_IMAGE: LazyLock<Regex> =
@@ -127,6 +127,49 @@ const PROFANITY_TERMS: &[&str] = &[
 
 pub(super) fn normalize_project_field_text(text: &str) -> String {
     text.trim().nfc().collect()
+}
+
+pub(super) fn project_text_similarity(left: &str, right: &str) -> f64 {
+    let left = normalized_for_similarity(left);
+    let right = normalized_for_similarity(right);
+    let longest_length = left.len().max(right.len());
+    if longest_length == 0 {
+        return 0.0;
+    }
+
+    1.0 - levenshtein_distance(&left, &right) as f64 / longest_length as f64
+}
+
+fn normalized_for_similarity(text: &str) -> Vec<char> {
+    normalize_project_field_text(text)
+        .to_lowercase()
+        .chars()
+        .filter(|character| !character.is_whitespace())
+        .collect()
+}
+
+fn levenshtein_distance(left: &[char], right: &[char]) -> usize {
+    if left.len() > right.len() {
+        return levenshtein_distance(right, left);
+    }
+
+    let mut previous_row = (0..=left.len()).collect::<Vec<_>>();
+    for (right_index, right_character) in right.iter().enumerate() {
+        let mut current_row = Vec::with_capacity(left.len() + 1);
+        current_row.push(right_index + 1);
+        for (left_index, left_character) in left.iter().enumerate() {
+            current_row.push(
+                (current_row[left_index] + 1)
+                    .min(previous_row[left_index + 1] + 1)
+                    .min(
+                        previous_row[left_index]
+                            + usize::from(left_character != right_character),
+                    ),
+            );
+        }
+        previous_row = current_row;
+    }
+    previous_row[left.len()]
 }
 
 pub(super) fn js_string_length(text: &str) -> usize {
@@ -838,6 +881,8 @@ pub(super) fn find_link_or_ip(text: &str) -> Option<String> {
 pub(super) fn has_summary_formatting(summary: &str) -> bool {
     has_paired_html_formatting(summary)
         || MARKDOWN_LINK.is_match(summary)
+        || Parser::new(summary)
+            .any(|event| matches!(event, Event::Start(Tag::Emphasis)))
         || summary.lines().any(|line| {
             let line = line.trim_start();
             line.starts_with('#')
@@ -873,7 +918,7 @@ pub(super) fn has_paired_html_formatting(text: &str) -> bool {
     })
 }
 
-pub(super) fn extract_description_text(markdown: &str) -> String {
+fn strip_description_markup(markdown: &str) -> String {
     let without_code = INLINE_CODE.replace_all(markdown, " ");
     let with_image_alt = MARKDOWN_IMAGE.replace_all(&without_code, "$1");
     let without_links = MARKDOWN_LINK.replace_all(&with_image_alt, " ");
@@ -888,8 +933,11 @@ pub(super) fn extract_description_text(markdown: &str) -> String {
                 .map_or_else(|| " ".to_owned(), |alt| alt.as_str().to_owned())
         },
     );
-    let without_html = HTML_TAG.replace_all(&with_html_image_alt, " ");
-    without_html
+    HTML_TAG.replace_all(&with_html_image_alt, " ").into_owned()
+}
+
+pub(super) fn extract_description_text(markdown: &str) -> String {
+    strip_description_markup(markdown)
         .lines()
         .map(|line| line.trim_start_matches(['>', '#']))
         .collect::<Vec<_>>()
@@ -900,12 +948,112 @@ pub(super) fn extract_description_text(markdown: &str) -> String {
         .join(" ")
 }
 
+fn strip_dotted_identifiers(text: &str) -> String {
+    static IDENTIFIER: LazyLock<Regex> = LazyLock::new(|| {
+        // matches dotted identifiers such as `com.example.mod` or `config.enabled`
+        Regex::new(r"\b[A-Za-z][A-Za-z0-9_-]*(?:\.[A-Za-z][A-Za-z0-9_-]*)+\b")
+            .unwrap()
+    });
+
+    IDENTIFIER.replace_all(text, " ").into_owned()
+}
+
+fn strip_command_arguments(text: &str) -> String {
+    static ARGUMENT: LazyLock<Regex> = LazyLock::new(|| {
+        // matches bracketed argument placeholders such as `[player]` or `[on|off]`
+        Regex::new(r"\[[A-Za-z][A-Za-z0-9_ /|.-]*\]").unwrap()
+    });
+
+    ARGUMENT.replace_all(text, " ").into_owned()
+}
+
+fn strip_technical_syntax(line: &str) -> String {
+    static COMMAND: LazyLock<Regex> = LazyLock::new(|| {
+        // matches slash commands such as `/help` or `/minecraft:give`.
+        Regex::new(r"(^|[\s|,(])/[A-Za-z][A-Za-z0-9_:./-]*").unwrap()
+    });
+
+    let without_commands = COMMAND.replace_all(line, "$1");
+    let without_identifiers = strip_dotted_identifiers(&without_commands);
+
+    if COMMAND.is_match(line) {
+        strip_command_arguments(&without_identifiers)
+    } else {
+        without_identifiers
+    }
+}
+
+fn strip_loaders(text: &str) -> String {
+    static LOADER_WORD: LazyLock<Regex> = LazyLock::new(|| {
+        Regex::new(r"(?i)\b(?:fabric|forge|quilt|neoforge|liteloader)\b")
+            .unwrap()
+    });
+
+    LOADER_WORD.replace_all(text, " ").into_owned()
+}
+
+fn description_language_input(markdown: &str) -> String {
+    let readable = strip_description_markup(markdown);
+    let readable = text_without_explicit_links(&readable);
+    let readable = strip_loaders(&readable);
+    readable
+        .lines()
+        .map(strip_technical_syntax)
+        .collect::<Vec<_>>()
+        .join("\n")
+}
+
 pub(super) fn extract_description_blocks(markdown: &str) -> Vec<String> {
-    DESCRIPTION_BLOCK_BREAK
-        .split(markdown)
-        .map(extract_description_text)
-        .filter(|block| !block.is_empty())
-        .collect()
+    const MIN_PARAGRAPH_WORDS: usize = 8;
+
+    let readable = description_language_input(markdown);
+    let mut blocks = Vec::new();
+    let mut paragraph = Vec::new();
+    let mut paragraph_word_count = 0;
+    let mut previous_line_was_heading = false;
+    let mut follows_blank_line = false;
+
+    for line in readable.lines() {
+        let line = line.trim();
+        if line.is_empty() {
+            follows_blank_line = true;
+            continue;
+        }
+
+        let is_heading = line.starts_with('#');
+        let line_word_count =
+            WORD.find_iter(line).take(MIN_PARAGRAPH_WORDS).count();
+        let starts_new_paragraph = follows_blank_line
+            && !previous_line_was_heading
+            && (paragraph_word_count >= MIN_PARAGRAPH_WORDS
+                || line_word_count >= MIN_PARAGRAPH_WORDS);
+
+        if is_heading || starts_new_paragraph {
+            push_description_block(&mut blocks, &mut paragraph);
+            paragraph_word_count = 0;
+        }
+
+        paragraph.push(line);
+        paragraph_word_count =
+            (paragraph_word_count + line_word_count).min(MIN_PARAGRAPH_WORDS);
+        previous_line_was_heading = is_heading;
+        follows_blank_line = false;
+    }
+
+    push_description_block(&mut blocks, &mut paragraph);
+    blocks
+}
+
+fn push_description_block(blocks: &mut Vec<String>, paragraph: &mut Vec<&str>) {
+    if paragraph.is_empty() {
+        return;
+    }
+
+    let block = extract_description_text(&paragraph.join("\n"));
+    if !block.is_empty() {
+        blocks.push(block);
+    }
+    paragraph.clear();
 }
 
 pub(super) fn has_image_without_alt_text(markdown: &str) -> bool {
@@ -967,111 +1115,52 @@ pub(super) fn project_requires_english(project: &Project) -> bool {
         || is_english_server
 }
 
-pub(super) fn is_likely_english_summary(text: &str) -> bool {
-    let detection_text = normalize_language_text(text);
-    if has_dominant_non_latin_script(&detection_text) {
-        return false;
-    }
+#[cfg(test)]
+mod tests {
+    use super::{has_summary_formatting, project_text_similarity};
 
-    if !has_enough_language_content(&detection_text) {
-        return true;
-    }
-
-    LANGUAGE_DETECTOR
-        .detect(&detection_text)
-        .is_none_or(|info| info.lang() == Lang::Eng || !info.is_reliable())
-}
-
-pub(super) fn has_sufficient_english_blocks(blocks: &[String]) -> bool {
-    let mut english_chunks = 0;
-    let mut non_english_chunks = 0;
-
-    for block in blocks {
-        let detection_text = normalize_language_text(block);
-        if has_dominant_non_latin_script(&detection_text) {
-            non_english_chunks += 1;
-
-            let latin_text = NON_LATIN_LETTER.replace_all(&detection_text, " ");
-            if has_enough_language_content(&latin_text)
-                && LANGUAGE_DETECTOR
-                    .detect(&latin_text)
-                    .is_some_and(|info| info.lang() == Lang::Eng)
-            {
-                english_chunks += 1;
-            }
-            continue;
-        }
-
-        for chunk in language_chunks(&detection_text) {
-            let Some(info) = LANGUAGE_DETECTOR.detect(&chunk) else {
-                continue;
-            };
-
-            if info.lang() == Lang::Eng {
-                english_chunks += 1;
-            } else if info.is_reliable() {
-                non_english_chunks += 1;
-            }
+    #[test]
+    fn summary_detects_markdown_emphasis() {
+        for summary in [
+            "*this*",
+            "Adds *new features* to Minecraft",
+            "*a*",
+            "_this_",
+        ] {
+            assert!(has_summary_formatting(summary), "{summary:?}");
         }
     }
 
-    let classified_chunks = english_chunks + non_english_chunks;
-    classified_chunks == 0 || english_chunks * 10 >= classified_chunks * 3
-}
-
-fn normalize_language_text(text: &str) -> String {
-    text.nfkc().collect()
-}
-
-fn has_dominant_non_latin_script(text: &str) -> bool {
-    const MIN_NON_LATIN_LETTERS: usize = 5;
-
-    let non_latin_letters = NON_LATIN_LETTER.find_iter(text).count();
-    let alphabetic_letters = text
-        .chars()
-        .filter(|character| character.is_alphabetic())
-        .count();
-    non_latin_letters >= MIN_NON_LATIN_LETTERS
-        && non_latin_letters * 2 >= alphabetic_letters
-}
-
-fn language_chunks(block: &str) -> Vec<String> {
-    const CHUNK_WORDS: usize = 24;
-    const CHUNK_STRIDE_WORDS: usize = 12;
-
-    let words = WORD
-        .find_iter(block)
-        .map(|word| word.as_str())
-        .collect::<Vec<_>>();
-    if words.len() < 8 {
-        return Vec::new();
-    }
-    if words.len() <= CHUNK_WORDS {
-        let chunk = words.join(" ");
-        return has_enough_language_content(&chunk)
-            .then_some(chunk)
-            .into_iter()
-            .collect();
+    #[test]
+    fn summary_allows_literal_asterisks() {
+        for summary in [
+            "A single * asterisk",
+            "2 * 3 * 4",
+            r"\*this\*",
+            "An unmatched *asterisk",
+        ] {
+            assert!(!has_summary_formatting(summary), "{summary:?}");
+        }
     }
 
-    let mut starts = BTreeSet::new();
-    let mut start = 0;
-    while start + 8 <= words.len() {
-        starts.insert(start);
-        start += CHUNK_STRIDE_WORDS;
+    #[test]
+    fn similarity_ignores_case_whitespace_and_unicode_composition() {
+        assert_eq!(
+            project_text_similarity(" Café tools ", "CAFE\u{301}\nTOOLS"),
+            1.0
+        );
     }
-    starts.insert(words.len() - CHUNK_WORDS);
 
-    starts
-        .into_iter()
-        .map(|start| {
-            words[start..(start + CHUNK_WORDS).min(words.len())].join(" ")
-        })
-        .filter(|chunk| has_enough_language_content(chunk))
-        .collect()
-}
+    #[test]
+    fn similarity_distinguishes_the_eighty_percent_boundary() {
+        assert!(project_text_similarity("abcde", "abcdx") >= 0.8);
+        assert!(project_text_similarity("abcde", "abcxy") < 0.8);
+    }
 
-fn has_enough_language_content(text: &str) -> bool {
-    WORD.find_iter(text).count() >= 8
-        && text.trim().graphemes(true).count() >= 35
+    #[test]
+    fn empty_fields_do_not_match() {
+        assert_eq!(project_text_similarity(" ", "\n"), 0.0);
+        assert_eq!(project_text_similarity("", "some text"), 0.0);
+        assert_eq!(project_text_similarity("some text", ""), 0.0);
+    }
 }

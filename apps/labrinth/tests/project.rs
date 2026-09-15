@@ -659,6 +659,60 @@ async fn test_leaving_review_skips_validation() {
 }
 
 #[actix_rt::test]
+async fn test_description_similarity_to_summary() {
+    with_test_environment(
+		None,
+		|test_env: TestEnvironment<ApiV3>| async move {
+			let api = &test_env.api;
+			let project_slug = &test_env.dummy.project_alpha.project_slug;
+			let summary = "Explore new worlds with configurable tools and adventures.";
+			let response = api
+				.edit_project(
+					project_slug,
+					json!({ "status": "draft", "summary": summary }),
+					ADMIN_USER_PAT,
+				)
+				.await;
+			assert_status!(&response, StatusCode::NO_CONTENT);
+
+			for (description, expected_match) in [
+				(summary.to_string(), true),
+				(format!("**{}**\n\n```yaml\nsetting: true\n```", summary.to_uppercase()), true),
+				(format!("{summary} Players can discover custom structures, configure individual features, and follow detailed installation instructions for their preferred loader."), false),
+				(String::new(), false),
+			] {
+				let response = api
+					.edit_project(
+						project_slug,
+						json!({ "description": description }),
+						USER_USER_PAT,
+					)
+					.await;
+				assert_status!(&response, StatusCode::NO_CONTENT);
+
+				let request = test::TestRequest::get()
+					.uri(&format!("/v3/project/{project_slug}/validate"))
+					.append_pat(USER_USER_PAT)
+					.to_request();
+				let response = api.call(request).await;
+				assert_status!(&response, StatusCode::OK);
+				let validation: serde_json::Value = test::read_body_json(response).await;
+				let matching_nag = validation["nags"]
+					.as_array()
+					.unwrap()
+					.iter()
+					.find(|nag| nag["kind"] == "project_description_matches_summary");
+				assert_eq!(matching_nag.is_some(), expected_match, "{description}");
+				if let Some(nag) = matching_nag {
+					assert_eq!(nag["severity"], "required");
+				}
+			}
+		},
+	)
+	.await;
+}
+
+#[actix_rt::test]
 async fn test_plugin_and_datapack_validation_use_mod_tags() {
     with_test_environment(
         None,

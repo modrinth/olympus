@@ -72,6 +72,7 @@ image = { workspace = true, features = [
 itertools = { workspace = true }
 json-patch = { workspace = true }
 lettre = { workspace = true }
+lingua = { workspace = true }
 linkify = { workspace = true }
 modrinth-content-management = { workspace = true }
 modrinth-util = { workspace = true, features = ["decimal", "sentry", "utoipa"] }
@@ -138,7 +139,6 @@ webauthn-rs = { workspace = true, features = [
 ] }
 webauthn-rs-proto = { workspace = true }
 webp = { workspace = true }
-whatlang = { workspace = true }
 woothee = { workspace = true }
 xredis = { workspace = true }
 yaserde = { workspace = true, features = ["derive"] }

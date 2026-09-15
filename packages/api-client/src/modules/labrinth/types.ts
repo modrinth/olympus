@@ -1146,6 +1146,7 @@ export namespace Labrinth {
 				| 'long-headers'
 				| 'missing-alt-text'
 				| 'project-description-banned-link'
+				| 'project-description-matches-summary'
 				| 'project-description-non-english'
 				| 'project-description-non-standard-text'
 				| 'project-description-profanity'

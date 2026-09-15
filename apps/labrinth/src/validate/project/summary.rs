@@ -2,14 +2,16 @@ use serde_json::json;
 
 use super::text::{
     ProfanityKind, contains_spam, find_link_or_ip, has_non_standard_text,
-    has_summary_formatting, is_likely_english_summary, js_string_length,
-    normalize_project_field_text, profanity_matches, project_requires_english,
+    has_summary_formatting, is_confidently_non_english_short_text,
+    is_likely_english_summary, js_string_length, normalize_project_field_text,
+    profanity_matches, project_requires_english, project_text_similarity,
 };
 use super::{ProjectNag, ProjectNagKind, ProjectNagSeverity};
 
 use crate::models::projects::Project;
 
 const MIN_SUMMARY_CHARS: usize = 25;
+const MIN_SUMMARY_LANGUAGE_CHARS: usize = 10;
 const MAX_SUMMARY_NAME_SIMILARITY: f64 = 0.8;
 
 pub(super) fn validate(project: &Project) -> Vec<ProjectNag> {
@@ -65,7 +67,7 @@ pub(super) fn validate(project: &Project) -> Vec<ProjectNag> {
     if !summary.is_empty()
         && !contains_link
         && !project.name.is_empty()
-        && summary_name_similarity(summary, &project.name)
+        && project_text_similarity(summary, &project.name)
             >= MAX_SUMMARY_NAME_SIMILARITY
     {
         nags.push(ProjectNag::new(
@@ -120,8 +122,11 @@ pub(super) fn is_non_english(project: &Project) -> bool {
 }
 
 fn is_non_english_text(project: &Project, normalized_summary: &str) -> bool {
+    let length = js_string_length(normalized_summary);
     project_requires_english(project)
-        && js_string_length(normalized_summary) >= MIN_SUMMARY_CHARS
+        && length >= MIN_SUMMARY_LANGUAGE_CHARS
+        && (length >= MIN_SUMMARY_CHARS
+            || is_confidently_non_english_short_text(normalized_summary))
         && !is_likely_english_summary(normalized_summary)
 }
 
@@ -131,50 +136,7 @@ fn requires_language_nag(
     contains_link: bool,
     has_spam: bool,
 ) -> bool {
-    is_non_english_text(project, normalized_summary)
-        && !contains_link
+    !contains_link
         && !has_spam
-}
-
-fn summary_name_similarity(summary: &str, name: &str) -> f64 {
-    let summary = normalized_for_similarity(summary);
-    let name = normalized_for_similarity(name);
-    let longest_length = summary.len().max(name.len());
-    if longest_length == 0 {
-        return 0.0;
-    }
-
-    1.0 - levenshtein_distance(&summary, &name) as f64 / longest_length as f64
-}
-
-fn normalized_for_similarity(text: &str) -> Vec<char> {
-    normalize_project_field_text(text)
-        .to_lowercase()
-        .chars()
-        .filter(|character| !character.is_whitespace())
-        .collect()
-}
-
-fn levenshtein_distance(left: &[char], right: &[char]) -> usize {
-    if left.len() > right.len() {
-        return levenshtein_distance(right, left);
-    }
-
-    let mut previous_row = (0..=left.len()).collect::<Vec<_>>();
-    for (right_index, right_character) in right.iter().enumerate() {
-        let mut current_row = Vec::with_capacity(left.len() + 1);
-        current_row.push(right_index + 1);
-        for (left_index, left_character) in left.iter().enumerate() {
-            current_row.push(
-                (current_row[left_index] + 1)
-                    .min(previous_row[left_index + 1] + 1)
-                    .min(
-                        previous_row[left_index]
-                            + usize::from(left_character != right_character),
-                    ),
-            );
-        }
-        previous_row = current_row;
-    }
-    previous_row[left.len()]
+        && is_non_english_text(project, normalized_summary)
 }
