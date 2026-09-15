@@ -41,9 +41,6 @@
   "nags.edit-description.title": {
     "defaultMessage": "Sunting keterangan"
   },
-  "nags.edit-license.title": {
-    "defaultMessage": "Sunting lisensi"
-  },
   "nags.edit-summary.title": {
     "defaultMessage": "Sunting ringkasan"
   },
@@ -61,9 +58,6 @@
   },
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "Berikan kode sumber"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "URL lisensi tidak sah."
   },
   "nags.invalid-license-url.description.malformed": {
     "defaultMessage": "URL lisensi Anda tampak cacat. Mohon berikan URL yang sah untuk teks lisensi Anda."
@@ -88,9 +82,6 @@
   },
   "nags.missing-alt-text.title": {
     "defaultMessage": "Tambahkan teks alt gambar"
-  },
-  "nags.misused-discord-link.title": {
-    "defaultMessage": "Pindahkan tautan undangan Discord"
   },
   "nags.moderation.title": {
     "defaultMessage": "Kunjungi utas moderasi"
@@ -180,4 +171,3 @@
     "defaultMessage": "Kunjungi pengaturan tautan"
   }
 }
-

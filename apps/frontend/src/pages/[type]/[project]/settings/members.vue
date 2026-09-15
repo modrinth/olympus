@@ -105,7 +105,7 @@
 			</div>
 			<div class="content">
 				<div class="adjacent-input">
-					<label :for="`member-${allTeamMembers[index].user.username}-role`">
+					<label :for="`member-${allTeamMembers[index].user.username}-role`" class="w-fit">
 						<span class="label__title">Role</span>
 						<span class="label__description">
 							The title of the role that this member plays for this project.
@@ -118,7 +118,10 @@
 					/>
 				</div>
 				<div class="adjacent-input">
-					<label :for="`member-${allTeamMembers[index].user.username}-monetization-weight`">
+					<label
+						:for="`member-${allTeamMembers[index].user.username}-monetization-weight`"
+						class="w-fit"
+					>
 						<span class="label__title">Monetization weight</span>
 						<span class="label__description">
 							Relative to all other members' monetization weights, this determines what portion of
@@ -361,7 +364,7 @@
 			</div>
 			<div class="content">
 				<div class="adjacent-input">
-					<label :for="`member-${allOrgMembers[index].user.username}-override-perms`">
+					<label :for="`member-${allOrgMembers[index].user.username}-override-perms`" class="w-fit">
 						<span class="label__title">Override values</span>
 						<span class="label__description">
 							Override organization default values and assign custom permissions, roles, and
@@ -375,7 +378,7 @@
 					/>
 				</div>
 				<div class="adjacent-input">
-					<label :for="`member-${allOrgMembers[index].user.username}-role`">
+					<label :for="`member-${allOrgMembers[index].user.username}-role`" class="w-fit">
 						<span class="label__title">Role</span>
 						<span class="label__description">
 							The title of the role that this member plays for this project.
@@ -391,7 +394,10 @@
 					/>
 				</div>
 				<div class="adjacent-input">
-					<label :for="`member-${allOrgMembers[index].user.username}-monetization-weight`">
+					<label
+						:for="`member-${allOrgMembers[index].user.username}-monetization-weight`"
+						class="w-fit"
+					>
 						<span class="label__title">Monetization weight</span>
 						<span class="label__description">
 							Relative to all other members' monetization weights, this determines what portion of

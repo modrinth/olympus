@@ -4106,12 +4106,6 @@
   "project.settings.general.url.title": {
     "message": "URL"
   },
-  "project.settings.links.donation.duplicate-type": {
-    "message": "Ссылка на {platform} повторяется."
-  },
-  "project.settings.links.donation.no-type": {
-    "message": "Выберите платформу для этой ссылки."
-  },
   "project.settings.monetization.description": {
     "message": "Проекты на Modrinth автоматически зачисляются в <rewards-program-link>программу наград</rewards-program-link>. Если вы не хотите (или не можете по юридическим причинам) получать доход от этого проекта, вы можете отключить его здесь."
   },

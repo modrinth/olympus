@@ -461,3 +461,25 @@ impl TryFrom<Link> for DonationLink {
         })
     }
 }
+
+pub fn validate_donation_platforms(
+    links: &[DonationLink],
+) -> Result<(), crate::routes::ApiError> {
+    let mut platforms = std::collections::HashSet::new();
+    for link in links {
+        if !matches!(
+            link.id.as_str(),
+            "patreon" | "bmac" | "paypal" | "github" | "ko-fi" | "other"
+        ) {
+            return Err(crate::routes::ApiError::Request(eyre::eyre!(
+                "each donation link must specify a donation platform"
+            )));
+        }
+        if !platforms.insert(&link.id) {
+            return Err(crate::routes::ApiError::Request(eyre::eyre!(
+                "donation platforms must not be repeated"
+            )));
+        }
+    }
+    Ok(())
+}

@@ -44,9 +44,6 @@
   "nags.edit-description.title": {
     "defaultMessage": "Upravte popis"
   },
-  "nags.edit-license.title": {
-    "defaultMessage": "Upravte licenci"
-  },
   "nags.edit-summary.title": {
     "defaultMessage": "Upravte souhrn"
   },
@@ -64,9 +61,6 @@
   },
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "Uveďte zdrojový kód"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "URL licence je neplatná."
   },
   "nags.invalid-license-url.description.malformed": {
     "defaultMessage": "Vaše licenční adresa URL se zdá být chybná. Uveďte prosím platnou adresu URL vašeho licenčního textu."
@@ -91,9 +85,6 @@
   },
   "nags.missing-alt-text.title": {
     "defaultMessage": "Přidejte popisek k obrázku"
-  },
-  "nags.misused-discord-link.title": {
-    "defaultMessage": "Přesuňte Discord pozvánku"
   },
   "nags.moderation.title": {
     "defaultMessage": "Přejděte do moderátorského vlákna"

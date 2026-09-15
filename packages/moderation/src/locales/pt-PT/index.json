@@ -35,9 +35,6 @@
   "nags.edit-description.title": {
     "defaultMessage": "Edita a descrição"
   },
-  "nags.edit-license.title": {
-    "defaultMessage": "Edita a licença"
-  },
   "nags.edit-summary.title": {
     "defaultMessage": "Edita o sumário"
   },
@@ -55,9 +52,6 @@
   },
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "Fornece o código-fonte"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "O URL da licença é inválido."
   },
   "nags.invalid-license-url.description.malformed": {
     "defaultMessage": "O teu URL de licença parece estar incorreto. Por favor, fornece um URL válido para o teu texto de licença."
@@ -82,9 +76,6 @@
   },
   "nags.missing-alt-text.title": {
     "defaultMessage": "Adiciona texto alternativo à imagem"
-  },
-  "nags.misused-discord-link.title": {
-    "defaultMessage": "Move o convite de Discord"
   },
   "nags.moderation.title": {
     "defaultMessage": "Visita o tópico de moderação"
@@ -165,4 +156,3 @@
     "defaultMessage": "Vê as definições de links"
   }
 }
-

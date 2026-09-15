@@ -35,9 +35,6 @@
   "nags.edit-description.title": {
     "defaultMessage": "Rediger beskrivelse"
   },
-  "nags.edit-license.title": {
-    "defaultMessage": "Rediger lisens"
-  },
   "nags.edit-summary.title": {
     "defaultMessage": "Rediger oppsummering"
   },
@@ -55,9 +52,6 @@
   },
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "Oppgi kildekode"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "Lisens-URL er ugyldig."
   },
   "nags.invalid-license-url.description.malformed": {
     "defaultMessage": "Lisenslenken ser ugyldig ut. Oppgi en gyldig lenke til lisens­teksten."
@@ -82,9 +76,6 @@
   },
   "nags.missing-alt-text.title": {
     "defaultMessage": "Legg til alternativ bildetekst"
-  },
-  "nags.misused-discord-link.title": {
-    "defaultMessage": "Flytt Discord-invitasjonen"
   },
   "nags.moderation.title": {
     "defaultMessage": "Gå til modereringstråden"
@@ -165,4 +156,3 @@
     "defaultMessage": "Gå til lisensinnstillinger"
   }
 }
-

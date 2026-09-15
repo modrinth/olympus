@@ -50,10 +50,6 @@ const messages = defineMessages({
 		id: 'nags.invalid-project-description.title',
 		defaultMessage: 'Modify the description',
 	},
-	bannedLink: {
-		id: 'nags.project-description-banned-link.description',
-		defaultMessage: 'The link “{fullUrl}” is not allowed in project descriptions.',
-	},
 	nonEnglish: {
 		id: 'nags.project-description-non-english.description',
 		defaultMessage: `Your project's description must be written in English or include an English translation.`,
@@ -118,11 +114,6 @@ export const descriptionNags = {
 	'missing-alt-text': {
 		title: messages.altTitle,
 		description: messages.alt,
-		destination: 'description',
-	},
-	'project-description-banned-link': {
-		title: messages.fixTitle,
-		description: messages.bannedLink,
 		destination: 'description',
 	},
 	'project-description-non-english': {

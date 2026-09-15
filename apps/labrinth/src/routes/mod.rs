@@ -252,6 +252,9 @@ impl ApiError {
             .map(ToString::to_string)
             .collect::<Vec<_>>();
 
+        let validation = report
+            .downcast_ref::<v3::projects::validate::ProjectValidationError>();
+
         crate::models::error::ApiError {
             error: match self {
                 Self::Internal(..) => "internal_error",
@@ -265,7 +268,11 @@ impl ApiError {
                 Self::RateLimit(..) => "ratelimit_error",
             },
             description: report.to_string(),
-            details: (!details.is_empty()).then(|| serde_json::json!(details)),
+            details: validation
+                .map(|error| serde_json::json!({ "nags": error.0 }))
+                .or_else(|| {
+                    (!details.is_empty()).then(|| serde_json::json!(details))
+                }),
         }
     }
 }

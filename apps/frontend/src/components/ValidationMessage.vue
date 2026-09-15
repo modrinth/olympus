@@ -110,7 +110,7 @@ watch(() => props.check, updateDisplayedCheck)
 onScopeDispose(() => clearTimeout(debounceTimer))
 
 const validations = computed(() => {
-	if (validationIsStale.value || projectValidationLoading.value) return []
+	if (validationIsStale.value) return []
 
 	return Array.isArray(displayedCheck.value)
 		? displayedCheck.value

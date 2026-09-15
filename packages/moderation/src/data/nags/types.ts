@@ -4,7 +4,12 @@ import type { MessageDescriptor } from '@modrinth/ui'
 import type { NagDestinationId } from '../../types/nags.ts'
 
 export interface NagDefinition {
-	title: MessageDescriptor
+	title:
+		| MessageDescriptor
+		| ((context: {
+				nag: Labrinth.Projects.v3.ProjectNag
+				projectType?: string
+		  }) => MessageDescriptor)
 	description:
 		| MessageDescriptor
 		| ((context: {

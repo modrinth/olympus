@@ -4115,12 +4115,6 @@
   "project.settings.general.url.title": {
     "message": "網址"
   },
-  "project.settings.links.donation.duplicate-type": {
-    "message": "你已經有一個 {platform} 連結了。"
-  },
-  "project.settings.links.donation.no-type": {
-    "message": "請為這個贊助連結選擇平台。"
-  },
   "project.settings.monetization.description": {
     "message": "Modrinth 上的專案會自動加入<rewards-program-link>獎勵計畫</rewards-program-link>。如果你不想（或因法律原因無法）從專案獲取收益，可在這裡關閉營利功能。"
   },

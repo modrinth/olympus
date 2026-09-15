@@ -30,6 +30,8 @@ gam = "gam"
 consts = "consts"
 # short for "Copy"
 Cpy = "Cpy"
+# NoDerivatives in SPDX license identifiers
+ND = "ND"
 
 [default.extend-identifiers]
 # Constant from the `zip` crate

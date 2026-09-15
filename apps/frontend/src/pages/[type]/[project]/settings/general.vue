@@ -17,6 +17,7 @@ import {
 import SlugSuggestions from '~/components/ui/SlugSuggestions.vue'
 import ValidationMessage from '~/components/ValidationMessage.vue'
 import { useProjectNagMessages } from '~/composables/project-nag-validation'
+import { useProjectSaveValidation } from '~/composables/project-save-validation'
 import {
 	useProjectSlugSuggestions,
 	useSlugSuggestionVisibility,
@@ -43,11 +44,15 @@ const {
 		icon: project.value.icon_url,
 	}),
 	async ({ title, tagline, url }) => {
-		await patchProject({
-			...(title !== undefined && { title }),
-			...(tagline !== undefined && { description: tagline }),
-			...(url !== undefined && { slug: url }),
-		})
+		await patchProject(
+			{
+				...(title !== undefined && { title }),
+				...(tagline !== undefined && { description: tagline }),
+				...(url !== undefined && { slug: url }),
+			},
+			false,
+			true,
+		)
 	},
 )
 
@@ -56,7 +61,8 @@ const { confirmLeaveModal } = usePageLeaveSafety(hasChanges)
 const titleValidation = useProjectNagMessages('name')
 const taglineValidation = useProjectNagMessages('summary')
 const iconValidation = useProjectNagMessages('icon')
-const canSave = computed(() => true)
+const saveValidation = useProjectSaveValidation(() => current.value)
+const canSave = computed(() => !saveValidation.hasErrors.value)
 const {
 	onFocusIn: onSlugSuggestionFocusIn,
 	onFocusOut: onSlugSuggestionFocusOut,
@@ -73,12 +79,19 @@ const { suggestions: slugSuggestions } = useProjectSlugSuggestions({
 })
 
 async function save() {
-	if (!canSave.value) return
-	await saveForm()
+	if (!canSave.value || saving.value) return
+	const submittedState = saveValidation.snapshot()
+	try {
+		await saveForm()
+		saveValidation.clear()
+	} catch (error) {
+		if (!saveValidation.capture(error, submittedState)) throw error
+	}
 }
 
 function reset() {
 	resetForm()
+	saveValidation.clear()
 }
 
 const messages = defineMessages({
@@ -168,6 +181,10 @@ const placeholder = computed(() => placeholders[placeholderIndex.value] ?? place
 <template>
 	<div>
 		<ConfirmLeaveModal ref="confirmLeaveModal" />
+		<ValidationMessage
+			:check="saveValidation.withoutFields(['name', 'summary', 'icon', 'slug'])"
+			class="my-4"
+		/>
 		<UnsavedChangesPopup
 			:original="saved"
 			:modified="current"
@@ -185,6 +202,7 @@ const placeholder = computed(() => placeholders[placeholderIndex.value] ?? place
 					:current-field="current.icon"
 					class="mt-2"
 				/>
+				<ValidationMessage :check="saveValidation.forField('icon')" class="mt-2" />
 			</div>
 			<div>
 				<SettingsLabel
@@ -208,6 +226,7 @@ const placeholder = computed(() => placeholders[placeholderIndex.value] ?? place
 					:current-field="current.title"
 					class="mt-2"
 				/>
+				<ValidationMessage :check="saveValidation.forField('name')" class="mt-2" />
 			</div>
 			<div class="mt-4">
 				<SettingsLabel
@@ -229,6 +248,7 @@ const placeholder = computed(() => placeholders[placeholderIndex.value] ?? place
 					:current-field="current.tagline"
 					class="mt-2"
 				/>
+				<ValidationMessage :check="saveValidation.forField('summary')" class="mt-2" />
 			</div>
 			<div class="mt-4" @focusin="onSlugSuggestionFocusIn" @focusout="onSlugSuggestionFocusOut">
 				<SettingsLabel id="project-url" :title="messages.urlTitle" />
@@ -243,6 +263,7 @@ const placeholder = computed(() => placeholders[placeholderIndex.value] ?? place
 						<span class="whitespace-nowrap">https://modrinth.com/project/</span>
 					</template>
 				</Input>
+				<ValidationMessage :check="saveValidation.forField('slug')" class="mt-2" />
 				<SlugSuggestions
 					:selected="current.url"
 					:suggestions="slugSuggestions"

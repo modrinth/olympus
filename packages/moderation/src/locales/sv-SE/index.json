@@ -41,12 +41,6 @@
   "nags.all-tags-selected.title": {
     "defaultMessage": "Välj lämpliga taggar"
   },
-  "nags.banned-link-usage.description": {
-    "defaultMessage": "Länken \"{url}\" är inte tillåten som en extern länk."
-  },
-  "nags.banned-link-usage.title": {
-    "defaultMessage": "Ta bort otillåtna länkar"
-  },
   "nags.check-disclosures.description": {
     "defaultMessage": "Se till att användare är upplysta om viktiga detaljer genom att fylla i innehållsupplysningar som gäller för ditt {type}."
   },
@@ -64,9 +58,6 @@
   },
   "nags.edit-gallery.title": {
     "defaultMessage": "Ändra galleriet"
-  },
-  "nags.edit-license.title": {
-    "defaultMessage": "Redigera licens"
   },
   "nags.edit-summary.title": {
     "defaultMessage": "Redigera sammanfattning"
@@ -88,12 +79,6 @@
   },
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "Tillförse källkod"
-  },
-  "nags.identical-links.title": {
-    "defaultMessage": "Ta bort identiska länkar"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "Licens-URL är ogiltig."
   },
   "nags.invalid-license-url.description.malformed": {
     "defaultMessage": "Din licens-URL ser ut att vara söndrig. Vänligen ange en URL till din licenstext."
@@ -125,9 +110,6 @@
   "nags.missing-alt-text.title": {
     "defaultMessage": "Lägg till alternativ bildtext"
   },
-  "nags.misused-discord-link.title": {
-    "defaultMessage": "Flytta Discord-inbjudan"
-  },
   "nags.moderation.title": {
     "defaultMessage": "Visa moderationstråd"
   },
@@ -139,9 +121,6 @@
   },
   "nags.multiple-resolution-tags.title": {
     "defaultMessage": "Välj korrekt upplösning"
-  },
-  "nags.project-description-banned-link.description": {
-    "defaultMessage": "Länken ”{fullUrl}” är inte tillåten i projektbeskrivningar."
   },
   "nags.project-description-non-english.description": {
     "defaultMessage": "Din projektbeskrivning måste vara skriven på engelska eller inkludera en engelsk översättning."
@@ -263,12 +242,6 @@
   "nags.upload-version.title": {
     "defaultMessage": "Ladda upp en version"
   },
-  "nags.verify-external-links.description": {
-    "defaultMessage": "Några av dina externa länkar kan leda till domäner som är inte lämpar sig för den länktypen."
-  },
-  "nags.verify-external-links.title": {
-    "defaultMessage": "Granska externa länkar"
-  },
   "nags.visit-links-settings.title": {
     "defaultMessage": "Besök länkinställningar"
   },
@@ -282,4 +255,3 @@
     "defaultMessage": "Projektnamn bör inte inkludera versionsnummer."
   }
 }
-

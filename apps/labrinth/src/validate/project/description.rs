@@ -5,11 +5,10 @@ use serde_json::json;
 use self::markdown::DescriptionMarkdown;
 use super::text::{
     ProfanityKind, contains_description_spam, extract_description_blocks,
-    extract_description_text, find_banned_description_link,
-    has_image_without_alt_text, has_sufficient_english_blocks,
-    is_confidently_non_english_short_text, js_string_length,
-    non_standard_text_ratio, normalize_project_field_text, profanity_matches,
-    project_requires_english, project_text_similarity,
+    extract_description_text, has_image_without_alt_text,
+    has_sufficient_english_blocks, is_confidently_non_english_short_text,
+    js_string_length, non_standard_text_ratio, normalize_project_field_text,
+    profanity_matches, project_requires_english, project_text_similarity,
 };
 use super::{ProjectNag, ProjectNagKind, ProjectNagSeverity};
 
@@ -107,15 +106,6 @@ pub(super) fn validate(project: &Project) -> Vec<ProjectNag> {
             ProjectNagKind::ProjectDescriptionSpam,
             ProjectNagSeverity::Required,
         ));
-    }
-    if let Some(url) = find_banned_description_link(&description_without_code) {
-        nags.push(
-            ProjectNag::new(
-                ProjectNagKind::ProjectDescriptionBannedLink,
-                ProjectNagSeverity::Required,
-            )
-            .with_details(json!({ "full_url": url })),
-        );
     }
     let long_headers = markdown.long_header_count();
     if long_headers > 0 {

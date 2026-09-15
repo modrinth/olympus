@@ -35,9 +35,6 @@
   "nags.all-tags-selected.title": {
     "defaultMessage": "اختر علامة دقيقة"
   },
-  "nags.banned-link-usage.title": {
-    "defaultMessage": "إزالة الروابط المحظورة"
-  },
   "nags.check-disclosures.description": {
     "defaultMessage": "تأكد من اطلاع المستخدمين على أي تفاصيل مهمة من خلال تعبئة إفصاحات المحتوى التي تنطبق على {type}."
   },
@@ -58,9 +55,6 @@
   },
   "nags.edit-gallery.title": {
     "defaultMessage": "تحرير المعرض"
-  },
-  "nags.edit-license.title": {
-    "defaultMessage": "تعديل الرخصة"
   },
   "nags.edit-summary.title": {
     "defaultMessage": "تعديل الملخص"
@@ -86,14 +80,8 @@
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "توفير كود مصدري"
   },
-  "nags.identical-links.title": {
-    "defaultMessage": "أزل الروابط المتطابقة"
-  },
   "nags.invalid-gallery-text.title": {
     "defaultMessage": "تعديل نص معرض الصور"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "رابط الرخصة غير صالح."
   },
   "nags.invalid-license-url.description.malformed": {
     "defaultMessage": "رابط حقوقك يظهر على انه غير صحيح. يرجى توفير رابط حقوق صحيح."
@@ -128,12 +116,6 @@
   "nags.missing-alt-text.title": {
     "defaultMessage": "اضف صورة نص"
   },
-  "nags.misused-discord-link-description": {
-    "defaultMessage": "لا يمكن استخدام دعوات ديسكورد لأنواع روابط أخرى. يرجى وضع رابط ديسكورد الخاص بك في حقل رابط دعوة ديسكورد فقط."
-  },
-  "nags.misused-discord-link.title": {
-    "defaultMessage": "حرك دعوة ديسكورد"
-  },
   "nags.moderation.title": {
     "defaultMessage": "زر صفحة الإشراف"
   },
@@ -145,9 +127,6 @@
   },
   "nags.multiple-resolution-tags.title": {
     "defaultMessage": "أختر قرار صحيح"
-  },
-  "nags.project-description-banned-link.description": {
-    "defaultMessage": "لا يسمح بوصلة ”{fullUrl}“ في أوصاف المشروع."
   },
   "nags.project-description-non-english.description": {
     "defaultMessage": "يجب أن يكتب وصف مشروعك باللغة الإنجليزية أو يتضمن ترجمة باللغة الإنجليزية."
@@ -278,9 +257,6 @@
   "nags.upload-version.title": {
     "defaultMessage": "تحميل إصدار"
   },
-  "nags.verify-external-links.title": {
-    "defaultMessage": "مراجعة الروابط الخارجية"
-  },
   "nags.visit-links-settings.title": {
     "defaultMessage": "زيارة إعدادات الروابط"
   },
@@ -294,4 +270,3 @@
     "defaultMessage": "يجب ألا تتضمن أسماء المشروع أرقام الإصدار."
   }
 }
-

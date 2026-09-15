@@ -4058,12 +4058,6 @@
   "project.settings.general.url.title": {
     "message": "URL"
   },
-  "project.settings.links.donation.duplicate-type": {
-    "message": "Masz już inny link do platformy {platform}."
-  },
-  "project.settings.links.donation.no-type": {
-    "message": "Wybierz platformę dla tego linku do darowizn."
-  },
   "project.settings.monetization.description": {
     "message": "Projekty na Modrinth są automatycznie przyjęte w <rewards-program-link>Programie Nagród</rewards-program-link>. Jeśli ty nie chcesz (lub nie możesz z powodów prawnych) zarabiać z tego projektu, możesz wyłączyć to tutaj."
   },

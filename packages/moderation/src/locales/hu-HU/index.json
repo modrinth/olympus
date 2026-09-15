@@ -53,12 +53,6 @@
   "nags.all-tags-selected.title": {
     "defaultMessage": "Válaszd ki a pontos címkéket"
   },
-  "nags.banned-link-usage.description": {
-    "defaultMessage": "A(z) \"{url}\"hivatkozás nem engedélyezett külső hivatkozásként."
-  },
-  "nags.banned-link-usage.title": {
-    "defaultMessage": "Távolítsd el a tiltott hivatkozásokat"
-  },
   "nags.check-disclosures.description": {
     "defaultMessage": "Ügyelj arra, hogy a felhasználók tisztában legyenek a fontos részletekkel: töltsd ki a {type} típusra vonatkozó tartalmi tájékoztatókat."
   },
@@ -88,9 +82,6 @@
   },
   "nags.edit-gallery.title": {
     "defaultMessage": "Galéria szerkesztése"
-  },
-  "nags.edit-license.title": {
-    "defaultMessage": "Licensz szerkesztése"
   },
   "nags.edit-summary.title": {
     "defaultMessage": "Összegzés szerkesztése"
@@ -125,20 +116,8 @@
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "Adj meg egy forráskódot"
   },
-  "nags.identical-links.description": {
-    "defaultMessage": "Néhány külső hivatkozásod azonosnak tűnik. Minden hivatkozást csak egyszer és a megfelelő hivatkozástípussal kell megadni."
-  },
-  "nags.identical-links.title": {
-    "defaultMessage": "Távolítsd el az azonos hivatkozásokat"
-  },
   "nags.invalid-gallery-text.title": {
     "defaultMessage": "Módosítsd a galériakép szövegét"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "A licensz linkje érvénytelen."
-  },
-  "nags.invalid-license-url.description.domain": {
-    "defaultMessage": "A licenced URL-je a(z) {domain} domainre mutat, amely nem megfelelő a licencinformációkhoz. A licenc URL-jének közvetlenül a licenc szövegére kell mutatnia."
   },
   "nags.invalid-license-url.description.malformed": {
     "defaultMessage": "Úgy tűnik, hogy a licensz linkje hibás. Adj meg egy érvényes linket a licensz szövegéhez."
@@ -173,12 +152,6 @@
   "nags.missing-alt-text.title": {
     "defaultMessage": "Adj hozzá helyettesítő szöveget"
   },
-  "nags.misused-discord-link-description": {
-    "defaultMessage": "A Discord-meghívók nem használhatók más hivatkozástípusokhoz. A Discord-hivatkozást csak a Discord-meghívó hivatkozás mezőjébe helyezd."
-  },
-  "nags.misused-discord-link.title": {
-    "defaultMessage": "Discord meghívó áthelyezése"
-  },
   "nags.moderation.title": {
     "defaultMessage": "Látogasd meg a Moderáció fület"
   },
@@ -193,9 +166,6 @@
   },
   "nags.multiple-resolution-tags.title": {
     "defaultMessage": "Válaszd ki a megfelelő felbontást"
-  },
-  "nags.project-description-banned-link.description": {
-    "defaultMessage": "A(z) {fullUrl} hivatkozás nem engedélyezett a projektleírásokban."
   },
   "nags.project-description-non-english.description": {
     "defaultMessage": "A projekted leírását angolul kell megadnod, vagy angol fordítást is kell tartalmaznia."
@@ -371,12 +341,6 @@
   "nags.upload-version.title": {
     "defaultMessage": "Tölts fel egy verziót"
   },
-  "nags.verify-external-links.description": {
-    "defaultMessage": "Néhány külső hivatkozásod olyan domainekre vezethet, amelyek nem megfelelőek az adott hivatkozástípushoz."
-  },
-  "nags.verify-external-links.title": {
-    "defaultMessage": "Ellenőrizd a külső hivatkozásokat"
-  },
   "nags.visit-links-settings.title": {
     "defaultMessage": "Látogasd meg a linkbeállításokat"
   },
@@ -390,4 +354,3 @@
     "defaultMessage": "A projektnevek nem tartalmazhatnak verziószámokat."
   }
 }
-

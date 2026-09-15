@@ -3884,6 +3884,18 @@
   "project.settings.delete-project.title": {
     "message": "Delete project"
   },
+  "project.settings.description.intro": {
+    "message": "You can type an extended description of your project here. The description must clearly and honestly describe the purpose and function of the project. See section 2.1 of the <rules>Content Rules</rules> for the full requirements."
+  },
+  "project.settings.description.title": {
+    "message": "Description"
+  },
+  "project.settings.description.updated": {
+    "message": "Description updated"
+  },
+  "project.settings.description.updated-text": {
+    "message": "Your description has been updated."
+  },
   "project.settings.disclosures.advertising.description.1": {
     "message": "Must be enabled if this project contains advertisements, sponsorships, or promotions of other works."
   },
@@ -4115,11 +4127,170 @@
   "project.settings.general.url.title": {
     "message": "URL"
   },
-  "project.settings.links.donation.duplicate-type": {
-    "message": "You already have another {platform} link."
+  "project.settings.license.all-rights": {
+    "message": "All Rights Reserved/No License"
   },
-  "project.settings.links.donation.no-type": {
-    "message": "Please select a platform for this Donation link."
+  "project.settings.license.allow-later": {
+    "message": "Allow later editions"
+  },
+  "project.settings.license.custom": {
+    "message": "Custom"
+  },
+  "project.settings.license.custom-url-description": {
+    "message": "The web location of the full license text. You have to provide a link since this is a custom license."
+  },
+  "project.settings.license.has-spdx": {
+    "message": "Use SPDX identifier"
+  },
+  "project.settings.license.intro": {
+    "message": "It is important to choose a proper license for your {type}. You may choose one from our list or provide a custom license. You may also provide a custom URL to your chosen license; otherwise, the license text will be displayed. See our <guide>licensing guide</guide> for more information."
+  },
+  "project.settings.license.later": {
+    "message": "Later editions"
+  },
+  "project.settings.license.later-description": {
+    "message": "The license you selected has an \"or later\" clause. If you check this box, users may use your project under later editions of the license."
+  },
+  "project.settings.license.missing-name": {
+    "message": "Enter a name or SPDX identifier for your custom license."
+  },
+  "project.settings.license.missing-url": {
+    "message": "Enter a URL to the full text of your custom license."
+  },
+  "project.settings.license.name": {
+    "message": "License name"
+  },
+  "project.settings.license.name-description": {
+    "message": "The full name of the license. If the license has a SPDX identifier, please check the checkbox and use the identifier instead."
+  },
+  "project.settings.license.name-placeholder": {
+    "message": "License name"
+  },
+  "project.settings.license.optional-url": {
+    "message": "License URL (optional)"
+  },
+  "project.settings.license.select": {
+    "message": "Select a license"
+  },
+  "project.settings.license.select-description": {
+    "message": "How users are and aren't allowed to use your project."
+  },
+  "project.settings.license.select-placeholder": {
+    "message": "Select license..."
+  },
+  "project.settings.license.spdx": {
+    "message": "SPDX identifier"
+  },
+  "project.settings.license.spdx-description": {
+    "message": "If your license does not have an official <spdx>SPDX license identifier</spdx>, uncheck the box and enter the name of the license instead."
+  },
+  "project.settings.license.spdx-placeholder": {
+    "message": "SPDX identifier"
+  },
+  "project.settings.license.title": {
+    "message": "License"
+  },
+  "project.settings.license.updated": {
+    "message": "License updated"
+  },
+  "project.settings.license.updated-text": {
+    "message": "Your license has been updated."
+  },
+  "project.settings.license.url": {
+    "message": "License URL"
+  },
+  "project.settings.license.url-description": {
+    "message": "The web location of the full license text. If you don't provide a link, the license text will be displayed instead."
+  },
+  "project.settings.links.add-link": {
+    "message": "Add link"
+  },
+  "project.settings.links.discord": {
+    "message": "Discord invite"
+  },
+  "project.settings.links.discord-description": {
+    "message": "An invitation link to your Discord server."
+  },
+  "project.settings.links.donation-link": {
+    "message": "Link"
+  },
+  "project.settings.links.donation-platform": {
+    "message": "Platform"
+  },
+  "project.settings.links.donation-url": {
+    "message": "URL"
+  },
+  "project.settings.links.donation-username": {
+    "message": "Username"
+  },
+  "project.settings.links.donation-username-placeholder": {
+    "message": "Enter your {platform} username"
+  },
+  "project.settings.links.donations": {
+    "message": "Donation links"
+  },
+  "project.settings.links.donations-description": {
+    "message": "Add donation links for users to support you directly."
+  },
+  "project.settings.links.issues": {
+    "message": "Issue tracker"
+  },
+  "project.settings.links.issues-description": {
+    "message": "A place for users to report bugs, issues, and concerns about your project."
+  },
+  "project.settings.links.link-type": {
+    "message": "Link type"
+  },
+  "project.settings.links.remove-donation-link": {
+    "message": "Remove donation link"
+  },
+  "project.settings.links.server-discord": {
+    "message": "Discord"
+  },
+  "project.settings.links.server-updated": {
+    "message": "Your server links have been updated."
+  },
+  "project.settings.links.server-wiki-description": {
+    "message": "A page containing information, documentation, and help for the server."
+  },
+  "project.settings.links.site": {
+    "message": "Website"
+  },
+  "project.settings.links.site-description": {
+    "message": "Your server's official website."
+  },
+  "project.settings.links.source": {
+    "message": "Source code"
+  },
+  "project.settings.links.source-description": {
+    "message": "A page/repository containing the source code for your project"
+  },
+  "project.settings.links.store": {
+    "message": "Store"
+  },
+  "project.settings.links.store-description": {
+    "message": "A link to your server's store or shop."
+  },
+  "project.settings.links.title": {
+    "message": "Links"
+  },
+  "project.settings.links.updated": {
+    "message": "Your links have been updated."
+  },
+  "project.settings.links.updated-title": {
+    "message": "Links updated"
+  },
+  "project.settings.links.url-placeholder": {
+    "message": "Enter a valid URL"
+  },
+  "project.settings.links.visit-link": {
+    "message": "Visit {url}"
+  },
+  "project.settings.links.wiki": {
+    "message": "Wiki page"
+  },
+  "project.settings.links.wiki-description": {
+    "message": "A page containing information, documentation, and help for the project."
   },
   "project.settings.monetization.description": {
     "message": "Projects on Modrinth are automatically enrolled in the <rewards-program-link>Rewards Program</rewards-program-link>. If you don't want to (or can't for legal reasons) earn revenue from this project, you can turn it off here."

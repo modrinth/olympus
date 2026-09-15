@@ -44,9 +44,6 @@
   "nags.edit-description.title": {
     "defaultMessage": "Açıklamayı düzenle"
   },
-  "nags.edit-license.title": {
-    "defaultMessage": "Lisansı düzenle"
-  },
   "nags.edit-summary.title": {
     "defaultMessage": "Özeti düzenle"
   },
@@ -64,9 +61,6 @@
   },
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "Kaynak kodu sun"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "Lisans URL'i geçersiz."
   },
   "nags.invalid-license-url.description.malformed": {
     "defaultMessage": "Lisans URL'in bozuk gibi görünüyor. Lütfen geçerli bir lisans URL'i gir."
@@ -91,9 +85,6 @@
   },
   "nags.missing-alt-text.title": {
     "defaultMessage": "Resim açıklaması ekle"
-  },
-  "nags.misused-discord-link.title": {
-    "defaultMessage": "Discord davetinin yerini değiştir"
   },
   "nags.moderation.title": {
     "defaultMessage": "Moderasyon kanalına göz at"
@@ -195,4 +186,3 @@
     "defaultMessage": "Bağlantı ayarlarına göz at"
   }
 }
-

@@ -32,9 +32,6 @@
   "nags.edit-description.title": {
     "defaultMessage": "Rediger beskrivelsen"
   },
-  "nags.edit-license.title": {
-    "defaultMessage": "Rediger licens"
-  },
   "nags.edit-summary.title": {
     "defaultMessage": "Rediger resumé"
   },
@@ -52,9 +49,6 @@
   },
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "Angiv kilde kode"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "Licens-URL'en er ugyldig."
   },
   "nags.server.title": {
     "defaultMessage": "Besøg server indstillinger"

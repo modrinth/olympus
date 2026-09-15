@@ -53,12 +53,6 @@
   "nags.all-tags-selected.title": {
     "defaultMessage": "Select accurate tags"
   },
-  "nags.banned-link-usage.description": {
-    "defaultMessage": "The link “{url}” is not allowed as an external link."
-  },
-  "nags.banned-link-usage.title": {
-    "defaultMessage": "Remove prohibited links"
-  },
   "nags.check-disclosures.description": {
     "defaultMessage": "Make sure users are aware of any important details by filling in content disclosures that apply to your {type}."
   },
@@ -89,9 +83,6 @@
   "nags.edit-gallery.title": {
     "defaultMessage": "Edit gallery"
   },
-  "nags.edit-license.title": {
-    "defaultMessage": "Edit license"
-  },
   "nags.edit-summary.title": {
     "defaultMessage": "Edit summary"
   },
@@ -120,25 +111,13 @@
     "defaultMessage": "Visit gallery page"
   },
   "nags.gpl-license-source-required.description": {
-    "defaultMessage": "Your {type}'s license requires source code to be published. Please provide a source code link, add sources files, or change license."
+    "defaultMessage": "Your {type}'s license requires source code to be published. Please provide a source code link, add sources files, or change the selected license."
   },
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "Provide source code"
   },
-  "nags.identical-links.description": {
-    "defaultMessage": "Some of your external links appear to be identical. Each link should be listed only once and with the appropriate link type."
-  },
-  "nags.identical-links.title": {
-    "defaultMessage": "Remove identical links"
-  },
   "nags.invalid-gallery-text.title": {
     "defaultMessage": "Modify gallery image text"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "License URL is invalid."
-  },
-  "nags.invalid-license-url.description.domain": {
-    "defaultMessage": "Your license URL points to {domain}, which is not appropriate for license information. License URLs should link directly to your license text."
   },
   "nags.invalid-license-url.description.malformed": {
     "defaultMessage": "Your license URL appears to be malformed. Please provide a valid URL to your license text."
@@ -154,6 +133,81 @@
   },
   "nags.invalid-project-summary.title": {
     "defaultMessage": "Modify the summary"
+  },
+  "nags.license-url.not-in-allowlist.description": {
+    "defaultMessage": "Your license URL is not a recognized license link. Please ensure it links directly to your license text."
+  },
+  "nags.license-url.not-in-allowlist.title": {
+    "defaultMessage": "Check your license link"
+  },
+  "nags.link-validation.discord-invite": {
+    "defaultMessage": "Your Discord invite is invalid, expired, or does not invite users to a server. Replace it with an active server invite."
+  },
+  "nags.link-validation.discord-invite.title": {
+    "defaultMessage": "Replace invalid Discord invites"
+  },
+  "nags.link-validation.download": {
+    "defaultMessage": "Links that start a download are not allowed. Please remove any such links from your description."
+  },
+  "nags.link-validation.download.title": {
+    "defaultMessage": "Remove download links"
+  },
+  "nags.link-validation.duplicate": {
+    "defaultMessage": "Your {linkField, select, issues {issue tracker} source {source code} wiki {wiki} discord {Discord invite} site {website} store {store} license {license} description {description} patreon {Patreon} bmac {Buy Me a Coffee} paypal {PayPal} github {GitHub Sponsors} kofi {Ko-fi} other {donation}} link is also used in {otherLinkField, select, issues {Issue tracker} source {Source code} wiki {Wiki} discord {Discord invite} site {Website} store {Store} license {License} patreon {Patreon} bmac {Buy Me a Coffee} paypal {PayPal} github {GitHub Sponsors} kofi {Ko-fi} other {another field}}. Each link should be listed only once."
+  },
+  "nags.link-validation.duplicate.title": {
+    "defaultMessage": "Remove duplicate links"
+  },
+  "nags.link-validation.external-blocklist-match": {
+    "defaultMessage": "Your {linkField} link is not allowed. Please remove this link, or replace it with something appropriate for the {linkField} link type."
+  },
+  "nags.link-validation.external-blocklist-match.title": {
+    "defaultMessage": "Replace incorrect links"
+  },
+  "nags.link-validation.global-blocklist-match": {
+    "defaultMessage": "Your {linkField, select, issues {issue tracker} source {source code} wiki {wiki} discord {Discord invite} site {website} store {store} license {license} description {description} patreon {Patreon} bmac {Buy Me a Coffee} paypal {PayPal} github {GitHub Sponsors} kofi {Ko-fi} other {donation}} link uses a prohibited domain. Remove or replace this link."
+  },
+  "nags.link-validation.global-blocklist-match.title": {
+    "defaultMessage": "Remove prohibited links"
+  },
+  "nags.link-validation.ip-address": {
+    "defaultMessage": "Your {linkField, select, issues {issue tracker} source {source code} wiki {wiki} discord {Discord invite} site {website} store {store} license {license} description {description} patreon {Patreon} bmac {Buy Me a Coffee} paypal {PayPal} github {GitHub Sponsors} kofi {Ko-fi} other {donation}} link uses an IP address. Use a URL with a domain name."
+  },
+  "nags.link-validation.ip-address.title": {
+    "defaultMessage": "Remove IP Address link"
+  },
+  "nags.link-validation.malformed": {
+    "defaultMessage": "Your {linkField, select, issues {issue tracker} source {source code} wiki {wiki} discord {Discord invite} site {website} store {store} license {license} description {description} patreon {Patreon} bmac {Buy Me a Coffee} paypal {PayPal} github {GitHub Sponsors} kofi {Ko-fi} other {donation}} link is invalid. Enter a complete HTTPS URL."
+  },
+  "nags.link-validation.malformed.title": {
+    "defaultMessage": "Fix invalid links"
+  },
+  "nags.link-validation.not-in-allowlist": {
+    "defaultMessage": "Your {linkField, select, issues {issue tracker} source {source code} wiki {wiki} discord {Discord invite} site {website} store {store} license {license} description {description} patreon {Patreon} bmac {Buy Me a Coffee} paypal {PayPal} github {GitHub Sponsors} kofi {Ko-fi} other {donation}} link may not be appropriate for the link type. Please ensure that it is suitable for its intended purpose."
+  },
+  "nags.link-validation.not-in-allowlist.title": {
+    "defaultMessage": "Check link accuracy"
+  },
+  "nags.link-validation.source-repository": {
+    "defaultMessage": "Your source code link must lead to a repository on a supported host platform, or to a self-hosted Gitea/Forgejo service."
+  },
+  "nags.link-validation.source-repository.title": {
+    "defaultMessage": "Link to a source repository"
+  },
+  "nags.link-validation.title": {
+    "defaultMessage": "Review this link"
+  },
+  "nags.link-validation.unverifiable": {
+    "defaultMessage": "Your {linkField, select, issues {issue tracker} source {source code} wiki {wiki} discord {Discord invite} site {website} store {store} license {license} description {description} patreon {Patreon} bmac {Buy Me a Coffee} paypal {PayPal} github {GitHub Sponsors} kofi {Ko-fi} other {donation}} link could not be verified. Check that it is online and accessible."
+  },
+  "nags.link-validation.unverifiable.title": {
+    "defaultMessage": "Check link availability"
+  },
+  "nags.link-validation.wrong-field": {
+    "defaultMessage": "Your {linkField, select, issues {issue tracker} source {source code} wiki {wiki} discord {Discord invite} site {website} store {store} license {license} description {description} patreon {Patreon} bmac {Buy Me a Coffee} paypal {PayPal} github {GitHub Sponsors} kofi {Ko-fi} other {donation}} link is not correct for {linkField, select, issues {issue tracker} source {source code} wiki {wiki} discord {Discord invite} site {website} store {store} license {license} description {description} patreon {Patreon} bmac {Buy Me a Coffee} paypal {PayPal} github {GitHub Sponsors} kofi {Ko-fi} other {donation}} links. Remove or replace it with the correct link."
+  },
+  "nags.link-validation.wrong-field.title": {
+    "defaultMessage": "Fix incorrect links"
   },
   "nags.long-headers.description": {
     "defaultMessage": "{count, plural, one {# header} other {# headers}} in your description {count, plural, one {is} other {are}} too long. Headers should be concise and act as section titles, not full sentences."
@@ -173,12 +227,6 @@
   "nags.missing-alt-text.title": {
     "defaultMessage": "Add image alt text"
   },
-  "nags.misused-discord-link-description": {
-    "defaultMessage": "Discord invites can not be used for other link types. Please only put your Discord link in the Discord Invite link field."
-  },
-  "nags.misused-discord-link.title": {
-    "defaultMessage": "Move Discord invite"
-  },
   "nags.moderation.title": {
     "defaultMessage": "Visit moderation thread"
   },
@@ -194,8 +242,8 @@
   "nags.multiple-resolution-tags.title": {
     "defaultMessage": "Select correct resolution"
   },
-  "nags.project-description-banned-link.description": {
-    "defaultMessage": "The link “{fullUrl}” is not allowed in project descriptions."
+  "nags.project-description-content.title": {
+    "defaultMessage": "Review the description"
   },
   "nags.project-description-content.title": {
     "defaultMessage": "Review the description"
@@ -373,12 +421,6 @@
   },
   "nags.upload-version.title": {
     "defaultMessage": "Upload a version"
-  },
-  "nags.verify-external-links.description": {
-    "defaultMessage": "Some of your external links may lead to domains that are inappropriate for that link type."
-  },
-  "nags.verify-external-links.title": {
-    "defaultMessage": "Review external links"
   },
   "nags.visit-links-settings.title": {
     "defaultMessage": "Visit links settings"

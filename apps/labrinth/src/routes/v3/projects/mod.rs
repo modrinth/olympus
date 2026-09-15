@@ -352,10 +352,10 @@ pub struct EditProject {
         length(max = 2048)
     )]
     pub license_url: Option<Option<String>>,
+    // <name, url> (leave url empty to delete)
     #[validate(custom(
         function = "crate::util::validate::validate_url_hashmap_optional_values"
     ))]
-    // <name, url> (leave url empty to delete)
     pub link_urls: Option<HashMap<String, Option<String>>>,
     pub license_id: Option<String>,
     #[validate(
@@ -1344,6 +1344,18 @@ pub async fn project_edit_internal(
     .await
     .wrap_internal_err("failed to update components")?;
 
+    let reloaded_project = if validate_for_review {
+        validate::ensure_project_is_valid_for_review(
+            id,
+            &pool,
+            &mut transaction,
+            &redis,
+        )
+        .await?
+    } else {
+        project_item.clone()
+    };
+
     // check new description and body for links to associated images
     // if they no longer exist in the description or body, delete them
     let checkable_strings: Vec<&str> =
@@ -1365,26 +1377,16 @@ pub async fn project_edit_internal(
     .await
     .wrap_api_err("deleting unused images")?;
 
-    if validate_for_review {
-        let reloaded_project = validate::ensure_project_is_valid_for_review(
-            id,
-            &pool,
+    if submit_for_review {
+        submit_project_for_review(
+            &reloaded_project,
+            &user,
+            team_member.as_ref().is_none_or(|member| !member.accepted),
+            sync_archival_disclosure,
             &mut transaction,
             &redis,
         )
         .await?;
-
-        if submit_for_review {
-            submit_project_for_review(
-                &reloaded_project,
-                &user,
-                team_member.as_ref().is_none_or(|member| !member.accepted),
-                sync_archival_disclosure,
-                &mut transaction,
-                &redis,
-            )
-            .await?;
-        }
     }
 
     transaction
@@ -2038,6 +2040,18 @@ pub async fn projects_edit(
             };
         }
 
+        if let Some(links) = &bulk_edit_project.link_urls {
+            let mut candidate = Project::from(project.clone());
+            validate::apply_link_changes(&mut candidate, links);
+            let nags = crate::validate::project::validate_link_fields(
+                &candidate,
+                crate::validate::project::LinkValidationScope {
+                    external: true,
+                    ..Default::default()
+                },
+            );
+            validate::require_valid_project(nags)?;
+        }
         let mut reindex_versions = bulk_edit_project_categories(
             &categories,
             &project.categories,
@@ -2113,6 +2127,16 @@ pub async fn projects_edit(
                     .await.wrap_internal_err("querying database for `projects_edit`")?;
                 }
             }
+        }
+
+        if project.inner.status == ProjectStatus::Processing {
+            validate::ensure_project_is_valid_for_review(
+                project.inner.id,
+                &pool,
+                &mut transaction,
+                &redis,
+            )
+            .await?;
         }
 
         changed_projects.push((
@@ -2721,8 +2745,8 @@ pub async fn add_gallery_item_internal(
     .await
     .wrap_internal_err("inserting galleries into database")?;
 
-    let validation_error = match project_item.inner.status {
-        ProjectStatus::Processing => {
+    let validation_error =
+        if project_item.inner.status == ProjectStatus::Processing {
             validate::ensure_project_is_valid_for_review(
                 project_item.inner.id,
                 &pool,
@@ -2731,9 +2755,9 @@ pub async fn add_gallery_item_internal(
             )
             .await
             .err()
-        }
-        _ => None,
-    };
+        } else {
+            None
+        };
     if let Some(error) = validation_error {
         delete_old_images(
             Some(upload_result.url),

@@ -44,9 +44,6 @@
   "nags.edit-description.title": {
     "defaultMessage": "説明を編集する"
   },
-  "nags.edit-license.title": {
-    "defaultMessage": "ライセンスを編集する"
-  },
   "nags.edit-summary.title": {
     "defaultMessage": "概要を編集する"
   },
@@ -64,9 +61,6 @@
   },
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "ソースコードのリンクの追加"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "ライセンスのURLが無効です。"
   },
   "nags.invalid-license-url.description.malformed": {
     "defaultMessage": "ライセンスのURLの形式が間違っています。ライセンスの本文にアクセスできる有効なURLを追加してください。"
@@ -91,9 +85,6 @@
   },
   "nags.missing-alt-text.title": {
     "defaultMessage": "画像の代替テキストを追加"
-  },
-  "nags.misused-discord-link.title": {
-    "defaultMessage": "Discordの招待リンクを移動する"
   },
   "nags.moderation.title": {
     "defaultMessage": "モデレーションスレッドを表示する"
@@ -195,4 +186,3 @@
     "defaultMessage": "リンク設定を表示"
   }
 }
-

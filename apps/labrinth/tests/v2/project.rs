@@ -437,7 +437,7 @@ async fn invalid_review_submission_returns_validation_error() {
             let error: serde_json::Value = test::read_body_json(response).await;
             assert_eq!(
                 error["description"],
-                "project must have no required validation nags before or while under review"
+                "resolve required project validation messages before saving"
             );
         },
     )
@@ -532,7 +532,7 @@ async fn permissions_patch_project_v2() {
                                 req_gen,
                             )
                             .await
-                            .into_iter();
+                            .unwrap();
                     }
                 })
                 .buffer_unordered(4)
@@ -575,7 +575,7 @@ pub async fn test_bulk_edit_links() {
                 .edit_project_bulk(
                     &[alpha_project_id, beta_project_id],
                     json!({
-                        "issues_url": "https://github.com",
+                        "issues_url": "https://github.com/modrinth/code/issues",
                         "donation_urls": [
                             {
                                 "id": "patreon",
@@ -597,7 +597,7 @@ pub async fn test_bulk_edit_links() {
             assert_eq!(donation_urls[0].url, "https://www.patreon.com/my_user");
             assert_eq!(
                 alpha_body.issues_url,
-                Some("https://github.com".to_string())
+                Some("https://github.com/modrinth/code/issues".to_string())
             );
             assert_eq!(alpha_body.discord_url, None);
 
@@ -609,7 +609,7 @@ pub async fn test_bulk_edit_links() {
             assert_eq!(donation_urls[0].url, "https://www.patreon.com/my_user");
             assert_eq!(
                 beta_body.issues_url,
-                Some("https://github.com".to_string())
+                Some("https://github.com/modrinth/code/issues".to_string())
             );
             assert_eq!(beta_body.discord_url, None);
 
@@ -617,7 +617,7 @@ pub async fn test_bulk_edit_links() {
                 .edit_project_bulk(
                     &[alpha_project_id, beta_project_id],
                     json!({
-                        "discord_url": "https://discord.gg",
+                        "discord_url": "https://discord.gg/modrinth",
                         "issues_url": null,
                         "add_donation_urls": [
                             {
@@ -650,7 +650,7 @@ pub async fn test_bulk_edit_links() {
             assert_eq!(alpha_body.issues_url, None);
             assert_eq!(
                 alpha_body.discord_url,
-                Some("https://discord.gg".to_string())
+                Some("https://discord.gg/modrinth".to_string())
             );
 
             let beta_body = api
@@ -668,10 +668,10 @@ pub async fn test_bulk_edit_links() {
                 "https://www.buymeacoffee.com/my_user"
             );
             assert_eq!(donation_urls[1].url, "https://www.patreon.com/my_user");
-            assert_eq!(alpha_body.issues_url, None);
+            assert_eq!(beta_body.issues_url, None);
             assert_eq!(
-                alpha_body.discord_url,
-                Some("https://discord.gg".to_string())
+                beta_body.discord_url,
+                Some("https://discord.gg/modrinth".to_string())
             );
 
             let resp = api

@@ -44,9 +44,6 @@
   "nags.edit-description.title": {
     "defaultMessage": "설명 수정하기"
   },
-  "nags.edit-license.title": {
-    "defaultMessage": "라이선스 수정"
-  },
   "nags.edit-summary.title": {
     "defaultMessage": "요약 수정하기"
   },
@@ -64,9 +61,6 @@
   },
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "소스 코드 제공"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "라이선스 URL이 잘못되었습니다."
   },
   "nags.invalid-license-url.description.malformed": {
     "defaultMessage": "이 라이센스 URL은 잘못되었습니다. URL을 라이선스 전문으로 연결해 주세요."
@@ -91,9 +85,6 @@
   },
   "nags.missing-alt-text.title": {
     "defaultMessage": "이미지 대체 텍스트 추가"
-  },
-  "nags.misused-discord-link.title": {
-    "defaultMessage": "디스코드 초대 이동"
   },
   "nags.moderation.title": {
     "defaultMessage": "관리 스레드 방문"
@@ -195,4 +186,3 @@
     "defaultMessage": "링크 설정 방문"
   }
 }
-

@@ -53,12 +53,6 @@
   "nags.all-tags-selected.title": {
     "defaultMessage": "Оставьте ключевые теги"
   },
-  "nags.banned-link-usage.description": {
-    "defaultMessage": "Ссылка «{url}» запрещена как внешняя ссылка."
-  },
-  "nags.banned-link-usage.title": {
-    "defaultMessage": "Измените ссылки"
-  },
   "nags.check-disclosures.description": {
     "defaultMessage": "Предупредите о важных особенностях проекта, заполнив маркировку контента."
   },
@@ -88,9 +82,6 @@
   },
   "nags.edit-gallery.title": {
     "defaultMessage": "Изменить галерею"
-  },
-  "nags.edit-license.title": {
-    "defaultMessage": "Изменить лицензию"
   },
   "nags.edit-summary.title": {
     "defaultMessage": "Изменить сводку"
@@ -125,20 +116,8 @@
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "Укажите исходный код"
   },
-  "nags.identical-links.description": {
-    "defaultMessage": "Некоторые внешние ссылки совпадают. Каждую ссылку нужно указать один раз и с правильным типом."
-  },
-  "nags.identical-links.title": {
-    "defaultMessage": "Уберите повторения"
-  },
   "nags.invalid-gallery-text.title": {
     "defaultMessage": "Измените текст изображения"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "Ссылка на лицензию недействительна."
-  },
-  "nags.invalid-license-url.description.domain": {
-    "defaultMessage": "Домен {domain} не подходит для лицензий. Ссылка должна вести на текст лицензии."
   },
   "nags.invalid-license-url.description.malformed": {
     "defaultMessage": "URL лицензии имеет неверный формат. Укажите действительную ссылку на текст лицензии."
@@ -173,12 +152,6 @@
   "nags.missing-alt-text.title": {
     "defaultMessage": "Опишите изображения"
   },
-  "nags.misused-discord-link-description": {
-    "defaultMessage": "Приглашение Discord нельзя указывать не для своего типа ссылок. Переместите ссылку в соответствующее ей поле."
-  },
-  "nags.misused-discord-link.title": {
-    "defaultMessage": "Переместите Discord"
-  },
   "nags.moderation.title": {
     "defaultMessage": "Открыть ветку модерации"
   },
@@ -193,9 +166,6 @@
   },
   "nags.multiple-resolution-tags.title": {
     "defaultMessage": "Укажите одно разрешение"
-  },
-  "nags.project-description-banned-link.description": {
-    "defaultMessage": "Ссылка «{fullUrl}» запрещена в описаниях."
   },
   "nags.project-description-non-english.description": {
     "defaultMessage": "Описание проекта должно быть написано или переведено на английский."
@@ -371,12 +341,6 @@
   "nags.upload-version.title": {
     "defaultMessage": "Загрузите версию"
   },
-  "nags.verify-external-links.description": {
-    "defaultMessage": "Возможно, одна из внешних ссылок ведёт на домены, не подходящие для этого типа ссылки."
-  },
-  "nags.verify-external-links.title": {
-    "defaultMessage": "Проверьте ссылки"
-  },
   "nags.visit-links-settings.title": {
     "defaultMessage": "Настроить ссылки"
   },
@@ -390,4 +354,3 @@
     "defaultMessage": "В названиях проектов не должно быть номеров версий."
   }
 }
-

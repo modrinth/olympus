@@ -42,6 +42,7 @@ import {
 import ValidationMessage from '~/components/ValidationMessage.vue'
 import { useAuth } from '~/composables/auth'
 import { useProjectNagMessages } from '~/composables/project-nag-validation'
+import { useProjectSaveValidation } from '~/composables/project-save-validation'
 
 const DISCLOSURE_QUERY_STALE_TIME = 1000 * 60 * 5
 
@@ -195,7 +196,7 @@ const {
 	saved,
 	current,
 	saving,
-	reset,
+	reset: resetForm,
 	save: saveForm,
 } = useSavable(
 	() => disclosuresToForm(disclosuresResponse.value?.disclosures ?? []),
@@ -221,10 +222,23 @@ const hasChanges = computed(
 	() => JSON.stringify(savedSnapshot.value) !== JSON.stringify(currentSnapshot.value),
 )
 
+const saveValidation = useProjectSaveValidation(() => currentSnapshot.value)
+
 async function save() {
-	if (!hasChanges.value) return
-	await saveForm()
-	await refreshProjectValidation()
+	if (!hasChanges.value || !canSave.value || saving.value) return
+	const submittedState = saveValidation.snapshot()
+	try {
+		await saveForm()
+		saveValidation.clear()
+		await refreshProjectValidation()
+	} catch (error) {
+		if (!saveValidation.capture(error, submittedState)) throw error
+	}
+}
+
+function reset() {
+	resetForm()
+	saveValidation.clear()
 }
 
 function disclosureUpdateProps(type: DisclosureType) {
@@ -268,7 +282,10 @@ const disclosureTextValidation = useProjectNagMessages('disclosure-text')
 const disclosureValidation = useProjectNagMessages('disclosures')
 
 const canSave = computed(
-	() => hasPermission.value && (isAdminUser.value || issues.value.length === 0),
+	() =>
+		!saveValidation.hasErrors.value &&
+		hasPermission.value &&
+		(isAdminUser.value || issues.value.length === 0),
 )
 
 const saveDisabledReason = computed(() => {
@@ -398,6 +415,7 @@ const { confirmLeaveModal } = usePageLeaveSafety(hasChanges)
 					"
 				/>
 			</div>
+			<ValidationMessage :check="saveValidation.messages.value" class="my-4" />
 			<UnsavedChangesPopup
 				:original="savedSnapshot"
 				:modified="currentSnapshot"

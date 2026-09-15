@@ -1,231 +1,129 @@
 <template>
 	<div>
 		<ConfirmLeaveModal ref="confirmLeaveModal" />
-		<!-- Server Project Links -->
-		<section v-if="isServerProject" class="universal-card">
-			<h2>External links</h2>
-			<ValidationMessage
-				:check="externalLinksValidation"
-				:project-field="JSON.stringify(saved)"
-				:current-field="JSON.stringify(current)"
-				class="mb-4"
-			/>
-			<div class="adjacent-input">
-				<label id="server-website" title="Your server's website.">
-					<span class="label__title">Website</span>
-					<span class="label__description">Your server's official website.</span>
-				</label>
-				<input
-					id="server-website"
-					v-model="current.site"
-					type="url"
-					placeholder="Enter a valid URL"
-					maxlength="2048"
-					:disabled="!hasPermission"
-				/>
-				<ValidationMessage
-					:check="siteCheck"
-					:project-field="saved.site"
-					:current-field="current.site"
-				/>
-			</div>
-			<div class="adjacent-input">
-				<label id="server-store" title="Your server's store page.">
-					<span class="label__title">Store</span>
-					<span class="label__description">A link to your server's store or shop.</span>
-				</label>
-				<input
-					id="server-store"
-					v-model="current.store"
-					type="url"
-					placeholder="Enter a valid URL"
-					maxlength="2048"
-					:disabled="!hasPermission"
-				/>
-				<ValidationMessage
-					:check="storeCheck"
-					:project-field="saved.store"
-					:current-field="current.store"
-				/>
-			</div>
-			<div class="adjacent-input">
-				<label
-					id="server-wiki"
-					title="A page containing information, documentation, and help for the server."
-				>
-					<span class="label__title">Wiki page</span>
-					<span class="label__description"
-						>A page containing information, documentation, and help for the server.</span
+		<div class="flex min-w-0 flex-col gap-8">
+			<section v-for="section in linkSections" :key="section.id" class="min-w-0">
+				<div class="mb-2.5 flex flex-wrap items-center justify-between gap-3">
+					<h2 class="m-0 text-2xl font-semibold">{{ section.title }}</h2>
+					<TeleportOverflowMenu
+						v-if="section.id === 'donations' && section.rows.length > 0"
+						:options="donationPlatformOptions"
+						:label="formatMessage(messages.addLink)"
+						:disabled="saving || !hasPermission || donationPlatformOptions.length === 0"
+						:icon-only="false"
+						type="outlined"
+						placement="bottom-end"
 					>
-				</label>
-				<input
-					id="server-wiki"
-					v-model="current.wiki"
-					type="url"
-					placeholder="Enter a valid URL"
-					maxlength="2048"
-					:disabled="!hasPermission"
-				/>
-				<ValidationMessage
-					:check="wikiCheck"
-					:project-field="saved.wiki"
-					:current-field="current.wiki"
-				/>
-			</div>
-			<div class="adjacent-input">
-				<label id="server-discord" title="An invitation link to your Discord server.">
-					<span class="label__title">Discord</span>
-					<span class="label__description">An invitation link to your Discord server.</span>
-				</label>
-				<input
-					id="server-discord"
-					v-model="current.discord"
-					type="url"
-					placeholder="Enter a valid URL"
-					maxlength="2048"
-					:disabled="!hasPermission"
-				/>
-				<ValidationMessage
-					:check="discordInviteCheck"
-					:project-field="saved.discord"
-					:current-field="current.discord"
-				/>
-			</div>
-		</section>
-
-		<!-- Standard Project Links -->
-		<section v-if="!isServerProject" class="universal-card">
-			<h2>External links</h2>
-			<ValidationMessage
-				:check="externalLinksValidation"
-				:project-field="JSON.stringify(saved)"
-				:current-field="JSON.stringify(current)"
-				class="mb-4"
-			/>
-			<div class="adjacent-input">
-				<label
-					id="project-issue-tracker"
-					title="A place for users to report bugs, issues, and concerns about your project."
+						<PlusIcon aria-hidden="true" />
+						{{ formatMessage(messages.addLink) }}
+					</TeleportOverflowMenu>
+				</div>
+				<Table
+					:columns="section.columns"
+					:data="section.rows"
+					row-key="id"
+					:table-min-width="section.rows.length ? '36rem' : undefined"
 				>
-					<span class="label__title">Issue tracker </span>
-					<span class="label__description">
-						A place for users to report bugs, issues, and concerns about your project.
-					</span>
-				</label>
-				<Input
-					id="project-issue-tracker"
-					v-model="current.issues"
-					type="url"
-					placeholder="Enter a valid URL"
-					:maxlength="2048"
-					:disabled="!hasPermission"
-				/>
-				<ValidationMessage
-					:check="issuesCheck"
-					:project-field="saved.issues"
-					:current-field="current.issues"
-				/>
-			</div>
-			<div class="adjacent-input">
-				<label
-					id="project-source-code"
-					title="A page/repository containing the source code for your project"
-				>
-					<span class="label__title">Source code </span>
-					<span class="label__description">
-						A page/repository containing the source code for your project
-					</span>
-				</label>
-				<Input
-					id="project-source-code"
-					v-model="current.source"
-					type="url"
-					:maxlength="2048"
-					placeholder="Enter a valid URL"
-					:disabled="!hasPermission"
-				/>
-				<ValidationMessage
-					:check="sourceCheck"
-					:project-field="saved.source"
-					:current-field="current.source"
-				/>
-			</div>
-			<div class="adjacent-input">
-				<label
-					id="project-wiki-page"
-					title="A page containing information, documentation, and help for the project."
-				>
-					<span class="label__title">Wiki page</span>
-					<span class="label__description">
-						A page containing information, documentation, and help for the project.
-					</span>
-				</label>
-				<Input
-					id="project-wiki-page"
-					v-model="current.wiki"
-					type="url"
-					:maxlength="2048"
-					placeholder="Enter a valid URL"
-					:disabled="!hasPermission"
-				/>
-				<ValidationMessage
-					:check="wikiCheck"
-					:project-field="saved.wiki"
-					:current-field="current.wiki"
-				/>
-			</div>
-			<div class="adjacent-input">
-				<label id="project-discord-invite" title="An invitation link to your Discord server.">
-					<span class="label__title">Discord invite </span>
-					<span class="label__description"> An invitation link to your Discord server. </span>
-				</label>
-				<Input
-					id="project-discord-invite"
-					v-model="current.discord"
-					type="url"
-					:maxlength="2048"
-					placeholder="Enter a valid URL"
-					:disabled="!hasPermission"
-				/>
-				<ValidationMessage
-					:check="discordInviteCheck"
-					:project-field="saved.discord"
-					:current-field="current.discord"
-				/>
-			</div>
-			<span class="label">
-				<span class="label__title">Donation links</span>
-				<span class="label__description">
-					Add donation links for users to support you directly.
-				</span>
-			</span>
-
-			<div
-				v-for="(donationLink, index) in donationLinks"
-				:key="`donation-link-${index}`"
-				class="input-group donation-link-group"
-			>
-				<Input
-					v-model="donationLink.url"
-					type="url"
-					:maxlength="2048"
-					placeholder="Enter a valid URL"
-					:disabled="!hasPermission"
-					@update:model-value="updateDonationLinks"
-				/>
-				<Combobox
-					v-model="donationLink.id"
-					:options="donationPlatformOptions"
-					placeholder="Select platform"
-					:disabled="!hasPermission"
-					force-direction="up"
-					trigger-type="base"
-					class="platform-selector !w-80"
-					@update:model-value="updateDonationLinks"
-				/>
-				<ValidationMessage :check="donationCheckState(donationLink, index)" />
-			</div>
-		</section>
+					<template #header-url="{ column }">
+						<span class="ml-3.5">{{ column.label }}</span>
+					</template>
+					<template #empty-state>
+						<EmptyState :description="formatMessage(messages.donationsDescription)" class="my-4">
+							<template #actions>
+								<TeleportOverflowMenu
+									:options="donationPlatformOptions"
+									:label="formatMessage(messages.addLink)"
+									:disabled="saving || !hasPermission || donationPlatformOptions.length === 0"
+									:icon-only="false"
+									type="outlined"
+									placement="bottom-start"
+									class="-mt-4"
+								>
+									<PlusIcon aria-hidden="true" />
+									{{ formatMessage(messages.addLink) }}
+								</TeleportOverflowMenu>
+							</template>
+						</EmptyState>
+					</template>
+					<template #cell-name="{ row }">
+						<label v-tooltip="row.description" :for="row.inputId" class="font-medium">
+							{{ row.name }}
+						</label>
+					</template>
+					<template #cell-url="{ row }">
+						<div class="flex min-w-0 items-center gap-2">
+							<Input
+								:id="row.inputId"
+								:model-value="row.value"
+								:type="row.donation?.mode === 'username' ? 'text' : 'url'"
+								:placeholder="
+									row.donation
+										? donationPlaceholder(row.donation)
+										: formatMessage(messages.urlPlaceholder)
+								"
+								:maxlength="2048"
+								:disabled="saving || !hasPermission"
+								:aria-describedby="row.inputId + '-help'"
+								autocapitalize="none"
+								autocomplete="off"
+								:spellcheck="false"
+								wrapper-class="min-w-0 flex-1 !bg-surface-3 !border-surface-4 !text-contrast"
+								input-class="!text-contrast"
+								@update:model-value="changeLink(row, $event)"
+							/>
+							<Tabs
+								v-if="row.donation?.id && usernamePrefixes[row.donation.id]"
+								:value="row.donation.mode"
+								:tabs="donationModeTabs"
+								:disabled="saving || !hasPermission"
+								color="gray"
+								class="shrink-0"
+								@update:value="changeDonationMode(row.donation, $event)"
+							/>
+							<IconButton
+								v-tooltip="
+									visitUrl(row.url)
+										? formatMessage(messages.visitLink, { url: visitUrl(row.url) })
+										: null
+								"
+								type="base"
+								class="shrink-0"
+								:label="formatMessage(messages.visitLink, { url: visitUrl(row.url) })"
+								:disabled="!visitUrl(row.url)"
+								@mousedown.stop
+								@click.stop="visitLink(row.url)"
+							>
+								<ExternalIcon />
+							</IconButton>
+							<IconButton
+								v-if="row.donation"
+								v-tooltip="formatMessage(messages.removeDonation)"
+								type="base"
+								class="shrink-0"
+								:label="formatMessage(messages.removeDonation)"
+								:disabled="saving || !hasPermission"
+								@click.stop="removeDonation(row.donation)"
+							>
+								<XIcon />
+							</IconButton>
+						</div>
+						<span :id="row.inputId + '-help'" class="sr-only">{{ row.description }}</span>
+						<div class="mt-2.5 empty:hidden">
+							<template v-if="row.field">
+								<ValidationMessage
+									:check="savedFieldMessages(row.field)"
+									:project-field="saved[row.field]"
+									:current-field="current[row.field]"
+								/>
+								<ValidationMessage :check="saveValidation.forField(row.field)" />
+							</template>
+							<ValidationMessage v-else-if="row.donation" :check="donationMessages(row.donation)" />
+						</div>
+					</template>
+				</Table>
+			</section>
+		</div>
+		<ValidationMessage :check="otherSaveMessages" class="my-4" />
 		<UnsavedChangesPopup
 			:original="original"
 			:modified="modified"
@@ -239,315 +137,424 @@
 
 <script setup lang="ts">
 import type { Labrinth } from '@modrinth/api-client'
+import { ExternalIcon, PlusIcon, XIcon } from '@modrinth/assets'
 import {
-	Combobox,
 	commonProjectSettingsMessages,
 	ConfirmLeaveModal,
-	defineMessage,
-	injectModrinthClient,
+	defineMessages,
+	EmptyState,
+	IconButton,
 	injectNotificationManager,
 	injectProjectPageContext,
 	Input,
+	Table,
+	type TableColumn,
+	Tabs,
+	type TabsValue,
+	TeleportOverflowMenu,
 	UnsavedChangesPopup,
 	usePageLeaveSafety,
 	useSavable,
+	useVIntl,
 } from '@modrinth/ui'
 import { isAdmin } from '@modrinth/utils'
 
 import ValidationMessage from '@/components/ValidationMessage.vue'
 import { useProjectNagMessages } from '~/composables/project-nag-validation'
+import { useProjectSaveValidation } from '~/composables/project-save-validation'
+import {
+	type DonationInput,
+	donationInput,
+	donationUsernamePrefixes as usernamePrefixes,
+	setDonationInput,
+	toggleDonationInput,
+} from '~/helpers/donation-links'
+import { normalizeProjectUrl } from '~/helpers/project-url'
 
 type EditableLinkField = 'discord' | 'issues' | 'site' | 'source' | 'store' | 'wiki'
 type EditableLinks = Partial<Record<EditableLinkField, string>>
 type ProjectLinkUrls = Labrinth.Projects.v3.Project['link_urls']
 
-interface DonationRow {
-	id?: string
-	url?: string
+interface DonationRow extends DonationInput {
+	key: number
 }
 
+type LinkTableRow = {
+	id: string
+	inputId: string
+	name: string
+	description: string
+	value: string
+	url: string
+	field?: EditableLinkField
+	donation?: DonationRow
+}
+
+const messages = defineMessages({
+	title: { id: 'project.settings.links.title', defaultMessage: 'Links' },
+	issues: { id: 'project.settings.links.issues', defaultMessage: 'Issue tracker' },
+	issuesDescription: {
+		id: 'project.settings.links.issues-description',
+		defaultMessage: 'A place for users to report bugs, issues, and concerns about your project.',
+	},
+	source: { id: 'project.settings.links.source', defaultMessage: 'Source code' },
+	sourceDescription: {
+		id: 'project.settings.links.source-description',
+		defaultMessage: 'A page/repository containing the source code for your project',
+	},
+	wiki: { id: 'project.settings.links.wiki', defaultMessage: 'Wiki page' },
+	wikiDescription: {
+		id: 'project.settings.links.wiki-description',
+		defaultMessage: 'A page containing information, documentation, and help for the project.',
+	},
+	discord: { id: 'project.settings.links.discord', defaultMessage: 'Discord invite' },
+	discordDescription: {
+		id: 'project.settings.links.discord-description',
+		defaultMessage: 'An invitation link to your Discord server.',
+	},
+	site: { id: 'project.settings.links.site', defaultMessage: 'Website' },
+	siteDescription: {
+		id: 'project.settings.links.site-description',
+		defaultMessage: "Your server's official website.",
+	},
+	store: { id: 'project.settings.links.store', defaultMessage: 'Store' },
+	storeDescription: {
+		id: 'project.settings.links.store-description',
+		defaultMessage: "A link to your server's store or shop.",
+	},
+	linkType: { id: 'project.settings.links.link-type', defaultMessage: 'Link type' },
+	donationPlatform: { id: 'project.settings.links.donation-platform', defaultMessage: 'Platform' },
+	donationLink: { id: 'project.settings.links.donation-link', defaultMessage: 'Link' },
+	donations: { id: 'project.settings.links.donations', defaultMessage: 'Donation links' },
+	addLink: { id: 'project.settings.links.add-link', defaultMessage: 'Add link' },
+	removeDonation: {
+		id: 'project.settings.links.remove-donation-link',
+		defaultMessage: 'Remove donation link',
+	},
+	donationsDescription: {
+		id: 'project.settings.links.donations-description',
+		defaultMessage: 'Add donation links for users to support you directly.',
+	},
+	urlPlaceholder: {
+		id: 'project.settings.links.url-placeholder',
+		defaultMessage: 'Enter a valid URL',
+	},
+	donationUsernamePlaceholder: {
+		id: 'project.settings.links.donation-username-placeholder',
+		defaultMessage: 'Enter your {platform} username',
+	},
+	visitLink: {
+		id: 'project.settings.links.visit-link',
+		defaultMessage: 'Visit {url}',
+	},
+	donationUrl: {
+		id: 'project.settings.links.donation-url',
+		defaultMessage: 'URL',
+	},
+	donationUsername: {
+		id: 'project.settings.links.donation-username',
+		defaultMessage: 'Username',
+	},
+	updatedTitle: { id: 'project.settings.links.updated-title', defaultMessage: 'Links updated' },
+	updated: {
+		id: 'project.settings.links.updated',
+		defaultMessage: 'Your links have been updated.',
+	},
+	serverDiscord: { id: 'project.settings.links.server-discord', defaultMessage: 'Discord' },
+	serverWikiDescription: {
+		id: 'project.settings.links.server-wiki-description',
+		defaultMessage: 'A page containing information, documentation, and help for the server.',
+	},
+	serverUpdated: {
+		id: 'project.settings.links.server-updated',
+		defaultMessage: 'Your server links have been updated.',
+	},
+})
+
+const fieldMessages = computed(() => ({
+	issues: { title: messages.issues, description: messages.issuesDescription },
+	source: { title: messages.source, description: messages.sourceDescription },
+	wiki: {
+		title: messages.wiki,
+		description: isServerProject.value ? messages.serverWikiDescription : messages.wikiDescription,
+	},
+	discord: {
+		title: isServerProject.value ? messages.serverDiscord : messages.discord,
+		description: messages.discordDescription,
+	},
+	site: { title: messages.site, description: messages.siteDescription },
+	store: { title: messages.store, description: messages.storeDescription },
+}))
+
+const { formatMessage } = useVIntl()
 const tags = useGeneratedState()
-
-const donationPlatformOptions = computed(() =>
-	tags.value.donationPlatforms.map((platform) => ({
-		value: platform.short,
-		label: platform.name,
-	})),
-)
-
-const { projectV3: project, currentMember, invalidate } = injectProjectPageContext()
-const { labrinth } = injectModrinthClient()
+const { projectV3: project, currentMember, patchProjectV3 } = injectProjectPageContext()
 const { addNotification } = injectNotificationManager()
-
 useProjectSettingsHeadTitle(commonProjectSettingsMessages.links)
 
-const isServerProject = computed(() => project.value?.minecraft_server != null)
-
+const isServerProject = computed(() => project.value.minecraft_server != null)
+const visibleFields = computed<EditableLinkField[]>(() =>
+	isServerProject.value
+		? ['site', 'store', 'wiki', 'discord']
+		: ['issues', 'source', 'wiki', 'discord'],
+)
+const hasPermission = computed(
+	() =>
+		isAdmin(currentMember.value?.user) ||
+		((currentMember.value?.permissions ?? 0) & (1 << 2)) !== 0,
+)
 const {
 	saved,
 	current,
 	reset: resetFields,
 } = useSavable<EditableLinks>(
-	() => {
-		if (isServerProject.value) {
-			return {
-				site: project.value.link_urls?.site?.url ?? '',
-				store: project.value.link_urls?.store?.url ?? '',
-				wiki: project.value.link_urls?.wiki?.url ?? '',
-				discord: project.value.link_urls?.discord?.url ?? '',
-			}
-		}
-		return {
-			issues: project.value.link_urls?.issues?.url ?? '',
-			source: project.value.link_urls?.source?.url ?? '',
-			wiki: project.value.link_urls?.wiki?.url ?? '',
-			discord: project.value.link_urls?.discord?.url ?? '',
-		}
-	},
+	() =>
+		Object.fromEntries(
+			visibleFields.value.map((field) => [field, project.value.link_urls?.[field]?.url ?? '']),
+		),
 	() => {},
 )
 
-function donationRowsFromLinks(linkUrls?: ProjectLinkUrls): DonationRow[] {
-	const rows: DonationRow[] = (tags.value.donationPlatforms ?? []).flatMap((platform) => {
-		const url = linkUrls?.[platform.short]?.url
-		return url ? [{ id: platform.short, url }] : []
-	})
-	rows.push({ id: undefined, url: undefined })
-	return rows
+let nextRowKey = 0
+
+function makeRow(id?: string, url = ''): DonationRow {
+	return { key: nextRowKey++, ...donationInput(id, url) }
 }
 
-const donationLinks = ref(donationRowsFromLinks(project.value?.link_urls))
+function donationRowsFromLinks(links?: ProjectLinkUrls): DonationRow[] {
+	return tags.value.donationPlatforms.flatMap((platform) =>
+		links?.[platform.short]?.url ? [makeRow(platform.short, links[platform.short].url)] : [],
+	)
+}
 
-function resetDonations() {
-	donationLinks.value = donationRowsFromLinks(project.value?.link_urls)
+const donationLinks = ref(donationRowsFromLinks(project.value.link_urls))
+const donationPlatformOptions = computed(() =>
+	tags.value.donationPlatforms
+		.filter((platform) => !donationLinks.value.some((row) => row.id === platform.short))
+		.map((platform) => ({
+			id: platform.short,
+			label: platform.name,
+			action: () => addDonation(platform.short),
+		})),
+)
+const donationModeTabs = computed(() => [
+	{ value: 'username', label: formatMessage(messages.donationUsername) },
+	{ value: 'url', label: formatMessage(messages.donationUrl) },
+])
+const linkColumns = computed<TableColumn<'name' | 'url'>[]>(() => [
+	{
+		key: 'name',
+		label: formatMessage(messages.linkType),
+		width: '12rem',
+		cellClass: 'pr-3 py-3',
+	},
+	{
+		key: 'url',
+		label: formatMessage(messages.donationUrl),
+		cellClass: 'py-3 pl-1',
+	},
+])
+const linkRows = computed<LinkTableRow[]>(() => [
+	...visibleFields.value.map((field) => ({
+		id: field,
+		inputId: 'project-link-' + field,
+		name: formatMessage(fieldMessages.value[field].title),
+		description: formatMessage(fieldMessages.value[field].description),
+		value: current.value[field] ?? '',
+		url: current.value[field] ?? '',
+		field,
+	})),
+	...(isServerProject.value
+		? []
+		: donationLinks.value.map((donation) => ({
+				id: 'donation-' + donation.key,
+				inputId: 'donation-link-' + donation.key,
+				name: donationPlatformTitle(donation) ?? '',
+				description: formatMessage(messages.donationsDescription),
+				value: donation.input,
+				url: donation.url,
+				donation,
+			}))),
+])
+const linkSections = computed(() => [
+	{
+		id: 'links',
+		title: formatMessage(messages.title),
+		columns: linkColumns.value,
+		rows: linkRows.value.filter((row) => row.field),
+	},
+	...(isServerProject.value
+		? []
+		: [
+				{
+					id: 'donations',
+					title: formatMessage(messages.donations),
+					columns: linkColumns.value.map((column) => ({
+						...column,
+						label: formatMessage(
+							column.key === 'name' ? messages.donationPlatform : messages.donationLink,
+						),
+					})),
+					rows: linkRows.value.filter((row) => row.donation),
+				},
+			]),
+])
+const savedDonations = computed(() =>
+	Object.fromEntries(
+		tags.value.donationPlatforms.flatMap((platform) => {
+			const url = project.value.link_urls?.[platform.short]?.url
+			return url ? [[platform.short, url]] : []
+		}),
+	),
+)
+const currentDonations = computed(() =>
+	Object.fromEntries(
+		donationLinks.value.filter((row) => row.id && row.url).map((row) => [row.id!, row.url]),
+	),
+)
+const original = computed(() => ({
+	...saved.value,
+	donations: JSON.stringify(
+		isServerProject.value ? [] : Object.entries(savedDonations.value).sort(),
+	),
+}))
+const modified = computed(() => ({
+	...current.value,
+	donations: JSON.stringify(
+		isServerProject.value
+			? []
+			: donationLinks.value
+					.filter((row) => row.id && row.url)
+					.map((row) => [row.id ?? '', row.url])
+					.sort(),
+	),
+}))
+const hasChanges = computed(() => JSON.stringify(original.value) !== JSON.stringify(modified.value))
+const { confirmLeaveModal } = usePageLeaveSafety(hasChanges)
+const saveValidation = useProjectSaveValidation(() => modified.value)
+const otherSaveMessages = computed(() =>
+	saveValidation.withoutFields([
+		...visibleFields.value,
+		...donationLinks.value.flatMap((row) => (row.id ? [row.id] : [])),
+	]),
+)
+
+const fieldValidation = useProjectNagMessages('link-field')
+const sourceRequirement = useProjectNagMessages('source-availability', 'source')
+
+function savedFieldMessages(field: string) {
+	return [
+		...fieldValidation.value.filter((message) => message.values?.field === field),
+		...(field === 'source' ? sourceRequirement.value : []),
+	]
+}
+
+function donationMessages(row: DonationRow) {
+	const rejected = row.id ? saveValidation.forField(row.id) : []
+	return rejected.length
+		? rejected
+		: row.id && row.url === savedDonations.value[row.id]
+			? savedFieldMessages(row.id)
+			: []
+}
+
+function donationPlatformTitle(row: DonationRow) {
+	return tags.value.donationPlatforms.find((platform) => platform.short === row.id)?.name ?? row.id
+}
+
+function donationPlaceholder(row: DonationRow) {
+	if (row.mode !== 'username') return formatMessage(messages.urlPlaceholder)
+	return formatMessage(messages.donationUsernamePlaceholder, {
+		platform:
+			row.id === 'github' ? 'GitHub' : row.id === 'paypal' ? 'PayPal' : donationPlatformTitle(row),
+	})
+}
+
+async function addDonation(platform: string) {
+	if (saving.value || !hasPermission.value) return
+	if (!donationPlatformOptions.value.some((option) => option.id === platform)) return
+	const row = makeRow(platform)
+	donationLinks.value.push(row)
+	await nextTick()
+	document.getElementById('donation-link-' + row.key)?.focus()
+}
+
+function removeDonation(row: DonationRow) {
+	if (saving.value || !hasPermission.value) return
+	donationLinks.value = donationLinks.value.filter((link) => link.key !== row.key)
+}
+
+function changeLink(row: LinkTableRow, value: string | number | undefined) {
+	if (row.donation) setDonationInput(row.donation, value ?? '')
+	else if (row.field) current.value[row.field] = String(value ?? '')
+}
+
+function changeDonationMode(row: DonationRow, mode: TabsValue) {
+	if (saving.value || !hasPermission.value || row.mode === mode) return
+	if (mode === 'username' || mode === 'url') toggleDonationInput(row)
+}
+
+function visitUrl(value: string) {
+	try {
+		const url = new URL(normalizeProjectUrl(value))
+		return ['http:', 'https:'].includes(url.protocol) ? url.href : ''
+	} catch {
+		return ''
+	}
+}
+
+function visitLink(value: string) {
+	const url = visitUrl(value)
+	if (url) window.open(url, '_blank', 'noopener,noreferrer')
 }
 
 function reset() {
 	resetFields()
-	resetDonations()
+	donationLinks.value = donationRowsFromLinks(project.value.link_urls)
+	saveValidation.clear()
 }
-
-const externalLinksValidation = useProjectNagMessages('external-links')
-
-function useLinkFieldMessages(field: EditableLinkField, includeSourceRequirement = false) {
-	const verification = useProjectNagMessages('source-issues-discord-links', field)
-	const discordMisuse = useProjectNagMessages('non-discord-link-fields', field)
-	const sourceRequirement = useProjectNagMessages('source-availability', field)
-	return computed(() => [
-		...verification.value,
-		...(field === 'discord' ? [] : discordMisuse.value),
-		...(includeSourceRequirement ? sourceRequirement.value : []),
-	])
-}
-
-const discordInviteCheck = useLinkFieldMessages('discord')
-const issuesCheck = useLinkFieldMessages('issues')
-const sourceCheck = useLinkFieldMessages('source', true)
-const wikiCheck = useLinkFieldMessages('wiki')
-const siteCheck = useLinkFieldMessages('site')
-const storeCheck = useLinkFieldMessages('store')
-
-function donationCheckState(row: DonationRow, index: number) {
-	if (row.url && !row.id) {
-		return {
-			severity: 'error',
-			message: defineMessage({
-				id: 'project.settings.links.donation.no-type',
-				defaultMessage: 'Please select a platform for this Donation link.',
-			}),
-		}
-	}
-
-	if (row.id) {
-		const firstIndex = donationLinks.value.findIndex((other) => other.id === row.id)
-		if (firstIndex !== index) {
-			return {
-				severity: 'error',
-				message: defineMessage({
-					id: 'project.settings.links.donation.duplicate-type',
-					defaultMessage: 'You already have another {platform} link.',
-				}),
-				values: {
-					platform:
-						tags.value.donationPlatforms.find((platform) => platform.short === row.id)?.name ??
-						row.id,
-				},
-			}
-		}
-	}
-
-	return undefined
-}
-
-const isAdminUser = computed(() => isAdmin(currentMember.value?.user))
-
-const hasPermission = computed(() => {
-	const EDIT_DETAILS = 1 << 2
-	return isAdminUser.value || (currentMember.value?.permissions & EDIT_DETAILS) === EDIT_DETAILS
-})
-
-function donationsMapFromLinkUrls(linkUrls?: ProjectLinkUrls): Record<string, string> {
-	const donations: Record<string, string> = {}
-	for (const platform of tags.value.donationPlatforms ?? []) {
-		donations[platform.short] = linkUrls?.[platform.short]?.url ?? ''
-	}
-	return donations
-}
-
-const donationsOriginal = computed<Record<string, string>>(() =>
-	isServerProject.value ? {} : donationsMapFromLinkUrls(project.value?.link_urls),
-)
-
-const donationsModified = computed<Record<string, string>>(() => {
-	if (isServerProject.value) return {}
-	const donations: Record<string, string> = {}
-	for (const row of donationLinks.value) {
-		if (row.id && !(row.id in donations)) donations[row.id] = row.url ?? ''
-	}
-	return donations
-})
-
-function serializeDonationRow(row: DonationRow): string {
-	return `${row.id ?? ''}:${row.url}`
-}
-
-function donationRowsToObject(rows: DonationRow[]): Record<string, string> {
-	const entries: Record<string, string> = {}
-	rows.forEach((row, index) => {
-		if (!row.url) return
-		entries[`donation-row-${index}`] = serializeDonationRow(row)
-	})
-	return entries
-}
-
-const donationsSavedRows = computed(() => donationRowsFromLinks(project.value?.link_urls))
-
-const originalDonationRows = computed<Record<string, string>>(() =>
-	isServerProject.value ? {} : donationRowsToObject(donationsSavedRows.value),
-)
-const modifiedDonationRows = computed<Record<string, string>>(() =>
-	isServerProject.value ? {} : donationRowsToObject(donationLinks.value),
-)
-
-const original = computed<Record<string, string | undefined>>(() => ({
-	...saved.value,
-	...originalDonationRows.value,
-}))
-const modified = computed<Record<string, string | undefined>>(() => {
-	const donations: Record<string, string | undefined> = { ...modifiedDonationRows.value }
-	for (const key of Object.keys(originalDonationRows.value)) {
-		if (!(key in donations)) donations[key] = undefined
-	}
-	return { ...current.value, ...donations }
-})
-
-const hasChanges = computed(() =>
-	Object.keys(modified.value).some((key) => modified.value[key] !== original.value[key]),
-)
-
-const { confirmLeaveModal } = usePageLeaveSafety(hasChanges)
 
 const patchData = computed<Record<string, string | null>>(() => {
 	const data: Record<string, string | null> = {}
-	for (const key of Object.keys(current.value) as EditableLinkField[]) {
-		const value = current.value[key]
-		if (value == null || value === saved.value[key]) continue
-		data[key] = value === '' ? null : value.trim()
+	for (const field of visibleFields.value) {
+		const value = current.value[field] ?? ''
+		if (value !== saved.value[field]) data[field] = normalizeProjectUrl(value) || null
 	}
 	if (!isServerProject.value) {
-		for (const platform of tags.value.donationPlatforms ?? []) {
-			const newUrl = donationsModified.value[platform.short] ?? ''
-			const oldUrl = donationsOriginal.value[platform.short] ?? ''
-			if (newUrl === oldUrl) continue
-			data[platform.short] = newUrl === '' ? null : newUrl.trim()
+		for (const platform of tags.value.donationPlatforms) {
+			const url = currentDonations.value[platform.short] ?? ''
+			if (url !== (savedDonations.value[platform.short] ?? '')) {
+				data[platform.short] = normalizeProjectUrl(url) || null
+			}
 		}
 	}
 	return data
 })
-
-const canSave = computed(() => {
-	if (!hasPermission.value || Object.keys(patchData.value).length === 0) return false
-
-	const donationsInvalid =
-		!isServerProject.value &&
-		donationLinks.value.some((row, index) => donationCheckState(row, index)?.severity === 'error')
-
-	return !donationsInvalid
-})
-
+const canSave = computed(
+	() =>
+		hasPermission.value &&
+		hasChanges.value &&
+		Object.keys(patchData.value).length > 0 &&
+		!saveValidation.messages.value.some((message) => message.severity === 'error'),
+)
 const saving = ref(false)
 
 async function save() {
-	if (!canSave.value) return
-	const data = patchData.value
-	if (Object.keys(data).length === 0) return
-
+	if (!canSave.value || saving.value) return
+	const submittedState = saveValidation.snapshot()
 	saving.value = true
 	try {
-		await labrinth.projects_v3.edit(project.value.id, {
-			link_urls: data,
-		})
-		await invalidate()
+		await patchProjectV3({ link_urls: patchData.value }, true, true)
 		reset()
 		addNotification({
-			title: 'Links updated',
-			text: isServerProject.value
-				? 'Your server links have been updated.'
-				: 'Your links have been updated.',
+			title: formatMessage(messages.updatedTitle),
+			text: formatMessage(isServerProject.value ? messages.serverUpdated : messages.updated),
 			type: 'success',
 		})
-	} catch (err: unknown) {
-		addNotification({
-			title: 'Failed to update links',
-			text: getErrorDescription(err),
-			type: 'error',
-		})
+	} catch (error) {
+		saveValidation.capture(error, submittedState)
 	} finally {
 		saving.value = false
 	}
 }
-
-function getErrorDescription(error: unknown): string {
-	if (typeof error === 'object' && error !== null && 'data' in error) {
-		const data = (error as { data?: { description?: string } }).data
-		if (data?.description) return data.description
-	}
-
-	return error instanceof Error ? error.message : String(error)
-}
-
-function updateDonationLinks() {
-	const links = donationLinks.value
-	links.forEach((link) => {
-		if (link.url) {
-			const url = link.url.toLowerCase()
-			if (url.includes('patreon.com')) {
-				link.id = 'patreon'
-			} else if (url.includes('ko-fi.com')) {
-				link.id = 'ko-fi'
-			} else if (url.includes('paypal.com') || url.includes('paypal.me')) {
-				link.id = 'paypal'
-			} else if (url.includes('buymeacoffee.com') || url.includes('buymeacoff.ee')) {
-				link.id = 'bmac'
-			} else if (url.includes('github.com/sponsors')) {
-				link.id = 'github'
-			}
-		}
-	})
-	if (!links.find((link) => !(link.url && link.id))) {
-		links.push({
-			id: undefined,
-			url: undefined,
-		})
-	}
-	donationLinks.value = links
-}
 </script>
-<style lang="scss" scoped>
-.donation-link-group {
-	input {
-		flex-grow: 2;
-		max-width: 26rem;
-	}
-}
-</style>

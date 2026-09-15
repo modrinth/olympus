@@ -14,8 +14,7 @@ export type ProjectSettingsField =
 	| 'custom-license'
 	| 'license-url'
 	| 'external-links'
-	| 'source-issues-discord-links'
-	| 'non-discord-link-fields'
+	| 'link-field'
 	| 'source-availability'
 	| 'permissions'
 	| 'server-region'
@@ -50,14 +49,15 @@ export const projectNagFields = {
 	],
 	icon: ['add-icon'],
 	description: [
+		'link-validation',
 		'project-description-slur',
 		'project-description-profanity',
 		'project-description-non-standard-text',
 		'project-description-non-english',
+		'project-description-matches-summary',
 		'add-description',
 		'description-too-short',
 		'project-description-spam',
-		'project-description-banned-link',
 		'long-headers',
 		'description-ends-with-header',
 		'adjacent-headers',
@@ -67,10 +67,9 @@ export const projectNagFields = {
 	'gallery-images': ['upload-gallery-image', 'feature-gallery-image'],
 	license: ['select-license'],
 	'custom-license': ['add-custom-license-details'],
-	'license-url': ['invalid-license-url'],
-	'external-links': ['add-links', 'add-links-server', 'identical-links', 'banned-link-usage'],
-	'source-issues-discord-links': ['verify-external-links'],
-	'non-discord-link-fields': ['misused-discord-link'],
+	'license-url': ['link-validation'],
+	'link-field': ['link-validation'],
+	'external-links': ['add-links', 'add-links-server'],
 	'source-availability': ['gpl-license-source-required'],
 	permissions: ['review-permissions'],
 	'server-region': ['select-country'],

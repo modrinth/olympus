@@ -53,12 +53,6 @@
   "nags.all-tags-selected.title": {
     "defaultMessage": "選擇精確的標籤"
   },
-  "nags.banned-link-usage.description": {
-    "defaultMessage": "不允許將連結「{url}」做為外部連結。"
-  },
-  "nags.banned-link-usage.title": {
-    "defaultMessage": "移除不被允許的連結"
-  },
   "nags.check-disclosures.description": {
     "defaultMessage": "填寫適用於你的{type}的內容揭露資訊，以確保使用者知悉所有重要資訊。"
   },
@@ -88,9 +82,6 @@
   },
   "nags.edit-gallery.title": {
     "defaultMessage": "編輯圖庫"
-  },
-  "nags.edit-license.title": {
-    "defaultMessage": "編輯授權條款"
   },
   "nags.edit-summary.title": {
     "defaultMessage": "編輯摘要"
@@ -125,20 +116,8 @@
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "提供原始碼"
   },
-  "nags.identical-links.description": {
-    "defaultMessage": "你輸入的部分外部連結似乎完全相同。每個連結僅應列出一次，並選擇正確的連結類型。"
-  },
-  "nags.identical-links.title": {
-    "defaultMessage": "移除重複連結"
-  },
   "nags.invalid-gallery-text.title": {
     "defaultMessage": "修改圖庫圖片文字"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "授權條款網址無效。"
-  },
-  "nags.invalid-license-url.description.domain": {
-    "defaultMessage": "你的授權條款網址指向 {domain}，這不適合用來提供授權條款資訊。授權條款網址應直接連結到你的授權條款文字。"
   },
   "nags.invalid-license-url.description.malformed": {
     "defaultMessage": "你的授權條款網址似乎格式不正確。請提供有效的授權條款網址。"
@@ -173,12 +152,6 @@
   "nags.missing-alt-text.title": {
     "defaultMessage": "新增圖片替代文字"
   },
-  "nags.misused-discord-link-description": {
-    "defaultMessage": "Discord 邀請連結不可用於其他連結類型。請只將你的 Discord 連結放至 Discord 邀請連結欄位。"
-  },
-  "nags.misused-discord-link.title": {
-    "defaultMessage": "移動 Discord 邀請連結"
-  },
   "nags.moderation.title": {
     "defaultMessage": "前往審查討論串"
   },
@@ -193,9 +166,6 @@
   },
   "nags.multiple-resolution-tags.title": {
     "defaultMessage": "選擇正確的解析度"
-  },
-  "nags.project-description-banned-link.description": {
-    "defaultMessage": "專案描述中不允許使用連結「{fullUrl}」。"
   },
   "nags.project-description-non-english.description": {
     "defaultMessage": "專案描述必須以英文撰寫或附上英文翻譯。"
@@ -371,12 +341,6 @@
   "nags.upload-version.title": {
     "defaultMessage": "上傳版本"
   },
-  "nags.verify-external-links.description": {
-    "defaultMessage": "你的部分外部連結可能指向了不適合該連結類型的網域。"
-  },
-  "nags.verify-external-links.title": {
-    "defaultMessage": "檢查外部連結"
-  },
   "nags.visit-links-settings.title": {
     "defaultMessage": "前往連結設定"
   },
@@ -390,4 +354,3 @@
     "defaultMessage": "專案名稱不應包含版本號碼。"
   }
 }
-

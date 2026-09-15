@@ -29,9 +29,6 @@
   "nags.edit-description.title": {
     "defaultMessage": "Muokkaa kuvausta"
   },
-  "nags.edit-license.title": {
-    "defaultMessage": "Muokkaa lisenssiä"
-  },
   "nags.edit-summary.title": {
     "defaultMessage": "Muokkaa tiivistelmää"
   },
@@ -46,9 +43,6 @@
   },
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "Anna lähdekoodi"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "Lisenssin URL-osoite on virheellinen."
   },
   "nags.invalid-license-url.description.malformed": {
     "defaultMessage": "Lisenssin URL-osoite näyttää olevan viallinen. Ole hyvä ja ilmoita kelvollinen URL-osoite lisenssitekstiisi."
@@ -73,9 +67,6 @@
   },
   "nags.missing-alt-text.title": {
     "defaultMessage": "Lisää puuttuva vaihtoehtoinen teksti"
-  },
-  "nags.misused-discord-link.title": {
-    "defaultMessage": "Siirrä Discord-kutsu"
   },
   "nags.moderator-feedback.title": {
     "defaultMessage": "Tarkista palaute"

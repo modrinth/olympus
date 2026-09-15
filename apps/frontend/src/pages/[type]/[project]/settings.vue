@@ -38,7 +38,7 @@ const {
 	setProcessing,
 	projectValidation,
 	projectValidationLoading,
-	refreshProjectValidation,
+	projectLinksNetworkValidationLoading,
 } = injectProjectPageContext()
 
 const flags = useFeatureFlags()
@@ -180,11 +180,10 @@ const moderatorSeeUserUi = computed<boolean>({
 			:route-name="route.name as string"
 			:tags="tags"
 			:validation-nags="projectValidation?.nags ?? []"
-			:validation-loading="projectValidationLoading"
+			:validation-loading="projectValidationLoading || projectLinksNetworkValidationLoading"
 			:validation-available="projectValidation !== null"
-			:refresh-validation="refreshProjectValidation"
+			:submit-project="setProcessing"
 			@toggle-collapsed="() => (collapsedChecklist = !collapsedChecklist)"
-			@set-processing="setProcessing"
 		/>
 		<div class="grid gap-6 lg:grid-cols-[1fr_3fr]">
 			<div>

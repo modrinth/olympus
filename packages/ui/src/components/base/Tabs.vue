@@ -9,13 +9,16 @@
 			:key="tab.value"
 			ref="tabButtons"
 			type="button"
-			class="flex min-h-6 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[10px] border border-solid px-2.5 h-full text-sm font-medium outline-none transition-all active:scale-[0.97] focus-visible:ring-4 focus-visible:ring-brand-shadow"
+			class="flex min-h-6 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[10px] border border-solid px-2.5 h-full text-sm font-medium outline-none transition-all active:scale-[0.97] focus-visible:ring-4 focus-visible:ring-brand-shadow disabled:cursor-not-allowed disabled:opacity-50"
 			:class="
 				tab.value === value
-					? 'border-green bg-highlight-green text-green'
+					? color === 'gray'
+						? 'border-surface-5 bg-surface-4 text-contrast'
+						: 'border-green bg-highlight-green text-green'
 					: 'border-transparent bg-transparent text-primary hover:bg-surface-4'
 			"
 			role="tab"
+			:disabled="disabled"
 			:aria-selected="tab.value === value"
 			:tabindex="tab.value === value || (!hasSelectedTab && index === 0) ? 0 : -1"
 			@click="selectTab(tab)"
@@ -25,7 +28,13 @@
 				:is="tab.icon"
 				v-if="tab.icon"
 				class="size-5 shrink-0"
-				:class="tab.value === value ? 'text-green' : 'text-secondary'"
+				:class="
+					tab.value === value
+						? color === 'gray'
+							? 'text-contrast'
+							: 'text-green'
+						: 'text-secondary'
+				"
 			/>
 			<span v-if="tab.label" class="text-nowrap">{{ tab.label }}</span>
 		</button>
@@ -47,6 +56,8 @@ export interface TabsTab {
 const props = defineProps<{
 	value: TabsValue
 	tabs: TabsTab[]
+	color?: 'green' | 'gray'
+	disabled?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -59,6 +70,7 @@ const tabButtons = ref<HTMLButtonElement[]>()
 const hasSelectedTab = computed(() => props.tabs.some((tab) => tab.value === props.value))
 
 function selectTab(tab: TabsTab) {
+	if (props.disabled) return
 	emit('update:value', tab.value)
 	emit('change', tab)
 }
@@ -74,7 +86,7 @@ function selectTabAtIndex(index: number) {
 }
 
 function onTabKeydown(event: KeyboardEvent, index: number) {
-	if (props.tabs.length === 0) return
+	if (props.disabled || props.tabs.length === 0) return
 
 	const lastIndex = props.tabs.length - 1
 	let nextIndex: number | undefined

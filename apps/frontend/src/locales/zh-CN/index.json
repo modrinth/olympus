@@ -4115,12 +4115,6 @@
   "project.settings.general.url.title": {
     "message": "URL"
   },
-  "project.settings.links.donation.duplicate-type": {
-    "message": "你已经有了一个{platform}链接了。"
-  },
-  "project.settings.links.donation.no-type": {
-    "message": "请为此捐赠链接选择一个平台。"
-  },
   "project.settings.monetization.description": {
     "message": "Modrinth上的项目会自动加入<rewards-program-link>激励计划</rewards-program-link>。如果你不想（或由于法律原因不能）从这个项目赚取收入，你可以在这里关闭它。"
   },

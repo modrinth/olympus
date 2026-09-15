@@ -20,9 +20,6 @@
   "nags.edit-description.title": {
     "defaultMessage": "แก้ไขคำอธิบาย"
   },
-  "nags.edit-license.title": {
-    "defaultMessage": "แก้ไขไลเซนส์"
-  },
   "nags.edit-summary.title": {
     "defaultMessage": "แก้ไขสรุป"
   },
@@ -31,9 +28,6 @@
   },
   "nags.gallery.title": {
     "defaultMessage": "ดูหน้าแกลเลอรี่"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "URL ไลเซนส์ไม่ถูกต้อง"
   },
   "nags.invalid-license-url.title": {
     "defaultMessage": "เพิ่มลิงก์ไลเซนส์ที่ถูกต้อง"

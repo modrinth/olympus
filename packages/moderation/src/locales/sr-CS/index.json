@@ -53,12 +53,6 @@
   "nags.all-tags-selected.title": {
     "defaultMessage": "Izaberi tačne oznake"
   },
-  "nags.banned-link-usage.description": {
-    "defaultMessage": "Link \"{url}\" nije dozvoljen kao eksterni link."
-  },
-  "nags.banned-link-usage.title": {
-    "defaultMessage": "Ukloni zabranjene linkove"
-  },
   "nags.check-disclosures.description": {
     "defaultMessage": "Uverite se da su korisnici svesni svih važnih detalja tako što ćete popuniti obaveštenja o sadržaju koja se odnose na vaš {type}."
   },
@@ -89,9 +83,6 @@
   "nags.edit-gallery.title": {
     "defaultMessage": "Izmeni galeriju"
   },
-  "nags.edit-license.title": {
-    "defaultMessage": "Promeni licencu"
-  },
   "nags.edit-summary.title": {
     "defaultMessage": "Promeni rezime"
   },
@@ -116,9 +107,6 @@
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "Navedi izvorni kod"
   },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "URL adresa licence je nevažeća."
-  },
   "nags.invalid-license-url.description.malformed": {
     "defaultMessage": "Izgleda da je URL adresa tvoje licence pogrešno formatirana. Molimo te da navedeš važeću URL adresu teksta tvoje licence."
   },
@@ -142,9 +130,6 @@
   },
   "nags.missing-alt-text.title": {
     "defaultMessage": "Dodajte alternativni tekst slike"
-  },
-  "nags.misused-discord-link.title": {
-    "defaultMessage": "Premesti Discord pozivnicu"
   },
   "nags.moderation.title": {
     "defaultMessage": "Posjeti temu za moderaciju"
@@ -246,4 +231,3 @@
     "defaultMessage": "Posjeti podešavanja linkova"
   }
 }
-

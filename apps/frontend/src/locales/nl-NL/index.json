@@ -4040,12 +4040,6 @@
   "project.settings.general.url.title": {
     "message": "URL"
   },
-  "project.settings.links.donation.duplicate-type": {
-    "message": "Je hebt al een andere {platform} link."
-  },
-  "project.settings.links.donation.no-type": {
-    "message": "Selecteer een platform voor deze donatie link."
-  },
   "project.settings.monetization.description": {
     "message": "Projecten op Modrinth worden automatisch ingeschreven in het <rewards-program-link>Beloningen Programma</rewards-program-link>. Als je geen inkomsten wilt (of niet kunt verdienen om juridische redenen) van dit project, kun je het hier uitschakelen."
   },

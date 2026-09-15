@@ -53,12 +53,6 @@
   "nags.all-tags-selected.title": {
     "defaultMessage": "Виберіть відповідні позначки"
   },
-  "nags.banned-link-usage.description": {
-    "defaultMessage": "Посилання «{url}» не допускається як зовнішнє посилання."
-  },
-  "nags.banned-link-usage.title": {
-    "defaultMessage": "Приберіть заборонені посилання"
-  },
   "nags.check-disclosures.description": {
     "defaultMessage": "Переконайтеся, що користувачі знають про всі важливі деталі, заповнивши розкриття інформації про вміст, що стосуються вашого {type}."
   },
@@ -88,9 +82,6 @@
   },
   "nags.edit-gallery.title": {
     "defaultMessage": "Відредагуйте галерею"
-  },
-  "nags.edit-license.title": {
-    "defaultMessage": "Відредагуйте ліцензію"
   },
   "nags.edit-summary.title": {
     "defaultMessage": "Відредагуйте короткий зміст"
@@ -125,20 +116,8 @@
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "Надайте вихідний код"
   },
-  "nags.identical-links.description": {
-    "defaultMessage": "Деякі з ваших зовнішніх посилань однакові. Кожне посилання має зазначатися лиш один раз і з відповідним типом посилання."
-  },
-  "nags.identical-links.title": {
-    "defaultMessage": "Приберіть однакові посилання"
-  },
   "nags.invalid-gallery-text.title": {
     "defaultMessage": "Модифікуйте текст зображення галереї"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "Посилання на ліцензію неправильне."
-  },
-  "nags.invalid-license-url.description.domain": {
-    "defaultMessage": "Ваше посилання відсилає на вебсайт {domain}, який не є прийнятним джерелом ліцензійної інформації. Посилання мають відсилати безпосередньо до тексту ліцензії."
   },
   "nags.invalid-license-url.description.malformed": {
     "defaultMessage": "Посилання на ліцензію, схоже, має неправильний формат. Надайте дійсне посилання на текст вашої ліцензії."
@@ -173,12 +152,6 @@
   "nags.missing-alt-text.title": {
     "defaultMessage": "Додайте альтернативний текст до зображень"
   },
-  "nags.misused-discord-link-description": {
-    "defaultMessage": "Запрошення до Discord не можуть використовуватися для посилань інших типів. Уставте посилання лише в поле «Посилання на запрошення до Discord»."
-  },
-  "nags.misused-discord-link.title": {
-    "defaultMessage": "Перемістіть запрошення до Discord"
-  },
   "nags.moderation.title": {
     "defaultMessage": "Відвідайте гілку модерації"
   },
@@ -193,9 +166,6 @@
   },
   "nags.multiple-resolution-tags.title": {
     "defaultMessage": "Виберіть правильну роздільність"
-  },
-  "nags.project-description-banned-link.description": {
-    "defaultMessage": "Опис проєкту не може містити посилання «{fullUrl}»."
   },
   "nags.project-description-non-english.description": {
     "defaultMessage": "Опис проєкту повинний бути англійською або містити переклад англійською."
@@ -371,12 +341,6 @@
   "nags.upload-version.title": {
     "defaultMessage": "Завантажте версію"
   },
-  "nags.verify-external-links.description": {
-    "defaultMessage": "Деякі з ваших зовнішніх посилань можуть вести до доменів, які не підходять для цього типу посилань."
-  },
-  "nags.verify-external-links.title": {
-    "defaultMessage": "Оглянути зовнішні посилання"
-  },
   "nags.visit-links-settings.title": {
     "defaultMessage": "Відвідайте налаштування посилань"
   },
@@ -390,4 +354,3 @@
     "defaultMessage": "Назва проєкту не повинна містити номер версії."
   }
 }
-

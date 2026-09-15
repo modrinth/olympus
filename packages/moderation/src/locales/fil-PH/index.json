@@ -29,9 +29,6 @@
   "nags.edit-description.title": {
     "defaultMessage": "Baguhin ang paglalarawan"
   },
-  "nags.edit-license.title": {
-    "defaultMessage": "Baguhin ang lisensya"
-  },
   "nags.edit-summary.title": {
     "defaultMessage": "Baguhin ang buod"
   },
@@ -49,9 +46,6 @@
   },
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "Magbigay ng source code"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "Di-wasto ang URL ng lisensiya."
   },
   "nags.invalid-license-url.description.malformed": {
     "defaultMessage": "Maaaring hindi wasto ang URL ng lisensiya mo. Mangyaring magbigay ng wastong URL para sa teksto ng iyong lisensiya."
@@ -76,9 +70,6 @@
   },
   "nags.missing-alt-text.title": {
     "defaultMessage": "Magdagdag ng image alt text"
-  },
-  "nags.misused-discord-link.title": {
-    "defaultMessage": "Ilipat ang anyaya sa Discord"
   },
   "nags.moderation.title": {
     "defaultMessage": "Bisitahin ang moderation thread"
@@ -162,4 +153,3 @@
     "defaultMessage": "Bisitahin ang mga setting sa mga link"
   }
 }
-

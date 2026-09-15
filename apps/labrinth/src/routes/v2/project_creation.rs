@@ -246,8 +246,14 @@ pub async fn project_create(
                 link_urls.insert("discord".to_string(), discord_url);
             }
             if let Some(donation_urls) = legacy_create.donation_urls {
+                crate::models::v2::projects::validate_donation_platforms(
+                    &donation_urls,
+                )
+                .map_err(|error| {
+                    CreateError::InvalidInput(error.to_string())
+                })?;
                 for donation_url in donation_urls {
-                    link_urls.insert(donation_url.platform, donation_url.url);
+                    link_urls.insert(donation_url.id, donation_url.url);
                 }
             }
 

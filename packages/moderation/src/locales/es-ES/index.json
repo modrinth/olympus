@@ -53,12 +53,6 @@
   "nags.all-tags-selected.title": {
     "defaultMessage": "Selecciona etiquetas precisas"
   },
-  "nags.banned-link-usage.description": {
-    "defaultMessage": "El link \"{url}\" no está permitido como enlace externo."
-  },
-  "nags.banned-link-usage.title": {
-    "defaultMessage": "Eliminar links prohibidos"
-  },
   "nags.check-disclosures.description": {
     "defaultMessage": "Asegúrate de que los usuarios estén al tanto de cualquier detalle importante rellenando las divulgaciones de contenido que se aplican a tu {type}."
   },
@@ -70,9 +64,6 @@
   },
   "nags.edit-description.title": {
     "defaultMessage": "Editar descripción"
-  },
-  "nags.edit-license.title": {
-    "defaultMessage": "Editar licencia"
   },
   "nags.edit-summary.title": {
     "defaultMessage": "Editar resumen"
@@ -91,9 +82,6 @@
   },
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "Proporcionar el código fuente"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "La URL de la licencia no es válida."
   },
   "nags.invalid-license-url.description.malformed": {
     "defaultMessage": "La URL de su licencia parece estar mal formada. Proporcione una URL válida para el texto de su licencia."
@@ -118,9 +106,6 @@
   },
   "nags.missing-alt-text.title": {
     "defaultMessage": "Añadir texto alternativo a la imagen"
-  },
-  "nags.misused-discord-link.title": {
-    "defaultMessage": "Mover invitación de Discord"
   },
   "nags.moderation.title": {
     "defaultMessage": "Visitar hilo de moderación"
@@ -222,4 +207,3 @@
     "defaultMessage": "Visitar la configuración de enlaces"
   }
 }
-

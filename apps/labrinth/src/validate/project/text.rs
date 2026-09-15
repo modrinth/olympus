@@ -55,9 +55,6 @@ static DESCRIPTION_LINK_FINDER: LazyLock<LinkFinder> = LazyLock::new(|| {
     finder
 });
 
-const URL_SHORTENERS: &[&str] =
-    &["bit.ly", "adf.ly", "tinyurl.com", "short.io", "is.gd"];
-
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(super) enum ProfanityKind {
     Profanity,
@@ -1069,34 +1066,6 @@ pub(super) fn has_image_without_alt_text(markdown: &str) -> bool {
                 })
                 .is_none_or(|alt| alt.as_str().trim().is_empty())
         })
-}
-
-pub(super) fn find_banned_description_link(markdown: &str) -> Option<String> {
-    DESCRIPTION_LINK_FINDER.links(markdown).find_map(|link| {
-        let raw = link.as_str();
-        let normalized = if raw.contains("://") {
-            raw.to_owned()
-        } else {
-            format!("http://{raw}")
-        };
-        Url::parse(&normalized)
-            .ok()
-            .filter(|url| {
-                url.host_str().is_some_and(|hostname| {
-                    URL_SHORTENERS
-                        .iter()
-                        .any(|domain| hostname_matches_domain(hostname, domain))
-                })
-            })
-            .map(|_| normalized)
-    })
-}
-
-fn hostname_matches_domain(hostname: &str, domain: &str) -> bool {
-    hostname.eq_ignore_ascii_case(domain)
-        || hostname
-            .to_ascii_lowercase()
-            .ends_with(&format!(".{domain}"))
 }
 
 pub(super) fn project_requires_english(project: &Project) -> bool {

@@ -1,61 +1,6 @@
 use super::{ProjectNag, ProjectNagKind, ProjectNagSeverity};
 use crate::models::v2::projects::LegacyProject;
 
-const INAPPROPRIATE_LICENSE_DOMAINS: &[&str] = &[
-    "youtube.com",
-    "youtu.be",
-    "modrinth.com",
-    "curseforge.com",
-    "twitter.com",
-    "x.com",
-    "discord.gg",
-    "discord.com",
-    "instagram.com",
-    "facebook.com",
-    "tiktok.com",
-    "reddit.com",
-    "twitch.tv",
-    "patreon.com",
-    "ko-fi.com",
-    "paypal.com",
-    "buymeacoffee.com",
-    "google.com",
-    "example.com",
-    "t.me",
-];
-
-fn hostname_matches_domain(hostname: &str, domain: &str) -> bool {
-    hostname == domain
-        || hostname
-            .strip_suffix(domain)
-            .is_some_and(|prefix| prefix.ends_with('.'))
-}
-
-enum InvalidLicenseUrl {
-    InappropriateDomain(String),
-    Malformed,
-}
-
-fn get_invalid_license_url(url: &str) -> Option<InvalidLicenseUrl> {
-    if url.is_empty() {
-        return None;
-    }
-
-    let Ok(url) = url::Url::parse(url) else {
-        return Some(InvalidLicenseUrl::Malformed);
-    };
-    let Some(hostname) = url.host_str() else {
-        return Some(InvalidLicenseUrl::Malformed);
-    };
-    let hostname = hostname.to_ascii_lowercase();
-    let hostname = hostname.trim_end_matches('.');
-
-    INAPPROPRIATE_LICENSE_DOMAINS
-        .iter()
-        .any(|domain| hostname_matches_domain(hostname, domain))
-        .then(|| InvalidLicenseUrl::InappropriateDomain(hostname.to_string()))
-}
-
 pub(super) fn validate(
     project: &crate::models::projects::Project,
 ) -> Vec<super::ProjectNag> {
@@ -79,42 +24,89 @@ pub(super) fn validate(
         );
     }
 
-    let has_license_url =
-        license.url.as_deref().is_some_and(|url| !url.is_empty());
-    let missing_custom_license_details = license.id == "LicenseRef-"
-        || (license.id.starts_with("LicenseRef-")
-            && !has_license_url
-            && license.id != "LicenseRef-Unknown"
-            && license.id != "LicenseRef-All-Rights-Reserved");
-    if missing_custom_license_details && !is_minecraft_server {
-        nags.push(ProjectNag::new(
-            ProjectNagKind::AddCustomLicenseDetails,
-            ProjectNagSeverity::Required,
-        ));
-    }
+    nags.extend(validate_custom_details(project));
+    nags
+}
 
-    if let Some(invalid_url) =
-        license.url.as_deref().and_then(get_invalid_license_url)
-    {
-        let details = match invalid_url {
-            InvalidLicenseUrl::InappropriateDomain(domain) => {
-                serde_json::json!({
-                    "domain": domain,
-                    "reason": "inappropriate_domain",
-                })
-            }
-            InvalidLicenseUrl::Malformed => serde_json::json!({
-                "reason": "malformed",
-            }),
-        };
-        nags.push(
-            ProjectNag::new(
-                ProjectNagKind::InvalidLicenseUrl,
-                ProjectNagSeverity::Required,
+pub(super) fn validate_custom_details(
+    project: &crate::models::projects::Project,
+) -> Vec<ProjectNag> {
+    let license = &project.license;
+    validate_custom_license(&license.id, license.url.as_deref())
+}
+
+pub(super) fn validate_custom_license(
+    id: &str,
+    url: Option<&str>,
+) -> Vec<ProjectNag> {
+    const BUILTIN_LICENSES: &[&str] = &[
+        "Apache-2.0",
+        "BSD-2-Clause",
+        "BSD-3-Clause",
+        "CC0-1.0",
+        "CC-BY-4.0",
+        "CC-BY-SA-4.0",
+        "CC-BY-NC-4.0",
+        "CC-BY-NC-SA-4.0",
+        "CC-BY-ND-4.0",
+        "CC-BY-NC-ND-4.0",
+        "AGPL-3.0",
+        "LGPL-2.1",
+        "LGPL-3.0",
+        "GPL-2.0",
+        "GPL-3.0",
+        "ISC",
+        "MIT",
+        "MPL-2.0",
+        "Zlib",
+    ];
+    let base_id = id.trim_end_matches("-only").trim_end_matches("-or-later");
+    let custom = !BUILTIN_LICENSES.contains(&base_id)
+        && !matches!(
+            id,
+            "LicenseRef-Unknown"
+                | "LicenseRef-All-Rights-Reserved"
+                | "LicenseRef-NOASSERTION"
+                | "NOASSERTION"
+                | "arr"
+        );
+    let missing_name = id.trim().is_empty()
+        || id
+            .strip_prefix("LicenseRef-")
+            .is_some_and(|name| name.trim_matches([' ', '-']).is_empty());
+    let missing_url = url.is_none_or(|url| url.trim().is_empty());
+    if custom && (missing_name || missing_url) {
+        vec![ProjectNag::new(ProjectNagKind::AddCustomLicenseDetails, ProjectNagSeverity::Required)
+			.with_details(serde_json::json!({ "field": "license", "missing_name": missing_name, "missing_url": missing_url }))]
+    } else {
+        Vec::new()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::validate_custom_license;
+
+    #[test]
+    fn custom_licenses_require_both_details() {
+        for (id, url) in [
+            ("LicenseRef-", Some("https://license.project.dev")),
+            ("LicenseRef-Custom", None),
+            ("Unlicense", None),
+            ("", Some("https://license.project.dev")),
+        ] {
+            assert_eq!(validate_custom_license(id, url).len(), 1, "{id}");
+        }
+        for id in ["MIT", "GPL-3.0-or-later", "LicenseRef-All-Rights-Reserved"]
+        {
+            assert!(validate_custom_license(id, None).is_empty());
+        }
+        assert!(
+            validate_custom_license(
+                "LicenseRef-Custom",
+                Some("https://license.project.dev")
             )
-            .with_details(details),
+            .is_empty()
         );
     }
-
-    nags
 }

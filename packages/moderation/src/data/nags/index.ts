@@ -91,6 +91,13 @@ export function getProjectNagValues(
 
 	return {
 		...formatted,
+		...(normalizeProjectNagKind(nag.kind) === 'link-validation'
+			? {
+					linkField: details.field === 'ko-fi' ? 'kofi' : String(details.field ?? 'other'),
+					otherLinkField:
+						details.other_field === 'ko-fi' ? 'kofi' : String(details.other_field ?? 'other'),
+				}
+			: {}),
 		...(values !== undefined && details.value === undefined ? { value: values } : {}),
 		...(tagValues.length > 0 ? { tags } : {}),
 		...(tagValues.length > 0 && details.count === undefined ? { count: tagValues.length } : {}),
@@ -102,11 +109,20 @@ export function toProjectNag(nag: Labrinth.Projects.v3.ProjectNag, projectType?:
 	const kind = normalizeProjectNagKind(nag.kind)
 	if (!kind) throw new Error(`Unknown project nag kind: ${nag.kind}`)
 	const definition = nagDefinitions[kind]
-	const destination = nagDestinations[definition.destination]
+	const destinationId =
+		kind === 'link-validation' && nag.details.field === 'description'
+			? 'description'
+			: kind === 'link-validation' && nag.details.field === 'license'
+				? 'license'
+				: definition.destination
+	const destination = nagDestinations[destinationId]
 
 	return {
-		id: kind,
-		title: definition.title,
+		id: projectNagId(nag, kind),
+		title:
+			typeof definition.title === 'function'
+				? definition.title({ nag, projectType })
+				: definition.title,
 		description: getNagDescription(definition, nag, projectType),
 		status: toNagStatus(nag.severity),
 		shouldShow: () => true,
@@ -122,9 +138,15 @@ export function toProjectFieldMessage(
 	const kind = normalizeProjectNagKind(nag.kind)
 	if (!kind) throw new Error(`Unknown project nag kind: ${nag.kind}`)
 	return {
-		code: kind,
+		code: projectNagId(nag, kind),
 		severity: nag.severity === 'required' ? 'error' : nag.severity,
 		message: getNagDescription(nagDefinitions[kind], nag, projectType),
 		values: getProjectNagValues(nag, projectType),
 	}
+}
+
+function projectNagId(nag: Labrinth.Projects.v3.ProjectNag, kind: string): string {
+	return kind === 'link-validation'
+		? `${kind}:${JSON.stringify([nag.details.field, nag.details.url, nag.details.reason])}`
+		: kind
 }

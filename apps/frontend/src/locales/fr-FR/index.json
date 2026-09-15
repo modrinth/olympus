@@ -4091,12 +4091,6 @@
   "project.settings.general.url.title": {
     "message": "URL"
   },
-  "project.settings.links.donation.duplicate-type": {
-    "message": "Vous avez déjà un autre lien {platform}."
-  },
-  "project.settings.links.donation.no-type": {
-    "message": "Veuillez sélectionner une plateforme pour ce lien de donation."
-  },
   "project.settings.monetization.description": {
     "message": "Les projets sur Modrinth sont automatiquement inscrits au <rewards-program-link>programme de récompenses</rewards-program-link>. Si vous ne souhaitez pas (ou ne pouvez pas, pour des raisons légales) générer des revenus avec ce projet, vous pouvez désactiver cette option ici."
   },

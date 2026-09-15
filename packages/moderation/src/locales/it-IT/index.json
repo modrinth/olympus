@@ -53,12 +53,6 @@
   "nags.all-tags-selected.title": {
     "defaultMessage": "Seleziona i tag pertinenti"
   },
-  "nags.banned-link-usage.description": {
-    "defaultMessage": "Usare \"{url}\" come collegamento esterno è vietato."
-  },
-  "nags.banned-link-usage.title": {
-    "defaultMessage": "Rimuovi i link vietati"
-  },
   "nags.check-disclosures.title": {
     "defaultMessage": "Rivedi le informative"
   },
@@ -85,9 +79,6 @@
   },
   "nags.edit-gallery.title": {
     "defaultMessage": "Modifica la galleria"
-  },
-  "nags.edit-license.title": {
-    "defaultMessage": "Modifica la licenza"
   },
   "nags.edit-summary.title": {
     "defaultMessage": "Modifica la sintesi"
@@ -122,20 +113,8 @@
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "Fornisci il codice sorgente"
   },
-  "nags.identical-links.description": {
-    "defaultMessage": "Alcuni dei collegamenti esterni sembrano identici. Tipicamente dovrebbero essere inseriti solo una volta e con il tipo appropriato."
-  },
-  "nags.identical-links.title": {
-    "defaultMessage": "Rimuovi i link identici"
-  },
   "nags.invalid-gallery-text.title": {
     "defaultMessage": "Modifica il testo delle immagini della galleria"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "L'URL della licenza non è valido."
-  },
-  "nags.invalid-license-url.description.domain": {
-    "defaultMessage": "L'URL della licenza rimanda a {domain}, che non è adatto. Tipicamente dovrebbe rimandare al corpo della licenza."
   },
   "nags.invalid-license-url.description.malformed": {
     "defaultMessage": "URL non valido. Forniscine uno adatto al testo della licenza."
@@ -170,12 +149,6 @@
   "nags.missing-alt-text.title": {
     "defaultMessage": "Aggiungi un testo alternativo alle immagini"
   },
-  "nags.misused-discord-link-description": {
-    "defaultMessage": "Gli inviti a Discord non possono essere usati con altri link. Inserisci solo il link di Discord nella casella Invito a Discord."
-  },
-  "nags.misused-discord-link.title": {
-    "defaultMessage": "Sposta l'invito a Discord"
-  },
   "nags.moderation.title": {
     "defaultMessage": "Thread di moderazione"
   },
@@ -190,9 +163,6 @@
   },
   "nags.multiple-resolution-tags.title": {
     "defaultMessage": "Seleziona la risoluzione corretta"
-  },
-  "nags.project-description-banned-link.description": {
-    "defaultMessage": "Usare \"{fullUrl}\" nelle descrizioni dei progetti è vietato."
   },
   "nags.project-description-non-english.description": {
     "defaultMessage": "La descrizione deve essere scritta in inglese o contenere una traduzione."
@@ -361,12 +331,6 @@
   },
   "nags.upload-version.title": {
     "defaultMessage": "Carica una versione"
-  },
-  "nags.verify-external-links.description": {
-    "defaultMessage": "Alcuni dei collegamenti esterni potrebbero portare a domini non appropriati per il tipo di link."
-  },
-  "nags.verify-external-links.title": {
-    "defaultMessage": "Rivedi i collegamenti esterni"
   },
   "nags.visit-links-settings.title": {
     "defaultMessage": "Impostazioni dei link"

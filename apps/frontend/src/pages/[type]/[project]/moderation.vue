@@ -113,6 +113,7 @@
 				:thread="prefixedThread"
 				:project="project"
 				:set-status="setStatus"
+				:review-submission-disabled="reviewSubmissionDisabled"
 				:current-member="currentMember ?? undefined"
 				:auth="auth"
 				class="overflow-clip rounded-b-2xl border-0 border-t border-solid border-surface-4 bg-surface-2"
@@ -155,6 +156,7 @@ import dayjs from 'dayjs'
 import { computed, watch } from 'vue'
 
 import ConversationThread from '~/components/ui/thread/ConversationThread.vue'
+import { canSubmitProjectForReview } from '~/composables/link-network-validation/submission'
 import { getProjectLink, isApproved, isRejected, isUnderReview } from '~/helpers/projects.js'
 
 defineEmits(['on-download', 'delete-version'])
@@ -212,11 +214,23 @@ const messages = defineMessages({
 const { addNotification } = injectNotificationManager()
 const {
 	projectV2: project,
+	projectValidation,
+	projectValidationLoading,
+	projectLinksNetworkValidationLoading,
+	setProcessing,
 	currentMember,
 	invalidate,
 	allMembers,
 	thread,
 } = injectProjectPageContext()
+
+const reviewSubmissionDisabled = computed(
+	() =>
+		!canSubmitProjectForReview(
+			projectValidation.value,
+			projectValidationLoading.value || projectLinksNetworkValidationLoading.value,
+		),
+)
 
 const THREADS_RELEASE_DATE = '2023-08-05T12:00:00-07:00'
 
@@ -477,6 +491,10 @@ function updateThread(newThread: Labrinth.Threads.v3.Thread | null | undefined) 
 }
 
 async function setStatus(status: Labrinth.Projects.v2.ProjectStatus) {
+	if (status === 'processing') {
+		await setProcessing()
+		return
+	}
 	startLoading()
 
 	try {

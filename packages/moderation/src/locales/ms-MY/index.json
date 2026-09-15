@@ -29,9 +29,6 @@
   "nags.edit-description.title": {
     "defaultMessage": "Sunting keterangan"
   },
-  "nags.edit-license.title": {
-    "defaultMessage": "Sunting lesen"
-  },
   "nags.edit-summary.title": {
     "defaultMessage": "Sunting ringkasan"
   },
@@ -49,9 +46,6 @@
   },
   "nags.gpl-license-source-required.title": {
     "defaultMessage": "Sediakan kod sumber"
-  },
-  "nags.invalid-license-url.description.default": {
-    "defaultMessage": "URL lesen tidak sah."
   },
   "nags.invalid-license-url.description.malformed": {
     "defaultMessage": "URL lesen anda nampaknya salah bentuk. Sila berikan URL yang sah kepada teks lesen anda."
@@ -76,9 +70,6 @@
   },
   "nags.missing-alt-text.title": {
     "defaultMessage": "Tambahkan teks alt gambar"
-  },
-  "nags.misused-discord-link.title": {
-    "defaultMessage": "Pindahkan pautan jemputan Discord"
   },
   "nags.moderation.title": {
     "defaultMessage": "Kunjungi bebenang penyederhanaan"
@@ -162,4 +153,3 @@
     "defaultMessage": "Kunjungi tetapan pautan"
   }
 }
-
